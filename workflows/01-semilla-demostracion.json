@@ -1,0 +1,51 @@
+{
+  "name": "01 · Semilla de demostración — Torre de Control",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "42f0d9c7-7d99-4d70-912e-123456789001",
+      "name": "Al ejecutar manualmente",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Este nodo es la fuente de verdad temporal del laboratorio.\n// Reemplázalo por conectores reales en el workflow 02.\nconst capturedAt = new Date().toISOString();\nconst projects = [\n  { id: 'PROY-01', name: 'Portal de aliados', owner: 'Lucía', status: 'en_riesgo', priority: 'alta', due: '2026-07-24', progress: 62, blocker: 'Falta decisión de Legal sobre términos.' },\n  { id: 'PROY-02', name: 'Onboarding comercial', owner: 'Miguel', status: 'en_curso', priority: 'media', due: '2026-08-02', progress: 48, blocker: '' },\n  { id: 'PROY-03', name: 'Migración CRM', owner: 'Sara', status: 'bloqueado', priority: 'critica', due: '2026-07-22', progress: 31, blocker: 'Proveedor no entregó acceso a la API.' }\n];\nconst events = [\n  { id: 'EVT-01', title: 'Comité de lanzamiento', start: '2026-07-21T09:00:00-05:00', projectId: 'PROY-01', type: 'decision' },\n  { id: 'EVT-02', title: 'Demo de onboarding', start: '2026-07-23T15:00:00-05:00', projectId: 'PROY-02', type: 'milestone' },\n  { id: 'EVT-03', title: 'Escalamiento con proveedor', start: '2026-07-20T16:30:00-05:00', projectId: 'PROY-03', type: 'blocker' }\n];\nconst milestones = [\n  { id: 'HIT-01', projectId: 'PROY-01', title: 'Aprobación de términos', date: '2026-07-21', status: 'at_risk' },\n  { id: 'HIT-02', projectId: 'PROY-02', title: 'Piloto con ventas', date: '2026-07-26', status: 'on_track' },\n  { id: 'HIT-03', projectId: 'PROY-03', title: 'Acceso a API CRM', date: '2026-07-20', status: 'blocked' }\n];\nreturn [{ json: { capturedAt, projects, events, milestones } }];"
+      },
+      "id": "42f0d9c7-7d99-4d70-912e-123456789002",
+      "name": "Semilla: tres fuentes",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nconst byProject = new Map(data.projects.map((project) => [project.id, { ...project, events: [], milestones: [] }]));\nfor (const event of data.events) byProject.get(event.projectId)?.events.push(event);\nfor (const milestone of data.milestones) byProject.get(milestone.projectId)?.milestones.push(milestone);\nconst projects = [...byProject.values()];\nconst summary = {\n  totalProjects: projects.length,\n  blocked: projects.filter((p) => p.status === 'bloqueado').length,\n  atRisk: projects.filter((p) => p.status === 'en_riesgo').length,\n  decisionsNeeded: projects.filter((p) => p.blocker).map((p) => ({ project: p.name, owner: p.owner, request: p.blocker })),\n  nextEvents: data.events.slice().sort((a, b) => a.start.localeCompare(b.start)).slice(0, 3)\n};\nreturn [{ json: { generatedAt: data.capturedAt, summary, projects } }];"
+      },
+      "id": "42f0d9c7-7d99-4d70-912e-123456789003",
+      "name": "Normalizar y priorizar",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": { "content": "={{ JSON.stringify($json, null, 2) }}", "height": 400, "width": 460, "color": 6 },
+      "id": "42f0d9c7-7d99-4d70-912e-123456789004",
+      "name": "Resultado: snapshot de la torre",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [940, 150]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Al ejecutar manualmente": { "main": [[{ "node": "Semilla: tres fuentes", "type": "main", "index": 0 }]] },
+    "Semilla: tres fuentes": { "main": [[{ "node": "Normalizar y priorizar", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "42f0d9c7-7d99-4d70-912e-123456789001",
+  "meta": { "templateCredsSetupCompleted": false },
+  "tags": []
+}

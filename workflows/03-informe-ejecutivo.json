@@ -1,0 +1,51 @@
+{
+  "name": "03 · Informe ejecutivo — formato verificable",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "51739dc5-0ba6-4e1e-9f51-123456789001",
+      "name": "Al ejecutar manualmente",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{ json: {\n  period: '20–26 de julio de 2026',\n  projects: [\n    { name: 'Portal de aliados', owner: 'Lucía', status: 'en_riesgo', progress: 62, blocker: 'Decisión de Legal sobre términos', decision: 'Aprobar versión B de términos antes del martes.' },\n    { name: 'Onboarding comercial', owner: 'Miguel', status: 'en_curso', progress: 48, blocker: '', decision: '' },\n    { name: 'Migración CRM', owner: 'Sara', status: 'bloqueado', progress: 31, blocker: 'Sin acceso de proveedor a API', decision: 'Escalar incumplimiento y acordar fecha de acceso.' }\n  ],\n  events: ['Lun 09:00 · Comité de lanzamiento', 'Mar 15:00 · Demo de onboarding', 'Hoy 16:30 · Escalamiento con proveedor']\n} }];"
+      },
+      "id": "51739dc5-0ba6-4e1e-9f51-123456789002",
+      "name": "Snapshot para informe",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const { period, projects, events } = $input.first().json;\nconst attention = projects.filter((project) => ['en_riesgo', 'bloqueado'].includes(project.status));\nconst lines = [\n  '# Torre de control — informe ejecutivo',\n  '',\n  `**Periodo:** ${period}`,\n  `**Generado:** ${new Date().toLocaleString('es-CO', { dateStyle: 'medium', timeStyle: 'short' })}`,\n  '',\n  '## 1. Lectura en 30 segundos',\n  `- Proyectos observados: ${projects.length}`,\n  `- Requieren atención: ${attention.length}`,\n  `- Próxima acción: ${attention[0]?.decision ?? 'Sin escalamiento pendiente.'}`,\n  '',\n  '## 2. Decisiones solicitadas',\n  ...attention.map((project, index) => `${index + 1}. **${project.name}** · responsable: ${project.owner}. Decidir: ${project.decision}`),\n  '',\n  '## 3. Semáforo de proyectos',\n  '| Proyecto | Responsable | Estado | Avance | Bloqueador |',\n  '|---|---|---:|---:|---|',\n  ...projects.map((project) => `| ${project.name} | ${project.owner} | ${project.status} | ${project.progress}% | ${project.blocker || '—'} |`),\n  '',\n  '## 4. Agenda próxima',\n  ...events.map((event) => `- ${event}`),\n  '',\n  '## 5. Recomendación de seguimiento',\n  'La automatización reúne evidencia y ordena prioridades. La decisión, la asignación de responsable y el escalamiento siguen siendo humanos.'\n];\nreturn [{ json: { reportMarkdown: lines.join('\\n'), reportType: 'determinista-y-auditable' } }];"
+      },
+      "id": "51739dc5-0ba6-4e1e-9f51-123456789003",
+      "name": "Construir informe con contrato",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": { "content": "OPCIÓN IA (después de validar el informe determinista)\n\nConecta un nodo OpenAI Chat Model o Basic LLM Chain después de este nodo. Usa el prompt de prompts/INFORME-EJECUTIVO.md y exige salida JSON.\n\nNunca dejes que la IA invente métricas, responsables, fechas o decisiones: el contrato de datos limita su trabajo a redactar y explicar.", "height": 235, "width": 460, "color": 4 },
+      "id": "51739dc5-0ba6-4e1e-9f51-123456789004",
+      "name": "Nota: extensión con IA",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [690, 20]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Al ejecutar manualmente": { "main": [[{ "node": "Snapshot para informe", "type": "main", "index": 0 }]] },
+    "Snapshot para informe": { "main": [[{ "node": "Construir informe con contrato", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "51739dc5-0ba6-4e1e-9f51-123456789001",
+  "meta": { "templateCredsSetupCompleted": false },
+  "tags": []
+}

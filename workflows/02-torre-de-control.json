@@ -1,0 +1,61 @@
+{
+  "name": "02 · Torre de control — Ingreso por contrato",
+  "nodes": [
+    {
+      "parameters": { "httpMethod": "POST", "path": "control-tower", "responseMode": "responseNode", "options": {} },
+      "id": "9d3135bd-4003-4256-8b9a-123456789001",
+      "name": "Webhook: recibir fuentes",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [220, 300],
+      "webhookId": "d5d3a1b5-1ca7-4a76-9f55-123456789123"
+    },
+    {
+      "parameters": {
+        "jsCode": "// CONTRATO DE ENTRADA (POST /webhook/control-tower)\n// { source: 'google-calendar|google-sheets|github|manual', records: [...] }\nconst { source, records } = $json.body ?? $json;\nif (!source || !Array.isArray(records)) {\n  throw new Error('Contrato inválido: se espera source y records[]');\n}\nconst normalize = (record) => ({\n  source,\n  externalId: String(record.id ?? record.externalId ?? crypto.randomUUID()),\n  kind: record.kind ?? (source === 'google-calendar' ? 'event' : 'project'),\n  title: record.title ?? record.name ?? '(sin título)',\n  owner: record.owner ?? record.assignee ?? 'Sin asignar',\n  status: record.status ?? 'sin_estado',\n  priority: record.priority ?? 'media',\n  date: record.date ?? record.start ?? record.due ?? null,\n  blocker: record.blocker ?? '',\n  url: record.url ?? '',\n  capturedAt: new Date().toISOString()\n});\nreturn records.map((record) => ({ json: normalize(record) }));"
+      },
+      "id": "9d3135bd-4003-4256-8b9a-123456789002",
+      "name": "Adaptador: normalizar contrato",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all().map((item) => item.json);\nconst priorityWeight = { critica: 4, alta: 3, media: 2, baja: 1 };\nconst needsAttention = items\n  .filter((row) => ['bloqueado', 'en_riesgo', 'at_risk', 'blocked'].includes(String(row.status).toLowerCase()) || row.blocker)\n  .sort((a, b) => (priorityWeight[b.priority] ?? 0) - (priorityWeight[a.priority] ?? 0));\nreturn [{ json: {\n  generatedAt: new Date().toISOString(),\n  received: items.length,\n  dashboard: {\n    bySource: Object.groupBy(items, ({ source }) => source),\n    needsAttention,\n    nextSevenDays: items.filter((row) => row.date).sort((a, b) => String(a.date).localeCompare(String(b.date))).slice(0, 7)\n  }\n} }];"
+      },
+      "id": "9d3135bd-4003-4256-8b9a-123456789003",
+      "name": "Motor: semáforo y agenda",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [700, 300]
+    },
+    {
+      "parameters": { "respondWith": "json", "responseBody": "={{ JSON.stringify($json) }}", "options": {} },
+      "id": "9d3135bd-4003-4256-8b9a-123456789004",
+      "name": "Responder: snapshot",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [940, 300]
+    },
+    {
+      "parameters": { "content": "CONECTORES REALES (se agregan antes del Webhook o como flujos emisores)\n\n1. Google Calendar → Event: Get Many → mapear al contrato.\n2. Google Sheets / Excel → leer filas → mapear al contrato.\n3. GitHub / Linear / Notion → listar issues o páginas → mapear al contrato.\n\nCada conector es sustituible: lo estable es el contrato, no el proveedor.", "height": 270, "width": 450, "color": 5 },
+      "id": "9d3135bd-4003-4256-8b9a-123456789005",
+      "name": "Nota: fuentes conectables",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [350, 20]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook: recibir fuentes": { "main": [[{ "node": "Adaptador: normalizar contrato", "type": "main", "index": 0 }]] },
+    "Adaptador: normalizar contrato": { "main": [[{ "node": "Motor: semáforo y agenda", "type": "main", "index": 0 }]] },
+    "Motor: semáforo y agenda": { "main": [[{ "node": "Responder: snapshot", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "9d3135bd-4003-4256-8b9a-123456789001",
+  "meta": { "templateCredsSetupCompleted": false },
+  "tags": []
+}
