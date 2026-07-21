@@ -1,0 +1,104 @@
+{
+  "id": "error09",
+  "name": "09 · Avísame cuando se rompa",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "g1000000-0000-4000-8000-000000000001",
+      "name": "Cuando otro flujo falla",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [-160, 560]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Este nodo recibe UN item con la forma real que arma n8n cuando otro\n// workflow falla — verificada contra el código fuente del nodo Error Trigger,\n// no supuesta:\n//\n// {\n//   execution: {\n//     id, url, retryOf,\n//     error: { message, stack },\n//     lastNodeExecuted,\n//     mode,\n//   },\n//   workflow: { id, name },\n// }\n//\n// No hay ningún campo de hora en este payload. \"Detectado\" es el momento en\n// que ESTE flujo se disparó — en la práctica, segundos después de la falla\n// real, no la marca exacta del error.\nconst datos = $input.first().json;\n\nconst workflow = datos.workflow?.name ?? 'workflow sin nombre (revisa la configuración)';\nconst nodo = datos.execution?.lastNodeExecuted ?? 'nodo desconocido';\nconst motivo = datos.execution?.error?.message ?? 'sin mensaje de error';\nconst url = datos.execution?.url ?? '';\nconst detectadoEl = new Date().toLocaleString('es-CO', {\n  dateStyle: 'medium',\n  timeStyle: 'short',\n});\n\nconst lineas = [\n  '🚨 Un flujo se rompió',\n  `Flujo: ${workflow}`,\n  `Se detuvo en: ${nodo}`,\n  `Motivo: ${motivo}`,\n  `Detectado: ${detectadoEl}`,\n];\n\nif (url) {\n  lineas.push('', `Ver la ejecución: ${url}`);\n}\n\nreturn [{ json: { mensaje: lineas.join('\\n') } }];"
+      },
+      "id": "g1000000-0000-4000-8000-000000000002",
+      "name": "Armar mensaje de alerta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [100, 560]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "TU_CHAT_ID_AQUI",
+        "text": "={{ $json.mensaje }}",
+        "additionalFields": {}
+      },
+      "id": "g1000000-0000-4000-8000-000000000003",
+      "name": "Avisar por Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [340, 560]
+    },
+    {
+      "parameters": {
+        "content": "## Cómo conectarlo a tus otros flujos\n\nImportar este workflow no alcanza. Un Error Trigger solo se dispara si OTRO workflow lo tiene asignado como su \"Error Workflow\" en su configuración — n8n no lo hace por defecto, ni siquiera entre flujos tuyos.\n\nEn el workflow que quieres vigilar (por ejemplo el 07):\n\n1. Ábrelo en el editor.\n2. Abre el menú de tres puntos (arriba a la derecha) → **Settings**.\n3. En **Error Workflow**, selecciona **09 · Avísame cuando se rompa**.\n4. Guarda.\n\nRepite esto en CADA workflow que quieras vigilar: 05, 06, 07, y cualquiera que agregues después. La asignación es por workflow, no global. Uno que te olvidaste de conectar sigue fallando en silencio exactamente igual que si este flujo no existiera — que sería la ironía perfecta.",
+        "height": 460,
+        "width": 400,
+        "color": 4
+      },
+      "id": "g1000000-0000-4000-8000-000000000004",
+      "name": "Nota: cómo conectarlo a tus otros flujos",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-180, -460]
+    },
+    {
+      "parameters": {
+        "content": "## Qué datos trae el aviso\n\nCuando otro workflow falla, n8n dispara este flujo con un item con esta forma (verificada contra el código del nodo Error Trigger):\n\n```\n{\n  \"execution\": {\n    \"id\": 231,\n    \"url\": \"http://localhost:5678/workflow/1/231\",\n    \"retryOf\": \"34\",\n    \"error\": { \"message\": \"...\", \"stack\": \"...\" },\n    \"lastNodeExecuted\": \"Nodo con el error\",\n    \"mode\": \"manual\"\n  },\n  \"workflow\": { \"id\": \"1\", \"name\": \"Nombre del workflow\" }\n}\n```\n\nSi el nodo que falla es el propio disparador del otro workflow (su trigger), esta forma trae menos datos en `execution` — otra razón para usar `?.` en el código en vez de asumir que el campo siempre está.",
+        "height": 460,
+        "width": 420,
+        "color": 3
+      },
+      "id": "g1000000-0000-4000-8000-000000000005",
+      "name": "Nota: qué datos trae el aviso",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [260, -460]
+    },
+    {
+      "parameters": {
+        "content": "## Por qué esto importa más de lo que parece\n\nUna automatización que falla en silencio es peor que no tener automatización, porque la organización ya confía en ella y dejó de hacer a mano lo que ella hacía. El día que se rompe, nadie lo sabe — hasta que alguien nota que el informe de los lunes no llegó, y para entonces ya pasaron semanas. El detalle completo está en docs/LO-QUE-CUESTA-DE-VERDAD.md.\n\nLa confianza en un proceso automático no se construye con que funcione. Se construye con que avise cuando deja de funcionar. Este flujo de una sola conexión —Error Trigger → mensaje → Telegram— no agrega ninguna capacidad nueva al sistema: agrega la certeza de que un fallo no pasa desapercibido.",
+        "height": 400,
+        "width": 400,
+        "color": 7
+      },
+      "id": "g1000000-0000-4000-8000-000000000006",
+      "name": "Nota: por qué esto importa más de lo que parece",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [720, -460]
+    },
+    {
+      "parameters": {
+        "content": "## La limitación honesta\n\nEste flujo avisa cuando un workflow SE EJECUTA y falla. **No avisa si el workflow nunca llegó a ejecutarse** — por ejemplo, si n8n estaba apagado el lunes a las 7:00. Ahí no hay ninguna ejecución que falle: simplemente no pasó nada, y este flujo tampoco se dispara, porque no hay error que disparar.\n\nEse caso —¿sigue vivo el proceso que debería estar corriendo?— necesita vigilancia desde AFUERA de n8n: un servicio externo que confirme que n8n respondió a tiempo. Está fuera del alcance de esta clase. Dilo así de claro cuando lleves esto a tu organización: este flujo cierra una parte del problema, no todo.",
+        "height": 400,
+        "width": 400,
+        "color": 5
+      },
+      "id": "g1000000-0000-4000-8000-000000000007",
+      "name": "Nota: la limitación honesta",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1160, -460]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Cuando otro flujo falla": {
+      "main": [[{ "node": "Armar mensaje de alerta", "type": "main", "index": 0 }]]
+    },
+    "Armar mensaje de alerta": {
+      "main": [[{ "node": "Avisar por Telegram", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "g1000000-0000-4000-8000-000000000001",
+  "meta": { "templateCredsSetupCompleted": false },
+  "tags": []
+}

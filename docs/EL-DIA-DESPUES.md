@@ -72,6 +72,18 @@ respuesta— entonces el proceso ya es crítico, y un computador personal que se
 apaga cuando su dueño se va de vacaciones no es la infraestructura que ese
 nivel de dependencia exige.
 
+Hay una respuesta operativa parcial a esta pregunta, y vale la pena
+conocerla antes de decidir que hace falta infraestructura nueva:
+[`workflows/09-avisame-cuando-se-rompa.json`](../workflows/09-avisame-cuando-se-rompa.json)
+conecta un `Error Trigger` a un aviso por Telegram, así que cuando un flujo
+se ejecuta y falla, alguien se entera en minutos y no en semanas — el
+hallazgo detrás, verificado contra el código de n8n, está en
+[LO-QUE-CUESTA-DE-VERDAD.md](LO-QUE-CUESTA-DE-VERDAD.md#1-qué-es-gratis-de-verdad-y-hasta-dónde).
+Es parcial a propósito: solo avisa cuando el flujo llega a ejecutarse y
+falla. Si n8n estaba apagado y el flujo nunca corrió, no hay error que
+disparar ni aviso que enviar — ese caso sigue siendo el que empuja hacia el
+piloto o la producción de la siguiente sección.
+
 ### ¿Qué se rompe cuando la persona que lo montó no está?
 
 Esta es la más incómoda de las tres, porque casi nunca se responde hasta que
