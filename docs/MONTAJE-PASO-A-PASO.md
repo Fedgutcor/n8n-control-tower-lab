@@ -310,7 +310,42 @@ which n8n
 Si responde con una ruta, tienes una instalación global previa y `npx` te está
 mostrando *esa*, no la actual.
 
-### 4. `Cannot connect to the Docker daemon`
+### 4. `SQLite package has not been found installed`
+
+Solo en la ruta `npx`/npm. El mensaje completo es:
+
+```text
+Initial database connection attempt 2 failed: SQLite package has not been
+found installed. Try to install it: npm install sqlite3 --save
+```
+
+**El mensaje miente, y por eso está aquí.** Te dice que instales `sqlite3`,
+pero `sqlite3` **ya está instalado**. Lo que falta es que esté **compilado**:
+ese paquete incluye código en C que tiene que convertirse en un programa para
+tu procesador durante la instalación, y a veces ese paso se salta en silencio.
+Quedan las fuentes sin el resultado.
+
+Cómo confirmarlo antes de tocar nada: busca la carpeta `build` dentro del
+paquete. Si `sqlite3` existe pero no tiene `build/`, ese es exactamente el caso.
+
+La solución es pedirle a npm que lo compile:
+
+```bash
+npm rebuild sqlite3 --build-from-source
+```
+
+Necesita herramientas de compilación instaladas (en macOS, las Xcode Command
+Line Tools; en Windows, las build tools de Visual Studio). Si no las tienes, la
+salida rápida es cambiarse a la ruta Docker.
+
+> **Por qué esto es un argumento a favor de Docker, y no un detalle menor:** la
+> imagen de Docker viene con ese componente ya compilado por quienes publican
+> n8n. Toda esta categoría de problema —código nativo que debe compilarse en la
+> máquina de cada persona, con las herramientas de cada persona— desaparece.
+> Es la razón de fondo por la que la ruta Docker es la principal de esta clase,
+> más allá de la comodidad.
+
+### 5. `Cannot connect to the Docker daemon`
 
 Docker está instalado pero no corriendo. Abre Docker Desktop y espera a que
 termine de arrancar.
