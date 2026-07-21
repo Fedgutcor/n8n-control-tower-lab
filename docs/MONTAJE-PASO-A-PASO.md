@@ -217,6 +217,23 @@ Para apagarlo: `Ctrl + C` en esa ventana.
 >   olvidada durante meses en `~/.npmrc`, afectando a cualquier programa que
 >   instales después.
 >
+> **¿Conviene desactivar esa opción para siempre?** No, y la razón es una
+> lección de la clase por derecho propio.
+>
+> `ignore-scripts=true` es una **protección real**: impide que un paquete
+> ejecute código en tu computador durante la instalación. Varios ataques
+> conocidos contra el ecosistema de npm usaron exactamente esa vía — te bastaba
+> con instalar una dependencia para quedar comprometido, sin abrir ni ejecutar
+> nada. Quien la activó en tu equipo hizo bien.
+>
+> Lo correcto no es apagar la protección, sino **abrirla a propósito y solo
+> cuando toca**, como en el comando de arriba: decides por un paquete concreto,
+> en un momento concreto, y vuelves a quedar protegido.
+>
+> Es el mismo criterio que atraviesa toda la clase, aplicado a la seguridad: el
+> valor por defecto protege, y las excepciones son decisiones conscientes de
+> alguien, no una puerta que se deja abierta por comodidad.
+>
 > **Si `ignore-scripts` está en `false` y aun así falla**, cámbiate a la ruta
 > Docker y sigue con la clase. No inviertas más tiempo ahí.
 >
