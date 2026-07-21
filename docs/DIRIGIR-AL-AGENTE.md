@@ -208,6 +208,21 @@ crees que debería tomar yo. Después de eso, empieza.
 
 De menor a mayor. Cada uno se apoya en el anterior.
 
+> **Antes de empezar, dile a tu agente qué tiene a mano.** Este repositorio ya
+> trae flujos armados y funcionando en la carpeta `workflows/`, y documentación
+> técnica en `docs/`. Si no se lo mencionas, tu agente puede ponerse a construir
+> desde cero algo que ya existe. Empieza cualquiera de los encargos con una
+> frase como esta:
+>
+> ```text
+> Tengo descargado el repositorio n8n-control-tower-lab. Incluye flujos ya
+> construidos en la carpeta workflows/ y documentación en docs/. Revísalos
+> antes de proponerme nada nuevo, y dime cuáles me sirven para lo que quiero.
+> ```
+>
+> Es el mismo principio de la Parte 2: **el contexto que solo tú tienes**. Que
+> los archivos estén en tu disco no significa que tu agente sepa que existen.
+
 ### Encargo 1 — Levantar el motor
 
 ```text

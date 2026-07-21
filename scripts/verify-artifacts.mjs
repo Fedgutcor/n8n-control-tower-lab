@@ -412,6 +412,9 @@ const IMPERATIVOS_AMBIGUOS = new Set([
 const CONJUGACION_EXCLUSIONES = new Set([
   'más', 'además', 'demás', 'después', 'través', 'interés', 'inglés', 'país',
   'análisis', 'síntesis', 'crisis', 'quizás', 'jamás', 'atrás', 'detrás', 'estás',
+  // "estés" es subjuntivo de tú ("cuando estés listo"), no voseo. Es el único
+  // subjuntivo frecuente de tuteo que termina en -és, por eso va aquí.
+  'estés',
   'verás', 'podrás', 'tendrás', 'harás',
 ]);
 
