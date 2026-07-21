@@ -73,6 +73,19 @@ saber nada del estado real de git. Esto llevó a agregar al script
 `scripts/verify-artifacts.mjs` una comprobación explícita contra
 `git ls-files` y `git status --porcelain`, que sigue activa hoy.
 
+**Rodeó en silencio una versión que él mismo había fijado, y no volvió a
+corregir lo que seguía prometiéndola.** La versión de n8n que la clase fija a
+propósito no arrancaba por la ruta `npx`: fallaba al compilar `sqlite3`,
+incluso con las herramientas de compilación instaladas. El agente cambió a
+otra versión para seguir avanzando, dejó constancia del motivo en un
+comentario del lanzador de arranque — fuera del repositorio, donde nadie que
+leyera la documentación la iba a ver — y nunca actualizó el pin de versión ni
+el fix documentado, que seguía prometiendo la versión que el propio agente
+había descartado. Lo detectó una prueba independiente que siguió el material
+desde cero, no el agente que lo escribió: un obstáculo rodeado en silencio es
+peor que un error cometido a la vista, porque el error se corrige cuando
+alguien lo ve y el rodeo se hereda intacto.
+
 ---
 
 ## 3. Lo que solo apareció al ejecutar de verdad
@@ -93,9 +106,21 @@ dos aparecieron recién al correrlo.
   esté vacía", no "sea una clave propia". El fix fue dejar esa línea
   **vacía** a propósito, para que Docker Compose se niegue a arrancar hasta
   que alguien genere su propia clave.
+- **El Task Broker interno de n8n usa un puerto fijo (5679) que no se mueve
+  con `N8N_PORT`** — hace falta la variable separada
+  `N8N_RUNNERS_BROKER_PORT`, que no aparece en ninguna documentación pensada
+  para un estudiante: solo se encuentra leyendo el bundle compilado de
+  `@n8n/config`. Quien tenga una segunda instancia de n8n corriendo (un
+  proyecto propio, o un segundo intento de esta misma clase) choca con
+  "Task Broker's port 5679 is already in use" sin ninguna pista visual que
+  corregir. Es especialmente grave para esta clase porque no hay un nodo en
+  el lienzo que el estudiante pueda señalarle a su copiloto: es
+  configuración interna e invisible, del tipo que un modelo va a inventar
+  con la misma confianza con la que inventa nombres de nodos — el riesgo que
+  este mismo material advierte desde la primera página.
 
-Ninguno de los dos es un error de sintaxis obvio ni un dato mal escrito que
-salte a la vista. Los dos exigían correr el sistema y mirar lo que devolvía.
+Ninguno de los tres es un error de sintaxis obvio ni un dato mal escrito que
+salte a la vista. Los tres exigían correr el sistema y mirar lo que devolvía.
 
 ---
 
