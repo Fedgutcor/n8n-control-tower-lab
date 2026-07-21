@@ -46,6 +46,15 @@ Al terminar, cada estudiante podrá:
 
 ## Diseño de 3 horas
 
+> **Apertura de la sesión (10–12 min, antes de la tabla).** La clase abre con una
+> presentación corta sobre especificar antes de construir y definir el fallo
+> antes de la solución. No se enseña como metodología de software, sino como dos
+> hábitos de gestión que este público ya reconoce. El prompt para generarla está
+> en [PROMPT-NOTEBOOKLM-APERTURA.md](PROMPT-NOTEBOOKLM-APERTURA.md).
+>
+> Esos minutos salen del primer bloque: el tramo "Mapa" se acorta y se apoya en
+> la presentación, que ya deja planteada la pregunta por las fuentes de verdad.
+
 | Tiempo | Momento | Módulo del lab | Evidencia de aprendizaje |
 |---:|---|---|---|
 | 0–15 min | Mapa: “¿qué fuentes usan hoy para saber si un proyecto está en riesgo?” + demo del snapshot. | 01 Inicio | Cada persona identifica tres fuentes y un destinatario de la decisión. |
