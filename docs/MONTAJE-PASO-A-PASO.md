@@ -23,8 +23,8 @@
 
 - **Docker** si quieres el entorno idéntico al del docente y que apagar el
   computador no te borre nada. Es la ruta principal de la clase.
-- **npx** si tu máquina no aguanta Docker Desktop, o si vas a trabajar con
-  **Ollama** — por esta ruta Ollama funciona con `localhost` sin trucos.
+- **npx** si tu máquina no aguanta Docker Desktop. **Ojo:** en macOS esta ruta
+  no está garantizada — lee la advertencia del paso B2 antes de elegirla.
 
 > Ambas rutas llegan al mismo lugar: n8n en `http://localhost:5678`. Nadie queda
 > atrás por elegir una u otra.
@@ -182,6 +182,43 @@ Descarga y arranca. **Deja esa ventana abierta**: si la cierras, n8n se apaga.
 Abre `http://localhost:5678`.
 
 Para apagarlo: `Ctrl + C` en esa ventana.
+
+> ### ⚠️ Esta ruta no está garantizada en macOS
+>
+> Lo comprobamos y preferimos decirlo antes de que lo descubras a mitad de una
+> clase: **en macOS, `npx n8n@2.30.8` puede fallar al arrancar** con el mensaje
+> `SQLite package has not been found installed`. La causa es que uno de sus
+> componentes internos no llega a compilarse durante la instalación, y el
+> arreglo habitual (`npm rebuild sqlite3 --build-from-source`) **informa éxito
+> sin compilar nada** — aunque tengas instaladas las herramientas de desarrollo
+> de Apple.
+>
+> **Qué hacer si te ocurre:** cámbiate a la ruta Docker. No pierdas tiempo
+> depurando esto: el problema está en cómo se distribuye ese componente, no en
+> tu máquina ni en algo que hayas hecho mal.
+>
+> **Para el docente:** si vas a ofrecer esta ruta a tu grupo, **pruébala antes**
+> en una máquina limpia con la versión que fija el `docker-compose.yml`. Si
+> falla, ofrece únicamente Docker ese día. La ruta `npx` sigue documentada
+> porque en Linux y Windows funciona sin este problema, y porque para algunos
+> equipos es la única opción disponible.
+>
+> Esta limitación la encontró una prueba independiente que siguió este material
+> desde cero, no quien lo escribió. Está contada en
+> [CASO-DE-ESTUDIO.md](CASO-DE-ESTUDIO.md).
+
+### B2b. Si necesitas dos instancias a la vez
+
+Cambiar `N8N_PORT` **no basta**: n8n usa además un segundo puerto interno
+(5679) que no se mueve con esa variable. Si arrancas una segunda instancia
+verás `Task Broker's port 5679 is already in use`. Hay que cambiar los dos:
+
+```bash
+N8N_PORT=5690 N8N_RUNNERS_BROKER_PORT=5691 npx n8n
+```
+
+Es un caso poco frecuente en clase, pero imposible de adivinar: esa segunda
+variable no aparece en la documentación habitual.
 
 ### B3. Dónde quedan tus datos
 
