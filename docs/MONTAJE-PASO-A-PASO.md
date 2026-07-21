@@ -275,6 +275,27 @@ N8N_PORT=5690 N8N_RUNNERS_BROKER_PORT=5691 npx n8n
 Es un caso poco frecuente en clase, pero imposible de adivinar: esa segunda
 variable no aparece en la documentación habitual.
 
+**Y hay un tercer caso**, que sorprende incluso a quien ya conoce el anterior:
+si dejas n8n corriendo y en otra ventana ejecutas un flujo por línea de comandos
+(`n8n execute`), **ese comando levanta su propio componente interno** y vuelve a
+chocar. No basta con los dos puertos del servidor: el comando de ejecución
+necesita el suyo.
+
+```bash
+N8N_RUNNERS_BROKER_PORT=5699 n8n execute --id=<identificador>
+```
+
+> **Cómo reconocerlo:** el mensaje dice `Task Broker's port 5679 is already in
+> use. Do you have another instance of n8n running already?` — y la respuesta es
+> sí: la tuya, la que dejaste abierta en la otra ventana.
+
+**Un aviso sobre `npx` que conviene conocer:** si alguna vez instalaste n8n de
+forma global, `npx n8n` puede reutilizar **esa versión vieja** en lugar de bajar
+la actual, y lo hace en silencio. Comprobar con `which n8n` ayuda, pero no es
+concluyente: `npx` también consulta la configuración global de npm, no solo las
+rutas del sistema. Si sospechas que estás corriendo una versión distinta a la que
+crees, fija la versión explícitamente: `npx n8n@2.30.8`.
+
 ### B3. Dónde quedan tus datos
 
 En la carpeta `.n8n` de tu usuario (`~/.n8n` en Mac/Linux,

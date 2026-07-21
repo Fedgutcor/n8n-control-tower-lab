@@ -79,7 +79,7 @@ que se verifica.
 | El flujo `01` importado y ejecutado | ¿Puedes señalar la regla que decide si un proyecto es riesgo, y explicarla? |
 | El informe `03` funcionando **sin ningún modelo de IA** | ¿De dónde sale cada número del informe? |
 | Tu propia hoja conectada ([Google](docs/CONECTAR-GOOGLE.md), flujo `05`) | ¿Qué pasa el día que quiera desconectarla? |
-| Proyectos cruzados con la agenda (flujo `06`) | ¿Qué ocurre con un evento cuyo proyecto no coincide? ¿Desaparece? |
+| Proyectos cruzados con la agenda (flujo `06`) | ¿Qué ocurre con un evento cuyo proyecto no coincide? ¿Desaparece? **Pruébalo:** cambia el nombre de un proyecto en la fuente para que no coincida con ninguno, ejecuta, y mira si ese evento sigue apareciendo en la salida |
 | El informe escrito por un modelo ([proveedores](docs/PROVEEDORES-LLM.md), flujo `04`) | ¿Puedes provocar una invención a propósito y ver que la detecta? |
 
 Comparar el informe del `03` con el del `04` es la clase entera: el primero sale
