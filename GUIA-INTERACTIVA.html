@@ -273,7 +273,7 @@ RESTRICCIONES:
 
 SABRÉ QUE FUNCIONÓ CUANDO: pueda abrir una dirección en el navegador y ver la pantalla de n8n.
 
-Antes de empezar: dime qué necesitas saber de mi máquina, dame los comandos de solo lectura para averiguarlo, y explícame qué vas a instalar y por qué.</pre><button class="btn copy" data-copy="promptEncargo1" type="button">Copiar encargo 1</button><p><strong>Qué verificar:</strong> que puedas abrirlo. Y pregúntale "¿dónde quedaron guardados mis datos y qué pasaría si borro esa carpeta?". Es la pieza 2 de la arquitectura. Si no sabe responder con precisión, no montó lo que crees.</p><label class="workshop-check"><input type="checkbox" data-encargo="0"> Lo logré</label></article>
+Antes de empezar: dime qué necesitas saber de mi máquina, dame los comandos de solo lectura para averiguarlo, y explícame qué vas a instalar y por qué.</pre><button class="btn copy" data-copy="promptEncargo1" type="button">Copiar encargo 1</button><p><strong>Qué verificar:</strong> que puedas abrirlo. Y pregúntale "¿dónde quedaron guardados mis datos y qué pasaría si borro esa carpeta?". Es la pieza 2 de la arquitectura. Si no sabe responder con precisión, no montó lo que crees.</p><label class="workshop-check"><input type="checkbox" data-encargo="0"> Lo logré</label><div class="field"><label for="encargoNota0">¿Qué te falló aquí?</label><textarea id="encargoNota0" data-encargo-note="0" rows="2" placeholder="Deja vacío si no hubo tropiezos."></textarea></div></article>
 
             <article class="card key"><h3>Encargo 2 — Entender lo que ya existe</h3><pre class="prompt" id="promptEncargo2">Importé un flujo de ejemplo en n8n y quiero entenderlo antes de cambiarlo.
 
@@ -283,7 +283,7 @@ Explícamelo en lenguaje de negocio, en orden:
 3. Cuáles de esas cosas son DECISIONES que alguien tomó, y no obligaciones técnicas.
 4. Qué pasaría si le llega un dato vacío o mal escrito.
 
-Si algo no lo puedes determinar con certeza, dilo en vez de suponerlo.</pre><button class="btn copy" data-copy="promptEncargo2" type="button">Copiar encargo 2</button><p><strong>Qué verificar:</strong> que puedas señalar en pantalla la regla del semáforo y explicarla con tus palabras. Si no puedes, aún no entendiste lo que vas a delegar.</p><label class="workshop-check"><input type="checkbox" data-encargo="1"> Lo logré</label></article>
+Si algo no lo puedes determinar con certeza, dilo en vez de suponerlo.</pre><button class="btn copy" data-copy="promptEncargo2" type="button">Copiar encargo 2</button><p><strong>Qué verificar:</strong> que puedas señalar en pantalla la regla del semáforo y explicarla con tus palabras. Si no puedes, aún no entendiste lo que vas a delegar.</p><label class="workshop-check"><input type="checkbox" data-encargo="1"> Lo logré</label><div class="field"><label for="encargoNota1">¿Qué te falló aquí?</label><textarea id="encargoNota1" data-encargo-note="1" rows="2" placeholder="Deja vacío si no hubo tropiezos."></textarea></div></article>
 
             <article class="card key"><h3>Encargo 3 — Conectar tu fuente real</h3><p>Aquí aparece tu decisión: cuál es la fuente de verdad.</p><pre class="prompt" id="promptEncargo3">QUIERO: que el flujo lea mis proyectos reales desde una hoja de cálculo mía, en lugar de los datos de ejemplo.
 
@@ -297,7 +297,7 @@ RESTRICCIONES:
 
 SABRÉ QUE FUNCIONÓ CUANDO: ejecute el flujo y vea mis propios proyectos.
 
-Dime primero qué opciones existen para conectar esto, con sus ventajas y desventajas, y cuál me recomiendas para hoy. No elijas por mí.</pre><button class="btn copy" data-copy="promptEncargo3" type="button">Copiar encargo 3</button><p><strong>Qué verificar:</strong> que tus datos aparezcan. Y algo más importante: pregúntale "¿qué pasa el día que quiera desconectar esto?". Si la respuesta es incómoda, la conexión estaba mal elegida.</p><label class="workshop-check"><input type="checkbox" data-encargo="2"> Lo logré</label></article>
+Dime primero qué opciones existen para conectar esto, con sus ventajas y desventajas, y cuál me recomiendas para hoy. No elijas por mí.</pre><button class="btn copy" data-copy="promptEncargo3" type="button">Copiar encargo 3</button><p><strong>Qué verificar:</strong> que tus datos aparezcan. Y algo más importante: pregúntale "¿qué pasa el día que quiera desconectar esto?". Si la respuesta es incómoda, la conexión estaba mal elegida.</p><label class="workshop-check"><input type="checkbox" data-encargo="2"> Lo logré</label><div class="field"><label for="encargoNota2">¿Qué te falló aquí?</label><textarea id="encargoNota2" data-encargo-note="2" rows="2" placeholder="Deja vacío si no hubo tropiezos."></textarea></div></article>
 
             <article class="card key"><h3>Encargo 4 — Escribir la regla</h3><p>Este encargo no se delega: se dicta. Tú traes la regla; el agente la implementa.</p><pre class="prompt" id="promptEncargo4">QUIERO: que el flujo marque cada proyecto con un semáforo, según esta regla que yo definí:
 
@@ -310,7 +310,7 @@ RESTRICCIONES:
 - La regla debe quedar visible y editable por alguien que no programa. No quiero que esté escondida en código.
 - Un modelo de lenguaje NO debe decidir el color. Esto lo decide la regla.
 
-SABRÉ QUE FUNCIONÓ CUANDO: pueda cambiar un umbral y ver cómo cambia el resultado.</pre><button class="btn copy" data-copy="promptEncargo4" type="button">Copiar encargo 4</button><p><strong>Por qué esta separación es el centro de la clase:</strong> un modelo puede redactar el informe, pero el criterio de riesgo es una decisión de gestión. Si la delegas, nadie puede auditarla después — ni siquiera tú.</p><label class="workshop-check"><input type="checkbox" data-encargo="3"> Lo logré</label></article>
+SABRÉ QUE FUNCIONÓ CUANDO: pueda cambiar un umbral y ver cómo cambia el resultado.</pre><button class="btn copy" data-copy="promptEncargo4" type="button">Copiar encargo 4</button><p><strong>Por qué esta separación es el centro de la clase:</strong> un modelo puede redactar el informe, pero el criterio de riesgo es una decisión de gestión. Si la delegas, nadie puede auditarla después — ni siquiera tú.</p><label class="workshop-check"><input type="checkbox" data-encargo="3"> Lo logré</label><div class="field"><label for="encargoNota3">¿Qué te falló aquí?</label><textarea id="encargoNota3" data-encargo-note="3" rows="2" placeholder="Deja vacío si no hubo tropiezos."></textarea></div></article>
 
             <article class="card key"><h3>Encargo 5 — Agregar el modelo, con su verificación</h3><pre class="prompt" id="promptEncargo5">QUIERO: que el informe final lo redacte un modelo de lenguaje, pero sin que pueda inventar datos.
 
@@ -321,7 +321,7 @@ RESTRICCIONES:
 
 SABRÉ QUE FUNCIONÓ CUANDO: pueda provocar una invención a propósito y ver que el flujo la detecta.
 
-Explícame por qué la verificación no debería hacerla otro modelo.</pre><button class="btn copy" data-copy="promptEncargo5" type="button">Copiar encargo 5</button><p><strong>Qué verificar:</strong> provoca el fallo. Pídele que fuerce una invención y comprueba que el flujo la rechaza. Una verificación que nunca has visto fallar no es una verificación: es una decoración.</p><label class="workshop-check"><input type="checkbox" data-encargo="4"> Lo logré</label></article>
+Explícame por qué la verificación no debería hacerla otro modelo.</pre><button class="btn copy" data-copy="promptEncargo5" type="button">Copiar encargo 5</button><p><strong>Qué verificar:</strong> provoca el fallo. Pídele que fuerce una invención y comprueba que el flujo la rechaza. Una verificación que nunca has visto fallar no es una verificación: es una decoración.</p><label class="workshop-check"><input type="checkbox" data-encargo="4"> Lo logré</label><div class="field"><label for="encargoNota4">¿Qué te falló aquí?</label><textarea id="encargoNota4" data-encargo-note="4" rows="2" placeholder="Deja vacío si no hubo tropiezos."></textarea></div></article>
 
           </div>
         </div></div>
@@ -358,10 +358,11 @@ Explícame por qué la verificación no debería hacerla otro modelo.</pre><butt
     const store=(key,value)=>{ try { localStorage.setItem(prefix+key,JSON.stringify(value)); } catch {} };
     const announce=(message)=>{ const live=document.getElementById('live'); live.textContent=''; setTimeout(()=>live.textContent=message,40); };
     window.LPR={ store, get, update:(key,value)=>store('activity-'+key,value), register:()=>{}, init:()=>{} };
-    const state=get('state',{complete:{},theme:'dark',diagnosis:'',matches:[],gap:'',sources:[],orchestra:{roles:[],approver:''},checks:[],commitments:['','',''],copiloto:{who:{},order:{},orderChecked:false,hallu:''},dirigir:{piezas:{},encargo:{quiero:'',contexto:'',restricciones:'',sabras:''},encargos:{},auditMatches:[]}});
+    const state=get('state',{complete:{},theme:'dark',diagnosis:'',matches:[],gap:'',sources:[],orchestra:{roles:[],approver:''},checks:[],commitments:['','',''],copiloto:{who:{},order:{},orderChecked:false,hallu:''},dirigir:{piezas:{},encargo:{quiero:'',contexto:'',restricciones:'',sabras:''},encargos:{},encargoNotes:{},auditMatches:[]}});
     if(!state.copiloto) state.copiloto={who:{},order:{},orderChecked:false,hallu:''};
-    if(!state.dirigir) state.dirigir={piezas:{},encargo:{quiero:'',contexto:'',restricciones:'',sabras:''},encargos:{},auditMatches:[]};
+    if(!state.dirigir) state.dirigir={piezas:{},encargo:{quiero:'',contexto:'',restricciones:'',sabras:''},encargos:{},encargoNotes:{},auditMatches:[]};
     if(!state.dirigir.encargo) state.dirigir.encargo={quiero:'',contexto:'',restricciones:'',sabras:''};
+    if(!state.dirigir.encargoNotes) state.dirigir.encargoNotes={};
     const save=()=>{ store('state',state); updateProgress(); };
     const $=(id)=>document.getElementById(id);
     const escape=(value)=>String(value).replace(/[&<>"']/g,(c)=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
@@ -438,6 +439,7 @@ Explícame por qué la verificación no debería hacerla otro modelo.</pre><butt
     // Dirigir — los cinco encargos
     document.querySelectorAll('[data-encargo]').forEach((input)=>{ const i=input.dataset.encargo; input.checked=!!state.dirigir.encargos[i]; input.addEventListener('change',()=>{ state.dirigir.encargos[i]=input.checked; const count=Object.keys(state.dirigir.encargos).filter((k)=>state.dirigir.encargos[k]).length; $('encargosStatus').textContent=count+'/5 encargos'; save(); }); });
     $('encargosStatus').textContent=Object.keys(state.dirigir.encargos).filter((k)=>state.dirigir.encargos[k]).length+'/5 encargos';
+    document.querySelectorAll('[data-encargo-note]').forEach((field)=>{ const i=field.dataset.encargoNote; field.value=state.dirigir.encargoNotes[i]||''; field.addEventListener('input',()=>{ state.dirigir.encargoNotes[i]=field.value; save(); }); });
     // Dirigir — Mecánica C: audita al agente
     const auditPairs=[
       ['¿Qué decisiones tomaste tú que debería haber tomado yo?','Decisiones silenciosas'],
