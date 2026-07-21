@@ -178,7 +178,7 @@ ejecutarla.
 
 ### 3. Importar y ejecutar la versión sin credenciales
 
-1. En n8n seleccione **Import from File** e importe
+1. En n8n seleccione **Import from file...** e importe
    `workflows/01-semilla-demostracion.json`.
 2. Ejecútelo manualmente.
 3. Abra **Normalizar y priorizar**. El resultado contiene un snapshot de tres

@@ -199,17 +199,33 @@ workflows.
 > obligatorio responderlo: pulsa **Get started** sin llenar nada y sigue. Puede
 > reaparecer en otras pantallas; se despacha igual.
 
-1. En n8n, menú **⋯ → Import from File**.
+1. En n8n, menú **⋯ → Import from file...**.
 2. Elige `workflows/01-semilla-demostracion.json`.
-3. Ejecuta con **Execute Workflow**.
+3. Ejecuta con **Execute workflow**.
 4. Haz clic en el nodo **Normalizar y priorizar** y mira la pestaña de salida:
    ahí está tu primer snapshot.
-5. Cambia un dato en el nodo **Semilla: tres fuentes** —por ejemplo pon un
-   `status` en `'bloqueado'`— y ejecuta otra vez. Observa qué cambió en el
-   resultado y **por qué regla** cambió.
+5. En el nodo **Semilla: tres fuentes**, busca el proyecto *Onboarding
+   comercial* y cambia su `status: 'en_curso'` por `status: 'bloqueado'`.
+   Ejecuta otra vez y compara la salida.
 
 Ese último paso es el ejercicio real. No es "ver si funciona": es entender qué
 regla produjo el cambio.
+
+> **Lo que vas a ver, y es una trampa a propósito.** El conteo de bloqueados
+> sube de 1 a 2, como esperabas. Pero *Onboarding comercial* **no aparece** en
+> la lista de decisiones necesarias, aunque acabas de marcarlo como bloqueado.
+>
+> No está roto. La lista de decisiones no mira el estado: mira si hay **texto**
+> en el campo `bloqueador`, y ese proyecto lo tiene vacío.
+>
+> Ahora la pregunta que importa, y que no tiene una respuesta técnica:
+> **¿debería un proyecto bloqueado sin explicación aparecer entre las decisiones
+> pendientes?** Se puede argumentar que sí —está detenido, alguien debe
+> actuar— o que no —sin saber qué lo bloquea, no hay decisión que tomar—.
+>
+> Alguien eligió una de las dos al escribir esa regla. Esa elección es
+> **exactamente** el tipo de cosa que no debes delegar en una herramienta ni en
+> un modelo: es una decisión de gestión disfrazada de detalle técnico.
 
 ---
 

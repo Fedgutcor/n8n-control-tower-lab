@@ -71,6 +71,19 @@ informe determinista (workflow `03`), y solo después el modelo.
 | **Ollama** (local) | Ruta avanzada | Ollama Chat Model | Ollama (URL base) | Ilimitado, offline | No aplica | `qwen2.5-coder:7b` (~4,7 GB) — ver nota abajo |
 | **Cerebras** | Alternativa | OpenAI Chat Model con URL base cambiada a `https://api.cerebras.ai/v1` | OpenAI | 1 M tokens/día · 30 req/min | No | Llama 3.3 70B (catálogo inestable, verifica antes) |
 
+> **Ojo: el workflow 04 viene cableado con Ollama, no con Gemini.** Aunque esta
+> guía recomienda Gemini como camino principal, el archivo trae el nodo **Ollama
+> Chat Model** ya conectado, porque es el único proveedor con el que pudimos
+> **verificar** la demostración de la invención de datos.
+>
+> Si vas por Gemini —lo recomendable para la clase— tendrás que borrar ese nodo,
+> agregar el de **Google Gemini Chat Model** y crear su credencial. Son dos
+> minutos, pero no aparecen solos: hazlo en el ensayo, no frente al grupo.
+>
+> Si te quedas con Ollama, **descarga el modelo antes** (`ollama pull
+> qwen2.5-coder:7b`, ~4,7 GB). Si el modelo no está descargado, el nodo falla
+> con un error que no dice claramente que falta el modelo.
+
 > **Por qué el workflow 04 trae `qwen2.5-coder:7b` y no un modelo mejor.** Está
 > elegido a propósito: es el modelo con el que **verificamos** que se produce la
 > invención de datos que la clase quiere mostrar. Con `qwen2.5:14b` el mismo
