@@ -74,6 +74,8 @@
     .mismatch { border:1px solid var(--border); padding:.7rem; display:flex; justify-content:space-between; gap:1rem; align-items:center; background:var(--bg1); margin:.55rem 0; }.mismatch button { white-space:nowrap; }.mismatch.correct { border-left:4px solid var(--green); }.mismatch.wrong { border-left:4px solid var(--red); }
     .queen { border:2px solid var(--cyan); background:linear-gradient(135deg,var(--bg1),var(--bg2)); padding:1.2rem; box-shadow:7px 7px 0 color-mix(in srgb,var(--cyan) 25%,transparent); }.queen h3 { font-size:1.65rem; }.layer { margin-top:1rem; border:1px solid var(--border); background:var(--bg0); padding:1rem; }.layer-label { color:var(--cyanText); font:800 .72rem "JetBrains Mono",monospace; letter-spacing:.08em; }.source-toggles { display:grid; grid-template-columns:repeat(3,1fr); gap:.65rem; margin:.7rem 0; }.source-toggle { border:1px solid var(--border); padding:.75rem; background:var(--bg1); text-align:left; }.source-toggle[aria-pressed="true"] { border-color:var(--cyan); background:var(--bg3); }.run-output { min-height:130px; margin-top:.8rem; padding:1rem; border:1px dashed var(--border); background:var(--bg1); }.run-output strong { color:var(--cyanText); }.archetypes { display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem; }.archetype { border:1px solid var(--border); padding:.65rem; background:var(--bg1); }.archetype input { accent-color:var(--cyan); }.prompt { white-space:pre-wrap; color:var(--text); background:var(--bg0); border:1px solid var(--border); padding:1rem; font-size:.8rem; }.copy { margin-top:.6rem; }
     textarea,input[type="text"] { width:100%; color:var(--text); background:var(--bg0); border:1px solid var(--border); padding:.75rem; border-radius:0; }.field { margin:.8rem 0; }.field label { display:block; color:var(--muted); font-size:.78rem; margin-bottom:.3rem; }.commitment { border-left:3px solid var(--cyan); padding-left:.8rem; margin:1rem 0; }.statusline { color:var(--muted); font:.75rem "JetBrains Mono",monospace; }.sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+    .workshop-list { display:grid; gap:1rem; }.workshop-step-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:.4rem; }.workshop-check { display:flex; align-items:center; gap:.5rem; margin:.9rem 0 .4rem; font-weight:700; }.workshop-check input { accent-color:var(--cyan); }
+    .piece-opt { border:1px solid var(--border); background:var(--bg2); padding:.5rem .7rem; border-radius:0; font:700 .72rem "JetBrains Mono",monospace; }.piece-opt:hover,.piece-opt:focus-visible { border-color:var(--cyan); outline:none; }.piece-opt.correct { border-color:var(--green); color:var(--green); }.piece-opt.wrong { border-color:var(--red); color:var(--red); }
     dialog { max-width:620px; background:var(--bg1); color:var(--text); border:1px solid var(--cyan); box-shadow:10px 10px 0 color-mix(in srgb,var(--cyan) 35%,transparent); padding:0; }.dialog-content { padding:1.3rem; }.dialog-content footer { display:flex; justify-content:flex-end; margin-top:1rem; } dialog::backdrop { background:#000a; }
     .footer { border-top:1px solid var(--border); padding:1.5rem 0; color:var(--muted); font-size:.82rem; }
     @media (max-width:800px) { .hero,.grid2,.grid3 { grid-template-columns:1fr; }.choice-grid,.source-toggles,.archetypes { grid-template-columns:1fr; }.flow { grid-template-columns:1fr; }.arrow { transform:rotate(90deg); text-align:center; }.tabs { top:66px; }.signal { max-width:500px; } }
@@ -96,7 +98,7 @@
 
       <p class="statusline">Duración total: 3 horas. La agenda minuto a minuto de cada módulo vive en la Guía del Docente (<code>docs/GUIA-DEL-DOCENTE.md</code>), no en las pestañas de este laboratorio.</p>
 
-      <section class="progress-wrap" aria-label="Progreso del laboratorio"><span class="eyebrow">Progreso</span><div class="progress"><div id="bar"></div></div><span class="progress-text" id="progressText">0/7 módulos</span></section>
+      <section class="progress-wrap" aria-label="Progreso del laboratorio"><span class="eyebrow">Progreso</span><div class="progress"><div id="bar"></div></div><span class="progress-text" id="progressText">0/8 módulos</span></section>
 
       <nav class="tabs" role="tablist" aria-label="Módulos del laboratorio">
         <button class="tab" role="tab" aria-selected="true" aria-controls="m1" id="t1" data-tab="m1">01 · INICIO</button>
@@ -106,6 +108,7 @@
         <button class="tab" role="tab" aria-selected="false" aria-controls="m5" id="t5" data-tab="m5">05 · COPILOTO</button>
         <button class="tab" role="tab" aria-selected="false" aria-controls="m6" id="t6" data-tab="m6">06 · MANOS A LA OBRA</button>
         <button class="tab" role="tab" aria-selected="false" aria-controls="m7" id="t7" data-tab="m7">07 · COMPROMISOS</button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="m8" id="t8" data-tab="m8">08 · DIRIGIR</button>
       </nav>
 
       <section class="panel active" id="m1" role="tabpanel" aria-labelledby="t1">
@@ -205,6 +208,142 @@ Al final responde tres cosas:
         <div class="grid3"><article class="card"><span class="number">RECUERDA</span><h3>La fuente manda</h3><p>El modelo no conoce tu operación: recibe evidencia. Mantén su rol dentro de lo verificable.</p></article><article class="card"><span class="number">RECUERDA</span><h3>El contrato protege</h3><p>Un buen adaptador permite reemplazar proveedores sin rehacer decisiones, dashboard e informe.</p></article><article class="card"><span class="number">RECUERDA</span><h3>La persona responde</h3><p>Los puntos de aprobación son parte del flujo. Define responsable, plazo y canal.</p></article></div>
         <button class="btn btn-primary complete" data-module="m7" type="button">Cerrar laboratorio</button>
       </section>
+
+      <section class="panel" id="m8" role="tabpanel" aria-labelledby="t8">
+        <span class="eyebrow">Dirigir al agente</span><h2>Encárgale la automatización a un agente. No la construyas a mano.</h2><p class="lede">No vas a armar nodos a mano. Vas a encargar la automatización a un agente de IA, revisar lo que construyó y decidir si sirve. Todo este repositorio fue construido así: una persona que no escribió una sola línea de código dirigió a un agente durante una sesión. La diferencia entre que salga bien o mal no está en la herramienta: está en saber qué pedir y cómo verificarlo.</p>
+        <div class="table-wrap"><table class="data-table"><thead><tr><th></th><th>Persona nueva</th><th>Agente de IA</th></tr></thead><tbody>
+          <tr><td>Conocimiento del oficio</td><td>Limitado, crece con el tiempo</td><td>Amplio desde el minuto uno</td></tr>
+          <tr><td>Conocimiento de tu contexto</td><td>Lo va absorbiendo</td><td>Ninguno, y no lo pide</td></tr>
+          <tr><td>Cuando no sabe algo</td><td>Suele preguntar</td><td>Suele rellenar con algo plausible</td></tr>
+          <tr><td>Trabaja mientras duermes</td><td>No</td><td>Sí</td></tr>
+        </tbody></table></div>
+        <div class="callout danger"><strong>Las dos filas del medio son todo el problema.</strong> Un agente no conoce tu operación y no sabe que no la conoce. Por eso el trabajo de quien dirige no es escribir instrucciones bonitas: es aportar el contexto que falta y verificar lo que vuelve. Eso no se delega. Es tu trabajo, y es el que no desaparece.</div>
+
+        <div class="mechanic" data-activity="quien-decide"><div class="mechanic-head"><span>¿QUIÉN DECIDE? · 08</span><span class="statusline" id="piezasStatus">0/6</span></div><div class="mechanic-body">
+          <h3>Seis piezas de la arquitectura. ¿A quién le toca cada una?</h3>
+          <p class="mech-help">No necesitas construir ninguna de estas piezas para poder encargarla. Necesitas saber si es tuya o del agente.</p>
+          <div id="piezas"></div>
+        </div></div>
+        <div class="callout danger"><strong>Regla práctica:</strong> las piezas 1, 2 y 3 (motor, datos, llaves) se delegan casi por completo. Las piezas 4, 5 y 6 (fuentes, reglas, compuerta) son tuyas. Un agente puede implementarlas; no puede decidirlas. Cuando un agente decide una de esas tres por su cuenta, el resultado funciona y está mal — la peor combinación posible.</div>
+
+        <div class="mechanic" data-activity="encargo"><div class="mechanic-head"><span>ARMA TU ENCARGO · 08</span></div><div class="mechanic-body">
+          <h3>Escribe el encargo con el que vas a dirigir a tu agente</h3>
+          <p class="mech-help">Cuatro campos. Si falta alguno, el agente rellena el hueco por su cuenta.</p>
+          <div class="grid2">
+            <div>
+              <div class="field"><label for="encQuiero">QUIERO (el resultado, en una frase, sin decir cómo)</label><textarea id="encQuiero" rows="2" placeholder="Ej.: tener n8n funcionando en mi computadora y poder abrirlo en el navegador."></textarea></div>
+              <div class="field"><label for="encContexto">MI CONTEXTO</label><textarea id="encContexto" rows="3" placeholder="Ej.: Sistema operativo: Windows 11. No sé si tengo Docker instalado. No soy programador."></textarea></div>
+              <div class="field"><label for="encRestricciones">RESTRICCIONES (en negativo)</label><textarea id="encRestricciones" rows="3" placeholder="Ej.: no quiero pagar suscripciones. No instales nada que pida permisos de administrador sin avisarme."></textarea></div>
+              <div class="field"><label for="encSabras">SABRÉ QUE FUNCIONÓ CUANDO</label><textarea id="encSabras" rows="2" placeholder="Ej.: pueda abrir una dirección en mi navegador y ver mis proyectos con su semáforo."></textarea></div>
+            </div>
+            <div>
+              <h4>Tu encargo, listo para pegar</h4>
+              <pre class="prompt" id="encargoPreview">QUIERO:
+
+MI CONTEXTO:
+
+
+RESTRICCIONES:
+
+
+SABRÉ QUE FUNCIONÓ CUANDO:
+
+Antes de empezar, dime qué decisiones tienes que tomar para hacer esto, y cuáles crees que debería tomar yo. Después de eso, empieza.</pre>
+              <button class="btn copy btn-primary" data-copy="encargoPreview" type="button">Copiar mi encargo</button>
+              <p>Ese último párrafo es el más valioso de toda la plantilla: obliga al agente a exponer las decisiones que de otro modo tomaría en silencio.</p>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="mechanic" data-activity="encargos"><div class="mechanic-head"><span>LOS CINCO ENCARGOS DE HOY · 08</span><span class="statusline" id="encargosStatus">0/5 encargos</span></div><div class="mechanic-body">
+          <h3>De menor a mayor. Cada uno se apoya en el anterior</h3>
+          <p class="mech-help">Pégale cada encargo a tu agente. Marca "lo logré" cuando puedas responder lo que dice "qué verificar".</p>
+          <div class="workshop-list">
+
+            <article class="card key"><h3>Encargo 1 — Levantar el motor</h3><pre class="prompt" id="promptEncargo1">QUIERO: tener n8n funcionando en mi computadora y poder abrirlo en el navegador.
+
+MI CONTEXTO:
+- Sistema operativo: [Windows 11 / macOS / Linux]
+- No sé si tengo Docker instalado.
+- No soy programador.
+
+RESTRICCIONES:
+- No quiero pagar nada.
+- Prefiero no instalar cosas que pidan permisos de administrador, salvo que sea imprescindible; si lo es, avísame antes.
+
+SABRÉ QUE FUNCIONÓ CUANDO: pueda abrir una dirección en el navegador y ver la pantalla de n8n.
+
+Antes de empezar: dime qué necesitas saber de mi máquina, dame los comandos de solo lectura para averiguarlo, y explícame qué vas a instalar y por qué.</pre><button class="btn copy" data-copy="promptEncargo1" type="button">Copiar encargo 1</button><p><strong>Qué verificar:</strong> que puedas abrirlo. Y pregúntale "¿dónde quedaron guardados mis datos y qué pasaría si borro esa carpeta?". Es la pieza 2 de la arquitectura. Si no sabe responder con precisión, no montó lo que crees.</p><label class="workshop-check"><input type="checkbox" data-encargo="0"> Lo logré</label></article>
+
+            <article class="card key"><h3>Encargo 2 — Entender lo que ya existe</h3><pre class="prompt" id="promptEncargo2">Importé un flujo de ejemplo en n8n y quiero entenderlo antes de cambiarlo.
+
+Explícamelo en lenguaje de negocio, en orden:
+1. Qué lo dispara.
+2. Qué hace cada paso y qué le entrega al siguiente.
+3. Cuáles de esas cosas son DECISIONES que alguien tomó, y no obligaciones técnicas.
+4. Qué pasaría si le llega un dato vacío o mal escrito.
+
+Si algo no lo puedes determinar con certeza, dilo en vez de suponerlo.</pre><button class="btn copy" data-copy="promptEncargo2" type="button">Copiar encargo 2</button><p><strong>Qué verificar:</strong> que puedas señalar en pantalla la regla del semáforo y explicarla con tus palabras. Si no puedes, aún no entendiste lo que vas a delegar.</p><label class="workshop-check"><input type="checkbox" data-encargo="1"> Lo logré</label></article>
+
+            <article class="card key"><h3>Encargo 3 — Conectar tu fuente real</h3><p>Aquí aparece tu decisión: cuál es la fuente de verdad.</p><pre class="prompt" id="promptEncargo3">QUIERO: que el flujo lea mis proyectos reales desde una hoja de cálculo mía, en lugar de los datos de ejemplo.
+
+MI CONTEXTO:
+- Mi hoja tiene estas columnas: [LÍSTALAS]
+- Está en Google Sheets / Excel / [...]
+
+RESTRICCIONES:
+- No quiero crear un proyecto en Google Cloud ni configurar OAuth hoy.
+- La hoja tiene datos de demostración, no confidenciales.
+
+SABRÉ QUE FUNCIONÓ CUANDO: ejecute el flujo y vea mis propios proyectos.
+
+Dime primero qué opciones existen para conectar esto, con sus ventajas y desventajas, y cuál me recomiendas para hoy. No elijas por mí.</pre><button class="btn copy" data-copy="promptEncargo3" type="button">Copiar encargo 3</button><p><strong>Qué verificar:</strong> que tus datos aparezcan. Y algo más importante: pregúntale "¿qué pasa el día que quiera desconectar esto?". Si la respuesta es incómoda, la conexión estaba mal elegida.</p><label class="workshop-check"><input type="checkbox" data-encargo="2"> Lo logré</label></article>
+
+            <article class="card key"><h3>Encargo 4 — Escribir la regla</h3><p>Este encargo no se delega: se dicta. Tú traes la regla; el agente la implementa.</p><pre class="prompt" id="promptEncargo4">QUIERO: que el flujo marque cada proyecto con un semáforo, según esta regla que yo definí:
+
+[ESCRIBE TU REGLA. Por ejemplo:]
+- ROJO si está bloqueado, o si vence en menos de 3 días y va por debajo del 50%.
+- ÁMBAR si tiene un bloqueador anotado, o vence en menos de 7 días.
+- VERDE en cualquier otro caso.
+
+RESTRICCIONES:
+- La regla debe quedar visible y editable por alguien que no programa. No quiero que esté escondida en código.
+- Un modelo de lenguaje NO debe decidir el color. Esto lo decide la regla.
+
+SABRÉ QUE FUNCIONÓ CUANDO: pueda cambiar un umbral y ver cómo cambia el resultado.</pre><button class="btn copy" data-copy="promptEncargo4" type="button">Copiar encargo 4</button><p><strong>Por qué esta separación es el centro de la clase:</strong> un modelo puede redactar el informe, pero el criterio de riesgo es una decisión de gestión. Si la delegas, nadie puede auditarla después — ni siquiera tú.</p><label class="workshop-check"><input type="checkbox" data-encargo="3"> Lo logré</label></article>
+
+            <article class="card key"><h3>Encargo 5 — Agregar el modelo, con su verificación</h3><pre class="prompt" id="promptEncargo5">QUIERO: que el informe final lo redacte un modelo de lenguaje, pero sin que pueda inventar datos.
+
+RESTRICCIONES:
+- Debe usar solo los datos que le llegan del flujo.
+- Quiero un paso posterior que compare lo que escribió contra los datos de entrada y lo marque como rechazado si inventó algo.
+- Ese paso de verificación NO puede ser otro modelo de lenguaje.
+
+SABRÉ QUE FUNCIONÓ CUANDO: pueda provocar una invención a propósito y ver que el flujo la detecta.
+
+Explícame por qué la verificación no debería hacerla otro modelo.</pre><button class="btn copy" data-copy="promptEncargo5" type="button">Copiar encargo 5</button><p><strong>Qué verificar:</strong> provoca el fallo. Pídele que fuerce una invención y comprueba que el flujo la rechaza. Una verificación que nunca has visto fallar no es una verificación: es una decoración.</p><label class="workshop-check"><input type="checkbox" data-encargo="4"> Lo logré</label></article>
+
+          </div>
+        </div></div>
+
+        <div class="mechanic" data-activity="auditar"><div class="mechanic-head"><span>AUDITA AL AGENTE · 08</span><span class="statusline" id="auditStatus">0/6</span></div><div class="mechanic-body">
+          <h3>Une cada pregunta con lo que detecta</h3>
+          <p class="mech-help">Haz clic en un "qué detecta"; después selecciona la pregunta que le corresponde.</p>
+          <div id="auditMatching"></div>
+          <div class="feedback" id="auditFeedback"></div>
+        </div></div>
+        <div class="callout danger"><strong>Señal de alarma:</strong> si el agente responde "sí, todo funciona correctamente" sin mostrarte una salida real, todavía no sabes si funciona. Pide la evidencia, siempre. La frase que más veces salva un proyecto es: "muéstrame la salida literal".</div>
+
+        <article class="card key"><span class="number">NUNCA SE DELEGA</span><h3>Cinco decisiones que son tuyas</h3><ol class="steps">
+          <li>Cuál es la fuente de verdad, cuando un dato vive en varios sitios.</li>
+          <li>Qué significa riesgo en tu operación.</li>
+          <li>Quién aprueba antes de que algo salga al mundo.</li>
+          <li>Qué datos pueden salir de tu organización y cuáles no.</li>
+          <li>Cuándo algo está terminado.</li>
+        </ol><p>Un agente que decide estas cinco cosas no te está ayudando: te está reemplazando en la única parte del trabajo que era tuya.</p></article>
+
+        <button class="btn btn-primary complete" data-module="m8" type="button">Marcar Dirigir como completado</button>
+      </section>
     </main>
     <footer class="footer">Torre de Control · guía autocontenida para abrir desde <code>file://</code>. Progreso local en el navegador. Los conectores reales y secretos viven en n8n, no en este archivo.</footer>
   </div>
@@ -219,12 +358,14 @@ Al final responde tres cosas:
     const store=(key,value)=>{ try { localStorage.setItem(prefix+key,JSON.stringify(value)); } catch {} };
     const announce=(message)=>{ const live=document.getElementById('live'); live.textContent=''; setTimeout(()=>live.textContent=message,40); };
     window.LPR={ store, get, update:(key,value)=>store('activity-'+key,value), register:()=>{}, init:()=>{} };
-    const state=get('state',{complete:{},theme:'dark',diagnosis:'',matches:[],gap:'',sources:[],orchestra:{roles:[],approver:''},checks:[],commitments:['','',''],copiloto:{who:{},order:{},orderChecked:false,hallu:''}});
+    const state=get('state',{complete:{},theme:'dark',diagnosis:'',matches:[],gap:'',sources:[],orchestra:{roles:[],approver:''},checks:[],commitments:['','',''],copiloto:{who:{},order:{},orderChecked:false,hallu:''},dirigir:{piezas:{},encargo:{quiero:'',contexto:'',restricciones:'',sabras:''},encargos:{},auditMatches:[]}});
     if(!state.copiloto) state.copiloto={who:{},order:{},orderChecked:false,hallu:''};
+    if(!state.dirigir) state.dirigir={piezas:{},encargo:{quiero:'',contexto:'',restricciones:'',sabras:''},encargos:{},auditMatches:[]};
+    if(!state.dirigir.encargo) state.dirigir.encargo={quiero:'',contexto:'',restricciones:'',sabras:''};
     const save=()=>{ store('state',state); updateProgress(); };
     const $=(id)=>document.getElementById(id);
     const escape=(value)=>String(value).replace(/[&<>"']/g,(c)=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-    function updateProgress(){ const count=Object.keys(state.complete).length; $('bar').style.width=(count/7*100)+'%'; $('progressText').textContent=count+'/7 módulos'; }
+    function updateProgress(){ const count=Object.keys(state.complete).length; $('bar').style.width=(count/8*100)+'%'; $('progressText').textContent=count+'/8 módulos'; }
     function openTab(id){ document.querySelectorAll('.tab').forEach((tab)=>tab.setAttribute('aria-selected',String(tab.dataset.tab===id))); document.querySelectorAll('.panel').forEach((panel)=>panel.classList.toggle('active',panel.id===id)); window.scrollTo({top:0,behavior:'smooth'}); }
     document.querySelectorAll('.tab').forEach((tab)=>tab.addEventListener('click',()=>openTab(tab.dataset.tab)));
     document.querySelectorAll('.complete').forEach((button)=>button.addEventListener('click',()=>{ state.complete[button.dataset.module]=true; save(); announce('Módulo completado.'); button.textContent='✓ Módulo completado'; }));
@@ -279,6 +420,36 @@ Al final responde tres cosas:
     const checklist=['Abrí n8n local y verifiqué el volumen persistente.','Importé y ejecuté el workflow 01 sin credenciales.','Definí el contrato común y un identificador estable.','Conecté una fuente con permiso mínimo y probé un item real.','Definí quién aprueba antes de una salida externa.'];function renderChecks(){ $('checks').innerHTML=checklist.map((text,i)=>`<label class="mismatch"><span><input type="checkbox" data-check="${i}" ${state.checks.includes(i)?'checked':''}> ${text}</span><span class="badge ${state.checks.includes(i)?'green':'cyan'}">${state.checks.includes(i)?'LISTO':'PENDIENTE'}</span></label>`).join('');document.querySelectorAll('[data-check]').forEach((input)=>input.addEventListener('change',()=>{const i=Number(input.dataset.check);state.checks=input.checked?[...new Set([...state.checks,i])]:state.checks.filter((x)=>x!==i);$('checkStatus').textContent=state.checks.length+'/5';save();renderChecks();}));}renderChecks();$('checkStatus').textContent=state.checks.length+'/5';
     // Compromisos
     ['c1','c2','c3'].forEach((id,i)=>{$(id).value=state.commitments[i]||'';$(id).addEventListener('input',()=>{state.commitments[i]=$(id).value;save();});});$('saveCommitments').addEventListener('click',()=>{$('commitFeedback').textContent='Compromisos guardados en este navegador. Exporta tu plan para compartirlo.';$('commitFeedback').classList.add('show');announce('Compromisos guardados.');});
+    // Dirigir — Mecánica A: ¿quién decide?
+    const piezas=[
+      {title:'1. El motor',text:'Dónde corre n8n: dentro de Docker o directamente sobre tu computadora.',answer:'agente',feedback:'Se delega casi por completo. Tu decisión es si tu máquina y tu área de sistemas permiten instalar Docker; si no lo sabes, resuélvelo antes de encargar lo demás.'},
+      {title:'2. Los datos',text:'La carpeta donde n8n guarda todo lo que construyes.',answer:'agente',feedback:'Se delega casi por completo. Tu decisión es dónde vive esa carpeta y quién la respalda — un agente pondrá el valor por defecto sin avisarte de las consecuencias.'},
+      {title:'3. Las llaves',text:'La clave maestra que cifra las contraseñas y tokens que conectes.',answer:'agente',feedback:'Se delega casi por completo. Tu decisión es dónde guardas esa clave: nunca en el chat con el agente, nunca en una captura de pantalla.'},
+      {title:'4. Las fuentes',text:'De dónde salen los datos: hojas de cálculo, calendario, sistema de tickets, correo.',answer:'yo',feedback:'Es tuya. Cuál es la fuente de verdad de cada dato es una decisión de gestión, no técnica: si la fecha de entrega vive en tres lugares, ningún agente puede decidir cuál manda.'},
+      {title:'5. Las reglas',text:'Qué significa "en riesgo", cuántos días antes es urgente, qué combinación dispara una alerta.',answer:'yo',feedback:'Es tuya, y es el corazón de la clase. Si le pides a un modelo que decida qué proyectos están en riesgo, conviertes una regla auditable en una opinión que nadie puede revisar.'},
+      {title:'6. La compuerta',text:'El punto donde algo sale al mundo: un correo, un mensaje, un cambio de estado.',answer:'yo',feedback:'Es tuya. Quién aprueba, antes de qué, y con qué plazo — eso no lo decide el agente.'}
+    ];
+    function renderPiezas(){ $('piezas').innerHTML=piezas.map((p,i)=>{ const chosen=state.dirigir.piezas[i]; const opts=[['agente','LO DELEGO AL AGENTE'],['yo','LO DECIDO YO']].map(([value,label])=>{ let cls=''; if(chosen===value) cls=(value===p.answer)?'correct':'wrong'; return `<button class="piece-opt ${cls}" data-piece="${i}" data-value="${value}" type="button">${label}</button>`; }).join(''); let fb=''; if(chosen){ const right=chosen===p.answer; fb=`<p class="who-fb"><strong>${right?'Correcto.':'No es así.'}</strong> ${escape(p.feedback)}</p>`; } return `<div class="who-item"><p><strong>${escape(p.title)}</strong> — ${escape(p.text)}</p><div class="who-options">${opts}</div>${fb}</div>`; }).join(''); document.querySelectorAll('#piezas [data-piece]').forEach((button)=>button.addEventListener('click',()=>{ const i=Number(button.dataset.piece); state.dirigir.piezas[i]=button.dataset.value; const correct=Object.keys(state.dirigir.piezas).filter((k)=>state.dirigir.piezas[k]===piezas[k].answer).length; $('piezasStatus').textContent=correct+'/6'; save(); renderPiezas(); })); }
+    renderPiezas(); $('piezasStatus').textContent=Object.keys(state.dirigir.piezas).filter((k)=>state.dirigir.piezas[k]===piezas[k].answer).length+'/6';
+    // Dirigir — Mecánica B: arma tu encargo
+    function renderEncargoPreview(){ const e=state.dirigir.encargo; $('encargoPreview').textContent=`QUIERO: ${e.quiero}\n\nMI CONTEXTO:\n${e.contexto}\n\nRESTRICCIONES:\n${e.restricciones}\n\nSABRÉ QUE FUNCIONÓ CUANDO: ${e.sabras}\n\nAntes de empezar, dime qué decisiones tienes que tomar para hacer esto, y cuáles crees que debería tomar yo. Después de eso, empieza.`; }
+    [['encQuiero','quiero'],['encContexto','contexto'],['encRestricciones','restricciones'],['encSabras','sabras']].forEach(([id,key])=>{ $(id).value=state.dirigir.encargo[key]||''; $(id).addEventListener('input',()=>{ state.dirigir.encargo[key]=$(id).value; save(); renderEncargoPreview(); }); });
+    renderEncargoPreview();
+    // Dirigir — los cinco encargos
+    document.querySelectorAll('[data-encargo]').forEach((input)=>{ const i=input.dataset.encargo; input.checked=!!state.dirigir.encargos[i]; input.addEventListener('change',()=>{ state.dirigir.encargos[i]=input.checked; const count=Object.keys(state.dirigir.encargos).filter((k)=>state.dirigir.encargos[k]).length; $('encargosStatus').textContent=count+'/5 encargos'; save(); }); });
+    $('encargosStatus').textContent=Object.keys(state.dirigir.encargos).filter((k)=>state.dirigir.encargos[k]).length+'/5 encargos';
+    // Dirigir — Mecánica C: audita al agente
+    const auditPairs=[
+      ['¿Qué decisiones tomaste tú que debería haber tomado yo?','Decisiones silenciosas'],
+      ['¿Qué parte de esto no probaste?','Trabajo dado por bueno sin verificar'],
+      ['Muéstrame el resultado real, no lo que debería pasar','Confusión entre intención y evidencia'],
+      ['¿Qué pasa si llega un dato vacío?','Fragilidad no considerada'],
+      ['¿Qué se rompe si mañana cambio la hoja de sitio?','Acoplamiento oculto'],
+      ['¿Dónde queda esto guardado y cómo lo deshago?','Reversibilidad']
+    ];
+    let currentAuditDefinition=null;
+    function renderAudit(){ $('auditMatching').innerHTML='<div class="grid2"><div>'+auditPairs.map(([term],i)=>`<button class="mismatch ${state.dirigir.auditMatches.includes(i)?'correct':''}" data-aterm="${i}" ${state.dirigir.auditMatches.includes(i)?'disabled':''}>${escape(term)}</button>`).join('')+'</div><div>'+auditPairs.map(([,def],i)=>`<button class="mismatch ${currentAuditDefinition===i?'correct':''}" data-adef="${i}" ${state.dirigir.auditMatches.includes(i)?'disabled':''}>${escape(def)}</button>`).join('')+'</div></div>'; document.querySelectorAll('#auditMatching [data-adef]').forEach((button)=>button.addEventListener('click',()=>{currentAuditDefinition=Number(button.dataset.adef);renderAudit();})); document.querySelectorAll('#auditMatching [data-aterm]').forEach((button)=>button.addEventListener('click',()=>{ if(currentAuditDefinition===null){$('auditFeedback').textContent='Primero selecciona un "qué detecta" en la columna derecha.';$('auditFeedback').classList.add('show');return;} const term=Number(button.dataset.aterm); if(term===currentAuditDefinition){ state.dirigir.auditMatches=[...new Set([...state.dirigir.auditMatches,term])]; $('auditFeedback').textContent='Correcto.'; } else { $('auditFeedback').textContent='No corresponde. Vuelve a leer la pregunta.'; } currentAuditDefinition=null; $('auditFeedback').classList.add('show'); $('auditStatus').textContent=state.dirigir.auditMatches.length+'/6'; save(); renderAudit(); })); }
+    renderAudit(); $('auditStatus').textContent=state.dirigir.auditMatches.length+'/6';
     applyTheme();updateProgress();
     const dialog=$('onboarding');if(!get('welcomed',false)&&typeof dialog.showModal==='function')dialog.showModal();$('closeOnboarding').addEventListener('click',()=>{store('welcomed',true);dialog.close();});
   })();
