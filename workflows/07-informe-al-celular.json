@@ -1,0 +1,187 @@
+{
+  "id": "movil07",
+  "name": "07 · El informe llega solo al celular",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "weeksInterval": 1,
+              "triggerAtDay": [1],
+              "triggerAtHour": 7,
+              "triggerAtMinute": 0
+            }
+          ]
+        }
+      },
+      "id": "e1000000-0000-4000-8000-000000000001",
+      "name": "Lunes a las 7:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [-160, 560]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/Fedgutcor/n8n-control-tower-lab/main/samples/proyectos-demo.csv",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "e1000000-0000-4000-8000-000000000002",
+      "name": "Traer los proyectos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [80, 560]
+    },
+    {
+      "parameters": {
+        "operation": "csv",
+        "options": {}
+      },
+      "id": "e1000000-0000-4000-8000-000000000003",
+      "name": "Convertir filas en datos",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [300, 560]
+    },
+    {
+      "parameters": {
+        "mode": "manual",
+        "includeOtherFields": true,
+        "assignments": {
+          "assignments": [
+            {
+              "id": "sem-1",
+              "name": "semaforo",
+              "value": "={{ $json.estado === 'bloqueado' ? 'ROJO' : ($json.estado === 'en_riesgo' ? 'AMBAR' : 'VERDE') }}",
+              "type": "string"
+            },
+            {
+              "id": "sem-2",
+              "name": "dias_restantes",
+              "value": "={{ Math.round((new Date($json.fecha_limite) - new Date()) / 86400000) }}",
+              "type": "number"
+            },
+            {
+              "id": "sem-3",
+              "name": "necesita_decision",
+              "value": "={{ $json.bloqueador ? true : false }}",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "e1000000-0000-4000-8000-000000000004",
+      "name": "Calcular semáforo",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [520, 560]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Este nodo recibe UN proyecto por item (la salida de \"Calcular semáforo\")\n// y los reúne en un solo mensaje corto, pensado para leerse en un teléfono:\n// un titular con el conteo por color, y debajo solo lo que exige una decisión.\nconst proyectos = $input.all().map((item) => item.json);\n\nconst conteos = { ROJO: 0, AMBAR: 0, VERDE: 0 };\nfor (const proyecto of proyectos) {\n  conteos[proyecto.semaforo] = (conteos[proyecto.semaforo] || 0) + 1;\n}\n\nconst decisiones = proyectos.filter((proyecto) => proyecto.necesita_decision);\n\nconst fecha = new Date().toLocaleDateString('es-CO', { day: 'numeric', month: 'long' });\nconst lineas = [\n  `📋 Torre de control — ${fecha}`,\n  `🔴 ${conteos.ROJO} bloqueados · 🟡 ${conteos.AMBAR} en riesgo · 🟢 ${conteos.VERDE} en curso`,\n];\n\nif (decisiones.length > 0) {\n  lineas.push('', 'Requieren una decisión:');\n  for (const proyecto of decisiones) {\n    lineas.push(`• ${proyecto.proyecto} — ${proyecto.responsable}`);\n  }\n} else {\n  lineas.push('', 'Ningún proyecto requiere decisión esta semana.');\n}\n\nreturn [{ json: { mensaje: lineas.join('\\n') } }];"
+      },
+      "id": "e1000000-0000-4000-8000-000000000005",
+      "name": "Armar mensaje para el celular",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [740, 560]
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "operation": "sendMessage",
+        "chatId": "TU_CHAT_ID_AQUI",
+        "text": "={{ $json.mensaje }}",
+        "additionalFields": {}
+      },
+      "id": "e1000000-0000-4000-8000-000000000006",
+      "name": "Enviar por Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [980, 560]
+    },
+    {
+      "parameters": {
+        "content": "## Por qué esto cambia todo\n\nEn los workflows anteriores, el flujo corría porque alguien entraba al editor y apretaba **Execute workflow**. Eso sigue siendo una herramienta: útil, pero pasiva. Alguien tiene que acordarse de usarla.\n\nEste workflow tiene una diferencia de fondo: el nodo **Lunes a las 7:00** no espera a nadie. Cada lunes, sin que nadie lo toque, el flujo se despierta solo, va a buscar los datos, calcula el semáforo y entrega el resultado en el teléfono de quien decide.\n\nEse es el salto de herramienta a **proceso**: deja de depender de que alguien se acuerde de usarlo. El informe ya está ahí cuando se necesita, no cuando alguien tiene tiempo de pedirlo.\n\nEs también el momento de mayor responsabilidad: un proceso que corre solo necesita reglas correctas, porque nadie va a revisar cada ejecución antes de que salga.",
+        "height": 420,
+        "width": 380,
+        "color": 5
+      },
+      "id": "e1000000-0000-4000-8000-000000000007",
+      "name": "Nota: por qué esto cambia todo",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-180, -460]
+    },
+    {
+      "parameters": {
+        "content": "## Cómo crear tu bot en 2 minutos\n\n1. Abre Telegram y busca **@BotFather** (tiene una marca de verificación azul; hay cuentas falsas que imitan el nombre, confirma el check).\n2. Envíale el comando **/newbot**.\n3. Te pide un **nombre para mostrar** — el que van a ver los usuarios. Puedes cambiarlo después.\n4. Te pide un **nombre de usuario**, que debe terminar en \"bot\" (por ejemplo `torre_control_bot`). Este no se puede cambiar más adelante, elígelo con cuidado.\n5. BotFather responde con el **token**: una cadena como `123456789:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw`. Cópialo ya — es la contraseña del bot, no lo compartas ni lo subas a un repositorio público.\n6. Ese token va en la credencial de este nodo: **Credential to connect with → Create new → Telegram API → Access Token**.",
+        "height": 460,
+        "width": 420,
+        "color": 4
+      },
+      "id": "e1000000-0000-4000-8000-000000000008",
+      "name": "Nota: cómo crear tu bot en 2 minutos",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [220, -460]
+    },
+    {
+      "parameters": {
+        "content": "## Cómo obtener tu chat ID\n\n1. Busca a tu bot recién creado por su nombre de usuario y envíale cualquier mensaje (por ejemplo \"hola\"). Un bot no puede escribirte primero: tienes que iniciar tú la conversación.\n2. Abre en el navegador esta dirección, reemplazando `<TU_TOKEN>` por el token real:\n   `https://api.telegram.org/bot<TU_TOKEN>/getUpdates`\n3. En el texto que aparece, busca `\"chat\":{\"id\":` — el número que sigue es tu chat ID.\n4. Copia ese número en el parámetro **Chat ID** del nodo de Telegram, reemplazando `TU_CHAT_ID_AQUI`.\n\nSi la respuesta viene vacía, es porque todavía no le enviaste ningún mensaje al bot: vuelve al paso 1.",
+        "height": 400,
+        "width": 380,
+        "color": 3
+      },
+      "id": "e1000000-0000-4000-8000-000000000009",
+      "name": "Nota: cómo obtener tu chat ID",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [660, -460]
+    },
+    {
+      "parameters": {
+        "content": "## Prueba primero contigo mismo\n\nEste mensaje sale solo, cada lunes, sin que nadie lo revise antes de enviarlo. Eso significa que es una salida al mundo real, no un ejercicio dentro del editor.\n\nMientras estés probando, deja el **Chat ID** apuntando a tu propia conversación con el bot, no al grupo de dirección. Si el semáforo tiene un error o el mensaje sale mal armado, mejor descubrirlo ahí que en el chat de la junta directiva.\n\nCambia el Chat ID al del grupo real solo cuando ya confirmaste, varias veces, que el mensaje llega bien.",
+        "height": 320,
+        "width": 340,
+        "color": 7
+      },
+      "id": "e1000000-0000-4000-8000-000000000010",
+      "name": "Nota: prueba primero contigo mismo",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1080, -460]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Lunes a las 7:00": {
+      "main": [[{ "node": "Traer los proyectos", "type": "main", "index": 0 }]]
+    },
+    "Traer los proyectos": {
+      "main": [[{ "node": "Convertir filas en datos", "type": "main", "index": 0 }]]
+    },
+    "Convertir filas en datos": {
+      "main": [[{ "node": "Calcular semáforo", "type": "main", "index": 0 }]]
+    },
+    "Calcular semáforo": {
+      "main": [[{ "node": "Armar mensaje para el celular", "type": "main", "index": 0 }]]
+    },
+    "Armar mensaje para el celular": {
+      "main": [[{ "node": "Enviar por Telegram", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "e1000000-0000-4000-8000-000000000001",
+  "meta": { "templateCredsSetupCompleted": false },
+  "tags": []
+}
