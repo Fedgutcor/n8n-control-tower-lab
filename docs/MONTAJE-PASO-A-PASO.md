@@ -23,8 +23,9 @@
 
 - **Docker** si quieres el entorno idéntico al del docente y que apagar el
   computador no te borre nada. Es la ruta principal de la clase.
-- **npx** si tu máquina no aguanta Docker Desktop. **Ojo:** en macOS esta ruta
-  no está garantizada — lee la advertencia del paso B2 antes de elegirla.
+- **npx** si tu máquina no aguanta Docker Desktop. Antes de elegirla, lee la
+  comprobación de `ignore-scripts` del paso B2: es un minuto y evita el único
+  fallo difícil de diagnosticar de esta ruta.
 
 > Ambas rutas llegan al mismo lugar: n8n en `http://localhost:5678`. Nadie queda
 > atrás por elegir una u otra.
@@ -183,29 +184,48 @@ Abre `http://localhost:5678`.
 
 Para apagarlo: `Ctrl + C` en esa ventana.
 
-> ### ⚠️ Esta ruta no está garantizada en macOS
+> ### ⚠️ Comprueba esto antes: una opción de npm puede impedir el arranque
 >
-> Lo comprobamos y preferimos decirlo antes de que lo descubras a mitad de una
-> clase: **en macOS, `npx n8n@2.30.8` puede fallar al arrancar** con el mensaje
-> `SQLite package has not been found installed`. La causa es que uno de sus
-> componentes internos no llega a compilarse durante la instalación, y el
-> arreglo habitual (`npm rebuild sqlite3 --build-from-source`) **informa éxito
-> sin compilar nada** — aunque tengas instaladas las herramientas de desarrollo
-> de Apple.
+> Si al arrancar ves `SQLite package has not been found installed`, **no es un
+> problema de n8n ni de tu sistema operativo**. Casi siempre es una opción de
+> configuración de npm en tu equipo.
 >
-> **Qué hacer si te ocurre:** cámbiate a la ruta Docker. No pierdas tiempo
-> depurando esto: el problema está en cómo se distribuye ese componente, no en
-> tu máquina ni en algo que hayas hecho mal.
+> Compruébalo antes de instalar nada:
 >
-> **Para el docente:** si vas a ofrecer esta ruta a tu grupo, **pruébala antes**
-> en una máquina limpia con la versión que fija el `docker-compose.yml`. Si
-> falla, ofrece únicamente Docker ese día. La ruta `npx` sigue documentada
-> porque en Linux y Windows funciona sin este problema, y porque para algunos
-> equipos es la única opción disponible.
+> ```bash
+> npm config get ignore-scripts
+> ```
 >
-> Esta limitación la encontró una prueba independiente que siguió este material
-> desde cero, no quien lo escribió. Está contada en
-> [CASO-DE-ESTUDIO.md](CASO-DE-ESTUDIO.md).
+> **Si responde `true`**, npm tiene desactivada la ejecución de los scripts de
+> instalación de los paquetes. Algunos componentes de n8n necesitan ese paso
+> para prepararse, y sin él quedan a medio instalar. Arráncalo así:
+>
+> ```bash
+> npm_config_ignore_scripts=false npx n8n
+> ```
+>
+> **Por qué esta trampa es tan difícil de diagnosticar**, y por qué vale la pena
+> conocerla más allá de n8n:
+>
+> - El mensaje habla de SQLite, cuando la causa es una opción de npm. Apunta al
+>   síntoma, no al origen.
+> - El arreglo que parece obvio —`npm rebuild sqlite3 --build-from-source`—
+>   **responde "rebuilt successfully" sin haber hecho nada**, porque `rebuild`
+>   también respeta esa misma opción. Es la peor clase de error: el que te
+>   confirma que lo arreglaste cuando no.
+> - Esa opción suele activarse por una recomendación de seguridad y quedar
+>   olvidada durante meses en `~/.npmrc`, afectando a cualquier programa que
+>   instales después.
+>
+> **Si `ignore-scripts` está en `false` y aun así falla**, cámbiate a la ruta
+> Docker y sigue con la clase. No inviertas más tiempo ahí.
+>
+> **Ten en cuenta el espacio**: `npx n8n` descarga un árbol de dependencias muy
+> grande. Deja **al menos 4 GB libres** antes de empezar.
+>
+> Esta causa la encontró una prueba independiente sobre una máquina real,
+> después de que la primera explicación —"npx no funciona en macOS"— resultara
+> equivocada. Está contado en [CASO-DE-ESTUDIO.md](CASO-DE-ESTUDIO.md).
 
 ### B2b. Si necesitas dos instancias a la vez
 
