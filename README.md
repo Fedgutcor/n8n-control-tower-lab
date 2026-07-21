@@ -19,6 +19,7 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 | `workflows/05-fuente-real-sin-codigo.json` | **Lee una hoja de cálculo real y calcula el semáforo sin un solo nodo de código.** Funciona sin credenciales; se cambia una dirección para apuntar a tu propia hoja de Google. |
 | `workflows/06-agenda-y-proyectos.json` | **Cruza proyectos con calendario.** Trae dos fuentes por separado (proyectos y eventos) y las une con el nodo Merge por el campo `proyecto`, para que cada evento salga con el estado y el responsable del proyecto detrás. Funciona sin credenciales; documenta cómo reemplazar la agenda de ejemplo por el Google Calendar propio con OAuth. |
 | `docs/CONECTAR-GOOGLE.md` | El camino corto para leer Google sin OAuth, y el completo para datos reales. |
+| `docs/CASO-DE-ESTUDIO.md` | **El relato honesto de cómo se construyó este repositorio**: los errores reales del agente que lo dirigió, lo que solo apareció al ejecutar de verdad, y qué decisiones se quedaron del lado humano. Con los commits para comprobarlo. |
 | `docs/PROMPT-NOTEBOOKLM-APERTURA.md` | Prompt para generar la presentación de apertura sobre especificar y probar antes de automatizar. |
 | `prompts/INFORME-EJECUTIVO.md` | Prompt y pruebas contra invenciones. |
 | `samples/` | Datos de demostración y plantilla para dashboard. |
