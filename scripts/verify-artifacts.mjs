@@ -415,6 +415,11 @@ const CONJUGACION_EXCLUSIONES = new Set([
   // "estés" es subjuntivo de tú ("cuando estés listo"), no voseo. Es el único
   // subjuntivo frecuente de tuteo que termina en -és, por eso va aquí.
   'estés',
+  // Sustantivos y adjetivos terminados en -és que no son verbos. Un checker
+  // que marca palabras normales pierde credibilidad, y entonces nadie mira sus
+  // advertencias el día que señala un voseo de verdad.
+  'revés', 'estrés', 'francés', 'portugués', 'cortés', 'marqués', 'burgués',
+  'envés', 'ciprés', 'arnés', 'traspiés',
   'verás', 'podrás', 'tendrás', 'harás',
 ]);
 
