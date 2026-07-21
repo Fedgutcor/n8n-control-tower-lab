@@ -20,14 +20,54 @@ equipo, con dos diferencias que importan:
 | Conocimiento del oficio | Limitado, crece con el tiempo | Amplio desde el minuto uno |
 | Conocimiento de **tu** contexto | Lo va absorbiendo | **Ninguno**, y no lo pide |
 | Cuando no sabe algo | Suele preguntar | Suele **rellenar con algo plausible** |
-| Trabaja mientras duermes | No | Sí |
 
-Las dos filas del medio son todo el problema. Un agente no conoce tu operación y
+Las dos últimas filas son todo el problema. Un agente no conoce tu operación y
 **no sabe que no la conoce**. Por eso el trabajo del que dirige no es escribir
 instrucciones bonitas: es **aportar el contexto que falta y verificar lo que
 vuelve**.
 
 Eso no se delega. Es tu trabajo, y es el que no desaparece.
+
+---
+
+## Antes de empezar: qué puede hacer TU herramienta
+
+No todas las herramientas de IA pueden lo mismo, y esta diferencia decide cuánto
+puedes encargar. Reconocerla es parte de saber dirigir.
+
+| Nivel | Qué es | Qué puede hacer | Quién ejecuta |
+|---|---|---|---|
+| **1. Chat en el navegador** | ChatGPT, Claude, Gemini o DeepSeek en una pestaña | Te dice **qué** hacer, paso a paso | **Tú**, copiando cada comando |
+| **2. Aplicación de escritorio** | Las mismas, instaladas | Además lee archivos que le entregues | **Tú**, casi siempre |
+| **3. Agente con acceso al sistema** | Claude Code, Antigravity y similares | Ejecuta comandos, crea archivos, **verifica su propio trabajo y corrige** | **El agente** |
+
+**Los cinco encargos de este documento funcionan con cualquiera de los tres.** Lo
+que cambia es quién teclea:
+
+- Con **nivel 1 o 2**, el agente redacta y tú ejecutas. El encargo es idéntico;
+  la conversación tendrá más idas y vueltas, porque después de cada paso tú le
+  cuentas qué pasó. Es más lento, y a cambio ves todo lo que ocurre.
+- Con **nivel 3**, el agente hace el trabajo y te trae el resultado. Es mucho más
+  rápido, y por eso mismo **exige más disciplina de verificación**: cuando no
+  ves los pasos intermedios, es más fácil aceptar algo que no comprobaste.
+
+> **La trampa de cada nivel, dicha sin rodeos.** En el nivel 1 la trampa es
+> creer que el modelo sabe si funcionó: **no lo sabe, no ve tu pantalla**; solo
+> conoce lo que tú le cuentas. En el nivel 3 la trampa es la contraria: el agente
+> sí ve el resultado, y precisamente por eso puedes caer en aceptar su palabra
+> sin pedirle la evidencia.
+>
+> Este repositorio se construyó con una herramienta de nivel 3, y aun así el
+> agente afirmó varias cosas que no había comprobado. Está contado con nombre y
+> apellido en [CASO-DE-ESTUDIO.md](CASO-DE-ESTUDIO.md).
+
+**Si no sabes en qué nivel estás**, pregúntaselo a tu herramienta:
+
+```text
+¿Puedes ejecutar comandos en mi computadora y leer el resultado por ti mismo, o
+necesitas que yo los ejecute y te cuente qué pasó? Respóndeme con honestidad,
+porque de eso depende cómo voy a trabajar contigo.
+```
 
 ---
 

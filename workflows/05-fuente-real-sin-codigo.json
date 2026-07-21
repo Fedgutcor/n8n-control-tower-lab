@@ -124,13 +124,13 @@
     },
     {
       "parameters": {
-        "content": "## Ni una línea de código\n\nMira los nodos de este flujo: ninguno es un nodo **Code**.\n\n- **Traer la hoja**: descarga el archivo.\n- **Convertir filas en datos**: convierte el CSV en registros.\n- **Calcular semáforo**: crea campos nuevos con reglas que se escriben en un formulario.\n- **Ordenar** y **Contar**: se configuran eligiendo el campo en una lista.\n\nLa regla del semáforo está a la vista y cualquiera puede discutirla:\n\n`bloqueado` → ROJO\n`en_riesgo` → ÁMBAR\ntodo lo demás → VERDE\n\nEso es lo que se busca: que la regla sea auditable por alguien que no programa.",
-        "height": 400,
+        "content": "## La regla queda a la vista, no en una caja negra\n\nMira los nodos de este flujo: ninguno es un nodo **Code**. Eso no es el logro en sí — es la evidencia de que nada quedó escondido.\n\n- **Traer la hoja**: descarga el archivo.\n- **Convertir filas en datos**: convierte el CSV en registros.\n- **Calcular semáforo**: crea campos nuevos con reglas que se escriben en un formulario.\n- **Ordenar** y **Contar**: se configuran eligiendo el campo en una lista.\n\nLa regla del semáforo está a la vista y cualquiera puede discutirla:\n\n`bloqueado` → ROJO\n`en_riesgo` → ÁMBAR\ntodo lo demás → VERDE\n\nEso es lo que se busca: que la regla sea **auditable por alguien que no programa** — no que el workflow tenga cero código por principio. Un nodo Code de una línea, legible, cumpliría igual de bien el objetivo; un nodo sin código con una expresión ilegible lo violaría igual.",
+        "height": 420,
         "width": 380,
         "color": 5
       },
       "id": "a1000000-0000-4000-8000-000000000008",
-      "name": "Nota: por qué no hay código",
+      "name": "Nota: la regla queda a la vista",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [440, -180]

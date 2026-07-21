@@ -104,6 +104,14 @@ confiable de perder la clase.
 - [ ] Hoja de cálculo de ejemplo (con permisos de edición para el grupo, o una
       copia por estudiante) lista si vas a demostrar el conector de Google
       Sheets.
+- [ ] Antes de que arranque el tramo 06, pregunta al grupo con qué herramienta
+      viene cada quien: nivel 1 (chat en el navegador), 2 (app de escritorio) o
+      3 (agente con acceso al sistema, tipo Claude Code o Antigravity) — ver
+      [DIRIGIR-AL-AGENTE.md](DIRIGIR-AL-AGENTE.md#antes-de-empezar-qué-puede-hacer-tu-herramienta).
+      Cambia el ritmo real del tramo: los niveles 1 y 2 necesitan más tiempo
+      tuyo por persona porque cada paso lo teclean ellos; el nivel 3 avanza más
+      rápido pero necesita más presión de auditoría, porque no ven los pasos
+      intermedios.
 
 ---
 
@@ -168,7 +176,25 @@ Aquí sólo lo que necesitas mientras dictas.
 - **Señal para avanzar:** cada persona nombró tres fuentes y un destinatario de
   la decisión.
 
-### 05 · Copiloto — antes del montaje (15–35 min)
+### 08 · Dirigir — antes de tocar n8n (15–30 min)
+
+- **Objetivo:** que cada estudiante entienda las seis piezas de la arquitectura,
+  sepa en qué nivel de herramienta está trabajando (1: chat en navegador, 2: app
+  de escritorio, 3: agente con acceso al sistema) y traiga escrito su primer
+  encargo antes de que exista nada que auditar.
+- **Pregunta de apertura:** "¿tu herramienta puede ejecutar comandos en tu
+  computadora y leer el resultado por sí misma, o necesita que tú los ejecutes y
+  le cuentes qué pasó?" — es literalmente la pregunta que
+  [DIRIGIR-AL-AGENTE.md](DIRIGIR-AL-AGENTE.md#antes-de-empezar-qué-puede-hacer-tu-herramienta)
+  sugiere hacerle a la propia herramienta.
+- **Error más probable:** alguien asume que su chat de navegador "va a construir
+  esto solo", igual que el agente de nivel 3 que construyó este repositorio.
+  Corrige con la tabla de niveles: los cinco encargos funcionan con cualquiera
+  de los tres, lo que cambia es quién teclea.
+- **Señal para avanzar:** cada estudiante puede nombrar las seis piezas sin mirar
+  el documento y tiene escrita la plantilla de su primer encargo (Encargo 1).
+
+### 05 · Copiloto — antes del montaje (30–50 min)
 
 - **Objetivo:** que cada estudiante tenga un chat abierto y entienda la
   diferencia entre copiloto del montaje y nodo dentro del flujo antes de que
@@ -183,11 +209,17 @@ Aquí sólo lo que necesitas mientras dictas.
 - **Señal para avanzar:** cada estudiante puede repetir el protocolo de 4 pasos
   sin mirar la pantalla, y sabe qué NO preguntarle al copiloto.
 
-### 06 · Manos a la obra — montar n8n (35–70 min)
+### 06 · Manos a la obra — montar n8n (50–85 min)
 
-- **Objetivo:** n8n corriendo en local, workflow `01` importado y ejecutado.
+- **Objetivo:** n8n corriendo en local, workflow `01` importado y ejecutado —
+  aplicando el **Encargo 1** (levantar el motor) y el **Encargo 2** (entender
+  lo que ya existe) de
+  [DIRIGIR-AL-AGENTE.md](DIRIGIR-AL-AGENTE.md#parte-3--los-cinco-encargos-de-hoy).
+  No es "instalar n8n": es dirigir a la herramienta de cada quien para que lo
+  instale, con el nivel que le toque (ver checklist del día).
 - **Pregunta de apertura:** "¿Docker o npx? Miren su Node con `node --version`
-  antes de decidir."
+  antes de decidir — y si tu herramienta es de nivel 3, pídele que lo verifique
+  ella misma."
 - **Error más probable:** los cuatro de siempre — ver
   [MONTAJE-PASO-A-PASO.md](MONTAJE-PASO-A-PASO.md#cuando-algo-falla-los-cuatro-errores-del-día):
   puerto ocupado, permisos del volumen en Docker, Node viejo en la ruta npx,
@@ -195,9 +227,11 @@ Aquí sólo lo que necesitas mientras dictas.
   dejando que cada estudiante use su copiloto con el **prompt B** antes de darle
   la solución tú mismo — es el tramo donde el protocolo se usa de verdad.
 - **Señal para avanzar:** cada estudiante muestra el JSON normalizado del nodo
-  **Normalizar y priorizar** y explica qué nodo lo produjo.
+  **Normalizar y priorizar**, explica qué nodo lo produjo, y responde la
+  pregunta de verificación del Encargo 1: "¿dónde quedaron guardados mis datos y
+  qué pasaría si borro esa carpeta?"
 
-### 02 · Teoría — contrato común (70–95 min)
+### 02 · Teoría — contrato común (85–110 min)
 
 - **Objetivo:** que el grupo entienda que el contrato, no el proveedor, es la
   pieza estable.
@@ -210,7 +244,7 @@ Aquí sólo lo que necesitas mientras dictas.
   semilla, volvió a ejecutar y puede decir qué regla produjo el cambio en el
   semáforo.
 
-### 03 · Brechas — clínica de credenciales (95–110 min, incluye la pausa)
+### 03 · Brechas — clínica de credenciales (110–125 min, incluye la pausa)
 
 - **Objetivo:** distinguir OAuth, token personal, API key y secreto, y el
   permiso mínimo de cada uno.
@@ -222,10 +256,13 @@ Aquí sólo lo que necesitas mientras dictas.
   mínimo apoyándose en
   [MATRIZ-DE-CONEXIONES.md](MATRIZ-DE-CONEXIONES.md).
 
-### 04 · Laboratorios — conectar fuentes reales (110–140 min)
+### 04 · Laboratorios — conectar fuentes reales (125–140 min)
 
-- **Objetivo:** al menos un adaptador real (Calendar, Sheets, GitHub, Linear o
-  Notion) produciendo el contrato común.
+- **Objetivo:** al menos un adaptador real (Calendar o Sheets) produciendo el
+  contrato común, aplicando el **Encargo 3** de
+  [DIRIGIR-AL-AGENTE.md](DIRIGIR-AL-AGENTE.md#encargo-3--conectar-tu-fuente-real).
+  Con solo 15 minutos el objetivo es UNA fuente, no dos — GitHub, Linear y
+  Notion quedan para después con la matriz de conexiones.
 - **Pregunta de apertura:** "¿qué credencial necesitan y quién en su
   organización la emite?"
 - **Error más probable:** falla de OAuth o de red del aula. Si el bloqueo no se
@@ -233,12 +270,16 @@ Aquí sólo lo que necesitas mientras dictas.
   contra el webhook y sigue adelante — es exactamente el plan B documentado en
   el README.
 - **Señal para avanzar:** el adaptador produce un registro sin campos
-  inventados, mapeado al contrato.
+  inventados, mapeado al contrato, y el estudiante puede responder "¿qué pasa
+  el día que quiera desconectar esto?" (la pregunta de verificación del
+  Encargo 3).
 
 > **Si el montaje del tramo 06 se desbordó de tiempo**, este es el bloque que se
-> sacrifica: la conexión de fuentes reales queda como trabajo posterior con la
-> matriz de conexiones. No sacrifiques el informe ni el cierre — cargan el
-> mensaje de la clase (ver
+> sacrifica primero: la conexión de fuentes reales queda como trabajo posterior
+> con la matriz de conexiones. Con el módulo 08 agregado este colchón ya es de
+> solo 15 minutos — si no alcanza, el siguiente bloque a recortar es 03 ·
+> Brechas. No sacrifiques el informe ni el cierre — cargan el mensaje de la
+> clase (ver
 > [FUNDAMENTACION-DE-LA-CLASE.md](FUNDAMENTACION-DE-LA-CLASE.md#plan-b-de-tiempos)).
 
 ### 04 · Laboratorios — informe ejecutivo (140–162 min)
@@ -273,7 +314,7 @@ Aquí sólo lo que necesitas mientras dictas.
 | **(a) Alguien no puede instalar Docker.** | Que trabaje en pareja con alguien que sí levantó n8n, mirando su pantalla y ejecutando los pasos de razonamiento (contrato, reglas, informe) en su propio papel/documento. No pierdas tiempo depurando la instalación de una máquina ajena frente al grupo completo. Si el problema se veía venir, esto se resuelve mejor en el correo de prerrequisitos, avisando con antelación. |
 | **(b) La red del aula bloquea la descarga.** | Usa tu propia imagen ya descargada como demo proyectada y que el resto siga el ejercicio en pareja con quien sí tenga n8n arriba. No intentes depurar la red del aula en vivo — no es un problema que el grupo pueda resolver contigo mirando. |
 | **(c) Un proveedor de LLM da error de cuota en vivo.** | Cambia al plan B documentado: si estaban en Gemini, pasa a Groq (nodo propio, 14 400 req/día). Nómbralo como lo que es: la razón de tener siempre un segundo camino gratuito, no un imprevisto. Ver [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md#cómo-elegir-en-una-decisión). |
-| **(d) El montaje se desborda de tiempo.** | Aplica el plan B de tiempos: sacrifica el bloque de conexión de fuentes reales (110–140 min), no el informe ni el cierre. Anuncia el corte en voz alta para que el grupo entienda que es una decisión, no que se quedaron sin tiempo. |
+| **(d) El montaje se desborda de tiempo.** | Aplica el plan B de tiempos: sacrifica el bloque de conexión de fuentes reales (125–140 min, ya reducido a 15 minutos desde que se agregó el módulo 08), no el informe ni el cierre. Si no alcanza, el siguiente en recortar es 03 · Brechas. Anuncia el corte en voz alta para que el grupo entienda que es una decisión, no que se quedaron sin tiempo. |
 | **(e) Alguien pega una API key en el chat compartido (pantalla, Slack, chat de la clase).** | Detén la demostración, pide que la persona **revoque esa clave de inmediato** desde la consola del proveedor (no que la borre del chat: ya quedó en el historial/log del canal), y usa el momento como ejemplo en vivo de por qué las credenciales se crean dentro de n8n y nunca se pegan en un chat. No lo trates como una vergüenza del estudiante — es exactamente la brecha que enseña el módulo 03. |
 
 ---
@@ -331,16 +372,15 @@ Se reportan aquí sin corregir, tal como se pidió:
    minutos" en el HTML no tiene un anclaje directo y visible en la tabla de
    tiempos de la fundamentación — vale la pena que quien dicte la clase no
    intente cuadrar ambos relojes de forma literal.
-2. **Nombres de módulo entre documentos.** La fundamentación llama al segundo
-   bloque de la agenda "05 Copiloto" y lo ubica en el minuto 15–35 (antes del
-   montaje), lo cual coincide con el orden real de las pestañas del HTML (`05 ·
-   COPILOTO` es el quinto tab, no el segundo). El número de módulo (`05`) no
-   corresponde a su posición cronológica en la clase (segundo bloque). Es
-   intencional según la fundamentación ("por qué el copiloto va antes del
-   montaje y no después"), pero puede confundir a un docente que lea la agenda
-   por primera vez esperando que el número de módulo seguido el orden de
-   dictado. Vale una nota aclaratoria en la propia fundamentación si se vuelve
-   a editar.
+2. **Nombres de módulo entre documentos — RESUELTO.** La fundamentación llama
+   al segundo bloque de la agenda "05 Copiloto", lo cual no coincidía con el
+   orden real de las pestañas del HTML (`05 · COPILOTO` es el quinto tab, no el
+   segundo). Con el módulo `08 · Dirigir` agregado, el desfase ahora afecta a
+   tres módulos (`08`, `05` y `06`, en ese orden de dictado). Es intencional, y
+   la fundamentación ya trae la nota aclaratoria que este punto pedía —ver
+   "El número del módulo no es el orden de dictado" en
+   [FUNDAMENTACION-DE-LA-CLASE.md](FUNDAMENTACION-DE-LA-CLASE.md#diseño-de-3-horas)—
+   así que este punto queda cerrado.
 3. **`.env.example` sin verificar contra el checklist de validación del
    README.** El README pide correr `node scripts/verify-artifacts.mjs` y
    `docker compose config` como validación previa, pero ninguno de los

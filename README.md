@@ -16,7 +16,7 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 | `workflows/02-torre-de-control.json` | Ingreso por contrato para conectar Calendar, Sheets, GitHub, Linear o Notion. |
 | `workflows/03-informe-ejecutivo.json` | Informe en formato fijo, primero determinista y luego ampliable con IA. |
 | `workflows/04-informe-con-modelo.json` | Extiende el informe con un modelo de lenguaje y valida su salida con un chequeo que detecta datos inventados (marca `RECHAZADO` si el modelo alucina). |
-| `workflows/05-fuente-real-sin-codigo.json` | **Lee una hoja de cálculo real y calcula el semáforo sin un solo nodo de código.** Funciona sin credenciales; se cambia una dirección para apuntar a tu propia hoja de Google. |
+| `workflows/05-fuente-real-sin-codigo.json` | **Lee una hoja de cálculo real y calcula un semáforo auditable por alguien que no programa** — cero nodos de código, la regla queda a la vista y no en una caja negra. Funciona sin credenciales; se cambia una dirección para apuntar a tu propia hoja de Google. |
 | `workflows/06-agenda-y-proyectos.json` | **Cruza proyectos con calendario.** Trae dos fuentes por separado (proyectos y eventos) y las une con el nodo Merge por el campo `proyecto`, para que cada evento salga con el estado y el responsable del proyecto detrás. Funciona sin credenciales; documenta cómo reemplazar la agenda de ejemplo por el Google Calendar propio con OAuth. |
 | `docs/CONECTAR-GOOGLE.md` | El camino corto para leer Google sin OAuth, y el completo para datos reales. |
 | `docs/CASO-DE-ESTUDIO.md` | **El relato honesto de cómo se construyó este repositorio**: los errores reales del agente que lo dirigió, lo que solo apareció al ejecutar de verdad, y qué decisiones se quedaron del lado humano. Con los commits para comprobarlo. |
@@ -45,21 +45,29 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 El resto del repositorio es la referencia técnica: el material que el agente
 usa, y contra el que puedes verificar lo que construya.
 
-1. **[Monta n8n en tu máquina](docs/MONTAJE-PASO-A-PASO.md)** — ruta Docker o
-   ruta npx, con los requisitos reales verificados.
-2. **[Abre un copiloto al lado](docs/EL-LLM-COMO-COPILOTO.md)** — no para que
-   instale por ti, sino para traducir lo que falle. Es la mitad de la clase.
-3. **Importa `workflows/01-semilla-demostracion.json`** y ejecútalo. Funciona sin
-   ninguna cuenta ni clave.
-4. **Importa `workflows/03-informe-ejecutivo.json`** y ejecútalo. Produce el
-   informe completo **sin usar ningún modelo de IA**: formato, conteos, semáforo
-   y agenda salen de reglas que puedes leer.
-5. **[Conecta tu propia hoja de cálculo](docs/CONECTAR-GOOGLE.md)** con
-   `workflows/05-fuente-real-sin-codigo.json`, y cruza proyectos con agenda en
-   `workflows/06-agenda-y-proyectos.json`.
-6. **[Ahora sí, elige un modelo](docs/PROVEEDORES-LLM.md)** y prueba
-   `workflows/04-informe-con-modelo.json`. Compara su resultado con el del paso
-   4: esa comparación es la clase entera.
+### Lo que va a quedar montado, y cómo compruebas cada parte
+
+No es una lista de tareas para hacer a mano: es **el resultado esperado**. Lo
+construya quien lo construya —tú o tu agente— cada línea trae la pregunta con la
+que se verifica.
+
+| Lo que debe quedar | Cómo compruebas que está bien |
+|---|---|
+| n8n corriendo en tu máquina ([montaje](docs/MONTAJE-PASO-A-PASO.md)) | ¿Dónde quedaron guardados los datos y qué pasa si borro esa carpeta? |
+| El flujo `01` importado y ejecutado | ¿Puedes señalar la regla que decide si un proyecto es riesgo, y explicarla? |
+| El informe `03` funcionando **sin ningún modelo de IA** | ¿De dónde sale cada número del informe? |
+| Tu propia hoja conectada ([Google](docs/CONECTAR-GOOGLE.md), flujo `05`) | ¿Qué pasa el día que quiera desconectarla? |
+| Proyectos cruzados con la agenda (flujo `06`) | ¿Qué ocurre con un evento cuyo proyecto no coincide? ¿Desaparece? |
+| El informe escrito por un modelo ([proveedores](docs/PROVEEDORES-LLM.md), flujo `04`) | ¿Puedes provocar una invención a propósito y ver que la detecta? |
+
+Comparar el informe del `03` con el del `04` es la clase entera: el primero sale
+de reglas que puedes leer; el segundo, de un modelo que hay que vigilar.
+
+> Si tu herramienta de IA no puede ejecutar comandos —un chat en el navegador,
+> por ejemplo— seguirás esta misma tabla, con el agente dictándote y tú
+> ejecutando. El resultado es el mismo; cambia quién teclea. Los tres niveles de
+> herramienta están explicados en
+> [DIRIGIR-AL-AGENTE.md](docs/DIRIGIR-AL-AGENTE.md).
 
 ## El resultado que construyen
 
@@ -107,10 +115,12 @@ analogía de la vida diaria:
 
 ## Inicio rápido (docente)
 
-> Si es estudiante, siga la secuencia numerada de la sección "Empieza por
-> aquí" más arriba. Lo que sigue es la referencia técnica de quien dicta la
-> clase: instalación completa, arranque, conexión de fuentes y validación, en
-> un solo lugar.
+> Si es estudiante, siga la sección "Empieza por aquí" más arriba: el documento
+> sobre cómo dirigir a un agente, y la tabla de lo que debe quedar montado con
+> su pregunta de verificación. Lo que sigue es la referencia técnica de quien
+> dicta la clase — instalación completa, arranque, conexión de fuentes y
+> validación en un solo lugar — y también el material contra el que se puede
+> contrastar lo que construya un agente.
 
 ### 1. Requisito local
 

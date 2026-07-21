@@ -2,14 +2,19 @@
 
 ## Propuesta de valor
 
-Esta clase no enseña a arrastrar nodos. Enseña a diseñar una **cadena de
-decisión**: qué evidencia entra, cómo se normaliza, qué regla produce un
-semáforo, qué puede redactar una IA y en qué punto una persona debe decidir.
+Esta clase no enseña a arrastrar nodos, y ya no enseña solo arquitectura de
+datos: enseña a **dirigir a un agente de IA para que construya la
+automatización, y a auditar lo que devuelve con evidencia real** — sobre una
+arquitectura que el estudiante entiende lo suficiente para saber qué encargar
+y qué no delegar nunca.
 
-El ejercicio supera una auditoría de repositorios porque cambia de un caso
-lineal a una arquitectura reutilizable: proyectos, calendario y eventos
-pueden venir de herramientas diferentes sin obligar al tablero a conocerlas
-por separado. La pieza estable es el contrato de datos.
+El vehículo sigue siendo el mismo caso: proyectos, calendario y eventos que
+llegan de herramientas distintas, un contrato de datos que los normaliza, una
+regla determinista que produce un semáforo, y una compuerta humana antes de
+publicar. Eso no cambió. Lo que cambió es quién arma cada pieza: el estudiante
+no la construye a mano, se la encarga a un agente y verifica el resultado —
+exactamente como se construyó este mismo repositorio (ver
+[CASO-DE-ESTUDIO.md](CASO-DE-ESTUDIO.md)).
 
 ```mermaid
 flowchart LR
@@ -25,24 +30,34 @@ flowchart LR
   H -->|rechaza| X[Revisar evidencia]
 ```
 
+> Esta arquitectura es lo que el estudiante necesita entender para
+> **encargarla y auditar lo que reciba** — no necesariamente para construirla
+> con sus propias manos. El documento que enseña ese encargo es
+> [DIRIGIR-AL-AGENTE.md](DIRIGIR-AL-AGENTE.md).
+
 ## Resultados de aprendizaje observables
 
 Al terminar, cada estudiante podrá:
 
-1. Ejecutar n8n en su equipo y distinguir configuración, volumen persistente y
+1. **Encargarle a un agente de IA que construya una automatización, y auditar
+   lo que devuelve con evidencia real** — no con su palabra. Es el resultado
+   central de la clase: los siete siguientes son lo que necesita saber para
+   poder encargar y auditar bien.
+2. Ejecutar n8n en su equipo y distinguir configuración, volumen persistente y
    credenciales.
-2. Explicar trigger, nodo, item, expresión, ejecución y credencial con un
+3. Explicar trigger, nodo, item, expresión, ejecución y credencial con un
    ejemplo funcional.
-3. Definir un contrato común para al menos tres fuentes de verdad.
-4. Conectar una fuente por OAuth/API, mapearla al contrato y verificar el
+4. Definir un contrato común para al menos tres fuentes de verdad.
+5. Conectar una fuente por OAuth/API, mapearla al contrato y verificar el
    resultado antes de continuar.
-5. Separar reglas deterministas de redacción con IA.
-6. Producir un informe ejecutivo con un formato verificable y una compuerta
+6. Separar reglas deterministas de redacción con IA.
+7. Producir un informe ejecutivo con un formato verificable y una compuerta
    humana antes de una acción externa.
-7. Usar un modelo de lenguaje como copiloto de su propio montaje: dar contexto,
+8. Usar un modelo de lenguaje como copiloto de su propio montaje: dar contexto,
    pegar el error literal, exigir que separe hecho de suposición, verificar con
-   un comando propio y registrar la causa raíz — distinguiendo esa función de la
-   de un modelo que corre dentro del flujo.
+   un comando propio y registrar la causa raíz — distinguiendo esa función de
+   la de un agente que ejecuta por su cuenta y la de un modelo que corre dentro
+   del flujo.
 
 ## Diseño de 3 horas
 
@@ -58,19 +73,27 @@ Al terminar, cada estudiante podrá:
 | Tiempo | Momento | Módulo del lab | Evidencia de aprendizaje |
 |---:|---|---|---|
 | 0–15 min | Mapa: “¿qué fuentes usan hoy para saber si un proyecto está en riesgo?” + demo del snapshot. | 01 Inicio | Cada persona identifica tres fuentes y un destinatario de la decisión. |
-| 15–35 min | **El copiloto antes del montaje**: las dos formas de usar un LLM, el protocolo de 4 pasos y la caza de alucinaciones. | 05 Copiloto | Cada estudiante tiene un chat abierto y sabe cuándo preguntarle a él, cuándo a su máquina y cuándo a la persona docente. |
-| 35–70 min | n8n local: elegir ruta (Docker o npx), levantar, importar y ejecutar `01`. **Aquí es donde aparecen los errores, y donde el copiloto se usa de verdad.** | 06 Manos a la obra | El estudiante muestra el JSON normalizado y explica qué nodo lo produjo. |
-| 70–95 min | Contrato común: modificar datos demo, insertar un bloqueo y revisar cómo cambia el semáforo. | 02 Teoría | Un registro con `source`, `kind`, `status`, `priority`, `date` y `owner`. |
-| 95–110 min | Pausa + clínica de credenciales: OAuth, token personal, API key y secreto. | 03 Brechas | Matriz fuente–credencial–permiso mínimo. |
-| 110–140 min | Conectar una o dos fuentes reales: Google Calendar + Sheets, GitHub, Linear o Notion. | 04 Laboratorios | Adaptadores que producen el mismo contrato. |
-| 140–162 min | Informe: ejecutar `03`, auditar su formato; **solo después** conectar un modelo para redacción. | 04 Laboratorios | Informe con decisiones, riesgos, agenda y evidencia. |
+| 15–30 min | **Dirigir, antes de tocar n8n**: las seis piezas de la arquitectura, los tres niveles de herramienta de IA (chat, app, agente con acceso al sistema) y la plantilla de un encargo. | 08 Dirigir | Cada estudiante nombra las seis piezas, sabe en qué nivel de herramienta está trabajando y trae escrito su primer encargo. |
+| 30–50 min | El copiloto: las dos formas de usar un LLM, el protocolo de 4 pasos y la caza de alucinaciones. | 05 Copiloto | Cada estudiante tiene su herramienta abierta y sabe cuándo preguntarle a ella, cuándo a su máquina y cuándo a la persona docente. |
+| 50–85 min | n8n local — **Encargo 1 y 2 de DIRIGIR-AL-AGENTE.md**: levantar el motor y entender el flujo `01` importado. **Aquí es donde aparecen los errores, y donde se audita de verdad.** | 06 Manos a la obra | El estudiante muestra el JSON normalizado, explica qué nodo lo produjo y qué decidió su agente sin que se lo pidiera. |
+| 85–110 min | Contrato común: modificar datos demo, insertar un bloqueo y revisar cómo cambia el semáforo. | 02 Teoría | Un registro con `source`, `kind`, `status`, `priority`, `date` y `owner`. |
+| 110–125 min | Pausa + clínica de credenciales: OAuth, token personal, API key y secreto. | 03 Brechas | Matriz fuente–credencial–permiso mínimo. |
+| 125–140 min | Conectar una fuente real (Calendar o Sheets) con el **Encargo 3**. El resto de conectores queda para después con la matriz de conexiones. | 04 Laboratorios | Un adaptador real que produce el contrato, y la respuesta a "¿qué pasa el día que la desconectes?". |
+| 140–162 min | Informe: ejecutar `03`, auditar su formato; **solo después** conectar un modelo para redacción (**Encargo 5**). | 04 Laboratorios | Informe con decisiones, riesgos, agenda y evidencia. |
 | 162–180 min | Actividad Reina y compromiso: diseñar la propia orquesta y exportar plan. | 07 Compromisos | Un flujo, una compuerta humana y tres compromisos. |
 
 > **El número del módulo no es el orden de dictado.** En el laboratorio HTML los
-> módulos están numerados por tema (01 a 07), no por reloj. El módulo **05 ·
-> Copiloto** es el segundo bloque que se dicta, y el **06 · Manos a la obra** es
-> el tercero. La columna "Módulo del lab" de esta tabla es la referencia buena:
-> los estudiantes navegan por pestañas, no en línea recta.
+> módulos están numerados por tema (01 a 08), no por reloj. El módulo **08 ·
+> Dirigir** es el segundo bloque que se dicta —antes de tocar n8n—, el **05 ·
+> Copiloto** el tercero, y el **06 · Manos a la obra** el cuarto. La columna
+> "Módulo del lab" de esta tabla es la referencia buena: los estudiantes
+> navegan por pestañas, no en línea recta.
+
+> **Por qué 08 · Dirigir va incluso antes que el copiloto:** sin las seis
+> piezas y la plantilla de encargo, un estudiante no sabe qué pedirle a su
+> herramienta en el primer error real del tramo 06. Enseñar la arquitectura
+> después de que el grupo ya vivió mal el montaje sería explicar la teoría de
+> un ejercicio que ya salió mal por falta de ella.
 
 > **Por qué el copiloto va antes del montaje y no después:** si se enseña al final,
 > queda como una curiosidad. Si se enseña antes, se convierte en la herramienta con
@@ -79,10 +102,19 @@ Al terminar, cada estudiante podrá:
 
 ### Plan B de tiempos
 
-Si el montaje se desborda (es el tramo con más varianza), sacrifica el bloque de
-110–140 min: la conexión de fuentes reales se puede dejar como trabajo posterior
-con la [matriz de conexiones](MATRIZ-DE-CONEXIONES.md). No sacrifiques el bloque
-del informe ni el cierre: son los que cargan el mensaje de la clase.
+Si el montaje se desborda (sigue siendo el tramo con más varianza), sacrifica
+el bloque de 125–140 min: la conexión de fuentes reales se puede dejar como
+trabajo posterior con la [matriz de conexiones](MATRIZ-DE-CONEXIONES.md). No
+sacrifiques el bloque del informe ni el cierre: son los que cargan el mensaje
+de la clase.
+
+> **Con el módulo 08 agregado, este colchón bajó de 30 a 15 minutos.** Antes
+> de esta versión, sacrificar por completo el bloque de fuentes reales
+> liberaba media hora; ahora libera un cuarto. Si el montaje (tramo 06) se
+> desborda más que eso, el siguiente bloque a recortar es **03 · Brechas**
+> (110–125 min): reduce la clínica de credenciales a señalar la matriz ya
+> resuelta en [MATRIZ-DE-CONEXIONES.md](MATRIZ-DE-CONEXIONES.md) en vez de
+> completarla en vivo con el grupo.
 
 ## Principios que se enseñan explícitamente
 
@@ -136,6 +168,16 @@ automática; aprobar una prioridad crítica no.
 - El **AI Assistant** y el **AI Workflow Builder** integrados existen en
   self-hosted, pero requieren activación de licencia de instancia, endpoint
   configurado y API key propia. **No se demuestran en vivo en esta clase.**
+- **La herramienta de IA que trae cada estudiante no es uniforme, y eso cambia
+  la logística de los tramos 06 y 04.** Hay tres niveles reales: un chat en el
+  navegador (ChatGPT, Claude, Gemini, DeepSeek), una aplicación de escritorio
+  de las mismas, o un agente con acceso al sistema (Claude Code, Antigravity y
+  similares). Con los dos primeros, cada paso lo teclea el estudiante y el
+  tramo tiene más idas y vueltas; con el tercero, el agente ejecuta y verifica
+  por su cuenta, y el tiempo se va en auditar, no en teclear. Los tres niveles
+  están descritos en
+  [DIRIGIR-AL-AGENTE.md](DIRIGIR-AL-AGENTE.md#antes-de-empezar-qué-puede-hacer-tu-herramienta).
+  Conviene preguntar qué nivel trae cada quien antes de que empiece el tramo 06.
 - Un modelo dentro del flujo tiene cuatro caminos gratuitos con nodo propio o
   compatible: Ollama, Google Gemini, Groq y Cerebras. Detalle, límites reales y
   el gotcha de red entre Docker y Ollama en [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md).
