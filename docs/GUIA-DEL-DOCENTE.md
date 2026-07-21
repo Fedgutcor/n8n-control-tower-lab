@@ -79,6 +79,14 @@ una máquina limpia si es posible.
       > Trigger. Para probar la cadena de datos por consola hay que cambiar el
       > disparador a manual temporalmente. Desde la interfaz no aplica: ahí se
       > ejecuta con el botón normal.
+- [ ] Si pruebas los flujos por línea de comandos en vez de por la interfaz,
+      ten en cuenta esto: `n8n execute` tarda **entre 15 y 20 segundos** en
+      arrancar sus componentes internos antes de mostrar cualquier resultado o
+      error. Los flujos que empiezan con Schedule, Formulario, Error o Webhook
+      **no se pueden ejecutar así** —fallan con "Missing node to start
+      execution", que es el comportamiento correcto— pero tardan esos mismos
+      segundos en decirlo. Con un tiempo de espera corto parecerá que se
+      colgaron cuando no es así.
 - [ ] Corre la validación automática:
       ```bash
       node scripts/verify-artifacts.mjs
