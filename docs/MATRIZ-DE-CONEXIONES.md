@@ -8,7 +8,24 @@
 | Linear | issues, ciclos, prioridades | API key/OAuth según conector | issue → `title`, `owner`, `priority`, `status` | traer un equipo/ciclo | no exponer identificadores internos |
 | Notion | decisiones y documentación | OAuth de Notion | página DB → decisión/proyecto | consultar base | conceder acceso sólo a la base |
 | Slack / correo | difusión aprobada | OAuth | no es fuente: es salida | enviar a canal de prueba | compuerta humana antes de publicar |
-| OpenAI API | redacción/explicación | API key en credencial | recibe snapshot, devuelve JSON | un informe con datos fijos | costo, alucinación y datos sensibles |
+
+## Modelos de lenguaje (no son fuentes: son redactores)
+
+Un modelo nunca aporta evidencia al contrato. Recibe el snapshot ya calculado y
+lo convierte en lenguaje. Detalle completo, límites y el gotcha de Docker con
+Ollama en [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md).
+
+| Proveedor | Nodo en n8n | Credencial | Free tier | Riesgo a gestionar |
+|---|---|---|---|---|
+| Ollama (local) | Ollama Chat Model | Ollama (URL base) | ilimitado, offline | Docker no alcanza `localhost` del anfitrión |
+| Google Gemini | Google Gemini Chat Model | Google Gemini(PaLM) API | sin tarjeta | el límite diario varía por proyecto |
+| Groq | Groq Chat Model | Groq | 14 400 req/día | el modelo por defecto está desactualizado |
+| Cerebras | OpenAI Chat Model con URL base `https://api.cerebras.ai/v1` | OpenAI | 1 M tokens/día | contexto de 8192 tokens: el snapshot puede no caber |
+| OpenAI API | OpenAI Chat Model | API key en credencial | de pago | costo por ejecución; ChatGPT ≠ API key |
+
+En los cinco casos el riesgo transversal es el mismo: **alucinación y datos
+sensibles**. Por eso el informe determinista se construye primero y el modelo
+solo redacta sobre evidencia ya validada.
 
 ## Patrón de adaptador
 

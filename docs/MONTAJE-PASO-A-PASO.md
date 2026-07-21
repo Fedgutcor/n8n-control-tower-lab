@@ -1,0 +1,330 @@
+# Montaje de n8n local, paso a paso
+
+> Datos verificados en julio de 2026 contra el registro de npm y la
+> documentación oficial. Versión de referencia de esta clase: **n8n 2.30.8**.
+>
+> Este documento se lee con el copiloto abierto al lado. Cuando algo falle —y
+> algo va a fallar, es parte del ejercicio— usa el protocolo de
+> [EL-LLM-COMO-COPILOTO.md](EL-LLM-COMO-COPILOTO.md) en vez de improvisar.
+
+---
+
+## Antes de elegir ruta: qué necesitas de verdad
+
+| Requisito | Ruta Docker | Ruta npx |
+|---|---|---|
+| Node.js | No hace falta | **22.22 o superior** (obligatorio) |
+| Docker Desktop | Sí | No |
+| Espacio en disco | ~1,5 GB (imagen) | ~500 MB |
+| RAM libre recomendada | 2 GB mínimo, 4 GB cómodo | 2 GB mínimo |
+| Tiempo de arranque | 5–10 min la primera vez | 2–3 min |
+
+**Cuál elegir:**
+
+- **Docker** si quieres el entorno idéntico al del docente y que apagar el
+  computador no te borre nada. Es la ruta principal de la clase.
+- **npx** si tu máquina no aguanta Docker Desktop, o si vas a trabajar con
+  **Ollama** — por esta ruta Ollama funciona con `localhost` sin trucos.
+
+> Ambas rutas llegan al mismo lugar: n8n en `http://localhost:5678`. Nadie queda
+> atrás por elegir una u otra.
+
+---
+
+## Paso 0 — Verificar la máquina (sin instalar nada)
+
+Ejecuta esto **antes** de instalar y guarda las respuestas: son el contexto que
+le vas a pegar a tu copiloto si algo falla.
+
+Abre una terminal según tu sistema:
+
+- **macOS**: pulsa `Cmd + Espacio`, escribe `Terminal` y presiona `Enter`.
+- **Windows**: pulsa la tecla Windows, escribe `PowerShell` y presiona
+  `Enter`.
+- **Linux**: usa el atajo `Ctrl + Alt + T`, o busca "Terminal" en el menú de
+  aplicaciones de tu distribución.
+
+```bash
+node --version
+docker --version
+```
+
+Interpretación:
+
+| Lo que ves | Qué significa |
+|---|---|
+| `v22.22.0` o mayor | Node sirve para la ruta npx |
+| `v20.x`, `v18.x` | Node **no** sirve para n8n 2.x — o actualizas, o usas Docker |
+| `command not found` / `no se reconoce` | Eso **no** está instalado. No es un error, es información |
+| `Docker version 27.x` | Docker está instalado (falta confirmar que esté corriendo) |
+
+**Nota sobre Node:** usa una versión **par** (22 o 24). Las versiones impares
+(como la 25) son de desarrollo y rompen componentes internos de n8n.
+
+Si Docker aparece instalado, confirma que además esté **corriendo**:
+
+```bash
+docker ps
+```
+
+Si responde con una tabla (aunque esté vacía), está corriendo. Si dice
+`Cannot connect to the Docker daemon`, Docker está instalado pero apagado: abre
+Docker Desktop y espera a que el ícono deje de moverse.
+
+---
+
+## Ruta A — Docker (principal)
+
+### A1. Instalar Docker Desktop
+
+Descárgalo de `docker.com` para tu sistema. Al terminar, ábrelo y espera a que
+diga que está corriendo. Vuelve a ejecutar `docker ps` para confirmar.
+
+### A2. Preparar la configuración
+
+Desde la carpeta de este repositorio:
+
+```bash
+cp .env.example .env
+```
+
+En Windows con PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+> **`.env` es un archivo oculto — tu explorador de archivos puede no
+> mostrarlo.** Como su nombre empieza con un punto, macOS y Windows lo ocultan
+> por defecto.
+>
+> - **macOS (Finder)**: con la carpeta abierta, pulsa `Cmd + Shift + Punto`
+>   para mostrar los archivos ocultos.
+> - **Windows (Explorador de archivos)**: en la pestaña **Vista**, activa la
+>   casilla **Elementos ocultos**.
+> - **Camino más simple**: abre la carpeta completa del repositorio con un
+>   editor como VS Code. Su panel de archivos muestra los que empiezan con
+>   punto sin que tengas que cambiar ninguna configuración del sistema.
+
+Abre `.env` con un editor de texto y reemplaza el valor de
+`N8N_ENCRYPTION_KEY` por una cadena larga y aleatoria. Genera esa cadena así:
+
+```bash
+openssl rand -hex 32          # macOS y Linux
+```
+
+```powershell
+# Windows (PowerShell) — 64 caracteres hexadecimales, dos GUID sin guiones
+((New-Guid).ToString() + (New-Guid).ToString()) -replace '-',''
+```
+
+> **Ejercicio del método de la clase:** en vez de copiar ese comando de
+> PowerShell a ciegas, pídeselo a tu copiloto y compara la respuesta — es el
+> mismo caso que ejercita el **prompt B** de
+> [EL-LLM-COMO-COPILOTO.md](EL-LLM-COMO-COPILOTO.md): *"dame un comando de
+> PowerShell de solo lectura que genere una cadena hexadecimal aleatoria de 64
+> caracteres"*. Verifica que la salida tenga realmente 64 caracteres antes de
+> pegarla en `.env`.
+
+**Por qué importa, y no es un trámite:** esa clave cifra las credenciales que
+guardes dentro de n8n. Si la pierdes o la cambias después, n8n no podrá
+descifrar las credenciales que ya creaste y tendrás que volver a cargarlas
+todas. Guárdala donde guardas tus contraseñas. Y nunca la subas a Git — por eso
+`.env` está en `.gitignore`.
+
+### A3. Levantar n8n
+
+```bash
+docker compose up -d
+```
+
+La primera vez descarga ~1,5 GB. Es normal que tarde varios minutos.
+
+Verifica que quedó arriba:
+
+```bash
+docker compose ps
+docker compose logs --tail=30
+```
+
+Abre `http://localhost:5678`. Crea el usuario propietario: es **local, en tu
+máquina**, no una cuenta de n8n.com.
+
+### A4. Apagar sin perder nada
+
+```bash
+docker compose down
+```
+
+Los datos siguen en el volumen `n8n_data`. Para volver: `docker compose up -d`.
+
+> **El comando peligroso:** `docker compose down -v`. Esa `-v` borra el volumen
+> y con él tus workflows y credenciales. Úsalo solo cuando quieras empezar
+> limpio a propósito.
+
+---
+
+## Ruta B — npx (sin Docker)
+
+### B1. Confirmar Node 22.22+
+
+Si `node --version` da menos que eso, instala Node 22 LTS desde `nodejs.org`,
+cierra la terminal, ábrela de nuevo y vuelve a verificar. El paso de cerrar y
+abrir no es superstición: la terminal solo lee la configuración al arrancar.
+
+### B2. Arrancar
+
+```bash
+npx n8n
+```
+
+Descarga y arranca. **Deja esa ventana abierta**: si la cierras, n8n se apaga.
+Abre `http://localhost:5678`.
+
+Para apagarlo: `Ctrl + C` en esa ventana.
+
+### B3. Dónde quedan tus datos
+
+En la carpeta `.n8n` de tu usuario (`~/.n8n` en Mac/Linux,
+`C:\Users\TuUsuario\.n8n` en Windows). Ahí vive la base de datos con tus
+workflows.
+
+---
+
+## Paso final (ambas rutas) — Importar y ejecutar
+
+> **Antes de empezar: te va a aparecer un formulario que no puedes cerrar.**
+> n8n muestra una encuesta de personalización ("Customize n8n to you") con
+> varias listas desplegables y **sin botón de cerrar**. No está roto y no es
+> obligatorio responderlo: pulsa **Get started** sin llenar nada y sigue. Puede
+> reaparecer en otras pantallas; se despacha igual.
+
+1. En n8n, menú **⋯ → Import from File**.
+2. Elige `workflows/01-semilla-demostracion.json`.
+3. Ejecuta con **Execute Workflow**.
+4. Haz clic en el nodo **Normalizar y priorizar** y mira la pestaña de salida:
+   ahí está tu primer snapshot.
+5. Cambia un dato en el nodo **Semilla: tres fuentes** —por ejemplo pon un
+   `status` en `'bloqueado'`— y ejecuta otra vez. Observa qué cambió en el
+   resultado y **por qué regla** cambió.
+
+Ese último paso es el ejercicio real. No es "ver si funciona": es entender qué
+regla produjo el cambio.
+
+---
+
+## Lo que parece un error y no lo es
+
+Al arrancar por Docker verás en los logs dos bloques alarmantes. **Los dos son
+ruido esperado.** Conviene mirarlos una vez, entender por qué no importan, y
+seguir — es un buen ejercicio de lectura de logs.
+
+**1. "Failed to start Python task runner … Python 3 is missing from this system"**
+
+n8n permite escribir nodos de código en JavaScript o en Python. La imagen no
+trae Python. Los workflows de esta clase usan **solo JavaScript**, y justo
+después de ese mensaje el log registra `Registered runner "JS Task Runner"`, que
+es el que sí necesitamos. Verificado: los tres workflows se ejecutan sin
+problema.
+
+**2. Un bloque de "deprecations related to your n8n setup"**
+
+n8n avisa que algunos valores por defecto cambiarán en versiones futuras. No
+afecta a esta clase. Este repositorio ya eliminó la única variable que estaba
+realmente deprecada (`N8N_RUNNERS_ENABLED`); el resto son avisos anticipados.
+
+> **La lección, que es de la clase y no de n8n:** un log que grita no siempre
+> señala un problema. Distinguir advertencia de error es parte del oficio, y es
+> justamente lo que le vas a pedir a tu copiloto cuando le pegues un log:
+> "dime qué de esto es un error real y qué es ruido".
+
+## Cuando algo falla: los cuatro errores del día
+
+Estos son los que aparecen de verdad. Para cualquier otro, usa el **prompt B**
+de la guía del copiloto.
+
+### 1. `port is already allocated` / `address already in use`
+
+Algo más ocupa el puerto 5678 — casi siempre otra instancia de n8n que quedó
+corriendo.
+
+Abre `.env` y cambia el puerto:
+
+```text
+N8N_PORT=8080
+```
+
+Vuelve a levantar y entra por `http://localhost:8080`.
+
+### 2. `EACCES: permission denied, open '/home/node/.n8n/config'`
+
+Solo en Docker. El usuario interno del contenedor no puede escribir en el
+volumen porque el dueño de la carpeta es otro.
+
+El diagnóstico rápido es poner `N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=false` en
+`.env`. Funciona, pero conviene saber que eso **desactiva una comprobación**, no
+arregla la causa: el dueño del volumen sigue estando mal. En clase es aceptable;
+en un servidor real, corrige el propietario de la carpeta.
+
+### 3. `npm ERR! code EPIPE` tras varios minutos, o una instalación eterna
+
+**Este es el peor error del día y merece leerse antes de que ocurra.**
+
+Si intentas la ruta `npx` con una versión de Node anterior a la 22.22, **n8n no
+te dice que tu Node es viejo**. Lo medimos: la instalación corre durante unos
+**nueve minutos**, escupe dos docenas de advertencias que parecen catástrofes
+(`npm WARN ERESOLVE overriding peer dependency`) y termina con un error de red:
+
+```text
+npm ERR! code EPIPE
+npm ERR! request to https://registry.npmjs.org/mustache failed, reason: write EPIPE
+```
+
+Ese mensaje habla de red y no menciona Node por ningún lado. Es engañoso: la
+causa raíz es la versión de Node, no tu conexión.
+
+**Por qué pasa:** npm no bloquea la instalación cuando tu versión de Node no
+cumple el requisito del paquete — solo advierte, y sigue. La misma instalación
+en Node 22 tardó **menos de dos minutos** y funcionó.
+
+**Qué hacer:** verifica `node --version` **antes** de correr `npx`. Si no es
+22.22 o superior, no insistas: instala Node 22 LTS o usa la ruta Docker.
+
+> Vale la pena señalarle esto al grupo cuando ocurra. Es un ejemplo perfecto de
+> por qué el protocolo del copiloto pide *verificar antes de actuar*: el mensaje
+> de error apunta a la red, y una hora de depurar la red no habría encontrado
+> nunca la causa.
+
+### 3b. `npx n8n --version` te responde, pero mintió
+
+Si ya tenías n8n instalado globalmente de antes, `npx` **reutiliza esa versión
+vieja en silencio**, sin descargar nada. Verás un número de versión y creerás
+que todo está bien.
+
+Compruébalo antes de confiar en el resultado:
+
+```bash
+which n8n
+```
+
+Si responde con una ruta, tienes una instalación global previa y `npx` te está
+mostrando *esa*, no la actual.
+
+### 4. `Cannot connect to the Docker daemon`
+
+Docker está instalado pero no corriendo. Abre Docker Desktop y espera a que
+termine de arrancar.
+
+---
+
+## Ejercicio de cierre del montaje
+
+Antes de pasar a conectar fuentes, responde estas tres preguntas por escrito. Si
+no puedes, vuelve sobre el paso correspondiente — no sigas adelante.
+
+1. ¿Dónde quedan guardados tus workflows si apagas el computador?
+2. ¿Qué pasa si pierdes `N8N_ENCRYPTION_KEY`?
+3. ¿Qué comando apaga n8n **sin** borrar tus datos, y cuál sí los borra?
+
+Si alguna te cuesta, pásasela a tu copiloto con el **prompt C**: "explícamelo con
+una analogía cotidiana y dime qué síntoma vería si lo configuro mal".

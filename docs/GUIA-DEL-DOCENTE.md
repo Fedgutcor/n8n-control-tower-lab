@@ -1,0 +1,333 @@
+# Guía del docente — clase de 3 horas: n8n local para directivos
+
+> Documento operativo para el día de la clase. La fundamentación pedagógica está
+> en [FUNDAMENTACION-DE-LA-CLASE.md](FUNDAMENTACION-DE-LA-CLASE.md); aquí no se
+> repite el porqué, sólo el cómo y el cuándo.
+
+---
+
+## 1. Checklist de ensayo — una semana antes
+
+No dictes esta clase sin haber hecho este ensayo completo al menos una vez, en
+una máquina limpia si es posible.
+
+- [ ] Instala y arranca n8n por la **ruta Docker** siguiendo
+      [MONTAJE-PASO-A-PASO.md](MONTAJE-PASO-A-PASO.md) de punta a punta.
+- [ ] Instala y arranca n8n por la **ruta npx** (Node 22.22+) siguiendo el mismo
+      documento. Si tu Node local es par pero no llega a 22.22, actualízalo antes
+      de la semana de clase, no el mismo día.
+- [ ] Confirma que la versión fijada en `docker-compose.yml`
+      (`docker.n8n.io/n8nio/n8n:2.30.8`) sigue siendo la que ensayaste. Si alguien
+      actualizó el compose después de tu último ensayo, vuelve a correr este
+      checklist completo: un cambio de versión sin ensayo es la forma más segura
+      de encontrarte un error nuevo frente al grupo.
+- [ ] Importa los cuatro workflows (`01`, `02`, `03`, `04`) desde una carpeta
+      limpia y ejecuta `01` y `03` sin errores.
+- [ ] Ensaya el workflow `04` con el modelo pequeño que vayas a recomendar en
+      clase (por ejemplo `qwen2.5-coder:7b` en Ollama) y confirma que el
+      validador muestra el veredicto `RECHAZADO` al menos una vez. El propio
+      prompt del informe la llama la demostración más valiosa de la sesión
+      (ver
+      [INFORME-EJECUTIVO.md](../prompts/INFORME-EJECUTIVO.md#este-prompt-no-basta-y-tenemos-la-prueba)):
+      si no la ensayaste antes, no la dictes en vivo por primera vez frente al
+      grupo.
+- [ ] Corre la validación automática:
+      ```bash
+      node scripts/verify-artifacts.mjs
+      docker compose config
+      ```
+- [ ] Envía `samples/control-tower-demo.json` al webhook de prueba del workflow
+      `02` (Postman, Bruno o curl) y confirma que el snapshot sale correcto.
+- [ ] Decide **qué proveedor de LLM vas a recomendar** para el nodo dentro del
+      flujo y verifica su cuota real ese mismo día en la consola del proveedor
+      (AI Studio para Gemini, consola de Groq, consola de Cerebras). No hay una
+      tabla universal de límites que puedas confiar a ciegas: los catálogos
+      gratuitos cambian sin aviso — ver
+      [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md). Si vas a usar Ollama, confirma
+      además que el modelo que vas a recomendar (`qwen2.5-coder:7b`) se
+      descarga y responde en tu máquina de referencia.
+- [ ] Si vas a usar Ollama con la ruta Docker, verifica el gotcha de red:
+      `http://host.docker.internal:11434` responde desde el nodo Ollama Chat
+      Model. En Linux confirma que `extra_hosts` está en el compose (ya viene
+      incluido en este repositorio).
+- [ ] Revisa `GUIA-INTERACTIVA.html` en el navegador: los 7 módulos cargan, las
+      mecánicas interactivas (emparejar, clasificar, ordenar, caza de
+      alucinación) funcionan y el botón de exportar plan genera un archivo.
+- [ ] Relee la fundamentación técnica verificada en
+      [FUNDAMENTACION-DE-LA-CLASE.md](FUNDAMENTACION-DE-LA-CLASE.md#fundamentación-técnica-verificada)
+      y confirma que ningún dato (versión de n8n, requisito de Node, estado del
+      AI Assistant nativo) cambió desde la última verificación.
+
+---
+
+## 2. Checklist del día — 30 minutos antes
+
+Todo lo que se pueda tener listo **antes** de que entre el grupo, se tiene listo
+antes. Descargar en vivo con 20 personas en la misma red es la forma más
+confiable de perder la clase.
+
+- [ ] Imagen de Docker ya descargada en tu máquina (`docker compose pull` o
+      `docker compose up -d` corrido de antemano).
+- [ ] Si vas a demostrar Ollama: modelo ya descargado (`ollama pull qwen2.5-coder:7b`
+      o el que hayas elegido). No lo bajes en vivo.
+- [ ] `.env` propio ya creado a partir de `.env.example`, con
+      `N8N_ENCRYPTION_KEY` propia — no la que quede en el repositorio de
+      ejemplo.
+- [ ] n8n arriba y probado una última vez (`docker compose ps`,
+      `http://localhost:5678` responde).
+- [ ] Pestañas abiertas y proyectables: `GUIA-INTERACTIVA.html`, tu instancia de
+      n8n, un chat de copiloto (DeepSeek como principal, Claude free como
+      respaldo — ver [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md)) y el repositorio
+      en el explorador de archivos.
+- [ ] `samples/control-tower-demo.json` accesible para probarlo con
+      Postman/Bruno/curl si alguna fuente real falla en vivo.
+- [ ] Ninguna pestaña ni ventana con una API key visible. Si alguna credencial
+      quedó guardada en el navegador con autocompletado, ciérrala antes de
+      compartir pantalla.
+- [ ] Hoja de cálculo de ejemplo (con permisos de edición para el grupo, o una
+      copia por estudiante) lista si vas a demostrar el conector de Google
+      Sheets.
+
+---
+
+## 3. Correo de prerrequisitos — enviar con antelación
+
+Copia y pega este mensaje tal cual, adaptando el nombre de la sesión y la fecha.
+
+> **Asunto: antes de la sesión de n8n — 15 minutos de preparación**
+>
+> Hola,
+>
+> La próxima sesión es práctica: vas a instalar y usar una herramienta de
+> automatización en tu propio computador. Para que el tiempo en clase se use en
+> el ejercicio y no en instalaciones, te pido que hagas esto **antes**:
+>
+> **1. Instala Docker Desktop.**
+> Descárgalo de docker.com para tu sistema operativo (Windows, macOS o Linux) e
+> instálalo. Ábrelo una vez para confirmar que arranca. No necesitas crear
+> ninguna cuenta paga.
+>
+> **2. Ten a mano un chat de IA que ya uses.**
+> ChatGPT, Claude, Gemini o DeepSeek — cualquiera que ya tengas. No hace falta
+> versión paga. Si no tienes ninguno, crea una cuenta gratuita en
+> chat.deepseek.com.
+>
+> **3. Ten disponible una cuenta de Google.**
+> La usaremos para un ejercicio con Google Calendar o Google Sheets. No
+> necesitas permisos especiales, cualquier cuenta personal o corporativa con
+> acceso a Calendar o Sheets sirve.
+>
+> **4. Verifica que tu computador tiene al menos 4 GB de RAM libres** y una
+> conexión a internet estable el día de la sesión (para descargar Docker si aún
+> no lo hiciste, e imágenes durante la clase).
+>
+> **No necesitas:**
+> - Saber programar.
+> - Ninguna suscripción paga.
+> - Instalar nada además de Docker Desktop.
+>
+> Si Docker no logra instalarse en tu equipo, avísame antes de la sesión — hay
+> una alternativa, pero necesito saberlo con tiempo para prepararla contigo.
+>
+> Nos vemos en la sesión.
+
+---
+
+## 4. Guion por tramo
+
+Agenda completa con tiempos en
+[FUNDAMENTACION-DE-LA-CLASE.md](FUNDAMENTACION-DE-LA-CLASE.md#diseño-de-3-horas).
+Aquí sólo lo que necesitas mientras dictas.
+
+### 01 · Inicio (0–15 min)
+
+- **Objetivo en una frase:** que cada persona nombre su propio dolor de
+  visibilidad antes de ver una herramienta.
+- **Pregunta de apertura:** "¿qué fuentes usan hoy para saber si un proyecto
+  está en riesgo?"
+- **Error más probable:** ninguno técnico todavía; el riesgo es que el grupo
+  quiera saltar directo a la herramienta. Redirige con la actividad de
+  diagnóstico del módulo 01 de `GUIA-INTERACTIVA.html`.
+- **Señal para avanzar:** cada persona nombró tres fuentes y un destinatario de
+  la decisión.
+
+### 05 · Copiloto — antes del montaje (15–35 min)
+
+- **Objetivo:** que cada estudiante tenga un chat abierto y entienda la
+  diferencia entre copiloto del montaje y nodo dentro del flujo antes de que
+  aparezca el primer error real.
+- **Pregunta de apertura:** "¿alguna vez un chat de IA les dio una respuesta que
+  sonaba perfecta y resultó ser inventada?"
+- **Error más probable:** alguien intenta pedirle al chat el JSON completo de un
+  workflow. Es intencional dejar que lo intenten — es el ejercicio de "la trampa
+  del nodo inventado" del propio documento
+  ([EL-LLM-COMO-COPILOTO.md](EL-LLM-COMO-COPILOTO.md#ejercicio-de-clase-la-trampa-del-nodo-inventado)).
+  No lo corrijas antes de que lo vivan.
+- **Señal para avanzar:** cada estudiante puede repetir el protocolo de 4 pasos
+  sin mirar la pantalla, y sabe qué NO preguntarle al copiloto.
+
+### 06 · Manos a la obra — montar n8n (35–70 min)
+
+- **Objetivo:** n8n corriendo en local, workflow `01` importado y ejecutado.
+- **Pregunta de apertura:** "¿Docker o npx? Miren su Node con `node --version`
+  antes de decidir."
+- **Error más probable:** los cuatro de siempre — ver
+  [MONTAJE-PASO-A-PASO.md](MONTAJE-PASO-A-PASO.md#cuando-algo-falla-los-cuatro-errores-del-día):
+  puerto ocupado, permisos del volumen en Docker, Node viejo en la ruta npx,
+  Docker Desktop instalado pero no corriendo. Responde señalando el documento y
+  dejando que cada estudiante use su copiloto con el **prompt B** antes de darle
+  la solución tú mismo — es el tramo donde el protocolo se usa de verdad.
+- **Señal para avanzar:** cada estudiante muestra el JSON normalizado del nodo
+  **Normalizar y priorizar** y explica qué nodo lo produjo.
+
+### 02 · Teoría — contrato común (70–95 min)
+
+- **Objetivo:** que el grupo entienda que el contrato, no el proveedor, es la
+  pieza estable.
+- **Pregunta de apertura:** "si mañana cambian de Linear a Notion, ¿qué parte de
+  este flujo tendría que rehacerse?"
+- **Error más probable:** confundir el contrato con un dashboard — alguien dirá
+  "pero yo necesito ver esto en una tabla bonita". Redirige: el contrato es el
+  dato, la vista es después.
+- **Señal para avanzar:** cada estudiante cambió `status` a `bloqueado` en la
+  semilla, volvió a ejecutar y puede decir qué regla produjo el cambio en el
+  semáforo.
+
+### 03 · Brechas — clínica de credenciales (95–110 min, incluye la pausa)
+
+- **Objetivo:** distinguir OAuth, token personal, API key y secreto, y el
+  permiso mínimo de cada uno.
+- **Pregunta de apertura:** "¿qué pasaría si esta credencial se filtrara hoy?
+  ¿qué alcance tiene?"
+- **Error más probable:** alguien pega o menciona en voz alta una clave real
+  mientras comparte pantalla. Ver plan B en la sección 5 de este documento.
+- **Señal para avanzar:** el grupo completó la matriz fuente–credencial–permiso
+  mínimo apoyándose en
+  [MATRIZ-DE-CONEXIONES.md](MATRIZ-DE-CONEXIONES.md).
+
+### 04 · Laboratorios — conectar fuentes reales (110–140 min)
+
+- **Objetivo:** al menos un adaptador real (Calendar, Sheets, GitHub, Linear o
+  Notion) produciendo el contrato común.
+- **Pregunta de apertura:** "¿qué credencial necesitan y quién en su
+  organización la emite?"
+- **Error más probable:** falla de OAuth o de red del aula. Si el bloqueo no se
+  resuelve en 2 minutos, no insistas: usa `samples/control-tower-demo.json`
+  contra el webhook y sigue adelante — es exactamente el plan B documentado en
+  el README.
+- **Señal para avanzar:** el adaptador produce un registro sin campos
+  inventados, mapeado al contrato.
+
+> **Si el montaje del tramo 06 se desbordó de tiempo**, este es el bloque que se
+> sacrifica: la conexión de fuentes reales queda como trabajo posterior con la
+> matriz de conexiones. No sacrifiques el informe ni el cierre — cargan el
+> mensaje de la clase (ver
+> [FUNDAMENTACION-DE-LA-CLASE.md](FUNDAMENTACION-DE-LA-CLASE.md#plan-b-de-tiempos)).
+
+### 04 · Laboratorios — informe ejecutivo (140–162 min)
+
+- **Objetivo:** ejecutar el informe determinista primero, conectar un modelo
+  después.
+- **Pregunta de apertura:** "miren el informe que acaba de salir sin ningún
+  modelo de por medio: ¿qué les falta ahí que sólo un LLM podría dar?"
+- **Error más probable:** alguien quiere conectar el modelo antes de validar el
+  informe determinista, o usa AI Agent en vez de Basic LLM Chain. Corrige: la
+  transformación es fija, no hay decisiones que tomar.
+- **Señal para avanzar:** el informe final tiene decisiones, riesgos, agenda y
+  evidencia citada — no texto genérico.
+
+### 07 · Compromisos — cierre (162–180 min)
+
+- **Objetivo:** cada estudiante exporta un plan con un flujo, una compuerta
+  humana y tres compromisos.
+- **Pregunta de apertura:** "¿qué debe decidir alguien mañana con esto?"
+- **Error más probable:** cerrar con una idea inspiradora en vez de un
+  compromiso verificable. Redirige a la pregunta de apertura, no a "qué nodo
+  usamos".
+- **Señal para avanzar:** el archivo exportado desde `GUIA-INTERACTIVA.html`
+  existe y tiene los tres campos completos.
+
+---
+
+## 5. Momentos de riesgo — plan B en menos de 2 minutos
+
+| Riesgo | Qué hacer, en menos de 2 minutos |
+|---|---|
+| **(a) Alguien no puede instalar Docker.** | Que trabaje en pareja con alguien que sí levantó n8n, mirando su pantalla y ejecutando los pasos de razonamiento (contrato, reglas, informe) en su propio papel/documento. No pierdas tiempo depurando la instalación de una máquina ajena frente al grupo completo. Si el problema se veía venir, esto se resuelve mejor en el correo de prerrequisitos, avisando con antelación. |
+| **(b) La red del aula bloquea la descarga.** | Usa tu propia imagen ya descargada como demo proyectada y que el resto siga el ejercicio en pareja con quien sí tenga n8n arriba. No intentes depurar la red del aula en vivo — no es un problema que el grupo pueda resolver contigo mirando. |
+| **(c) Un proveedor de LLM da error de cuota en vivo.** | Cambia al plan B documentado: si estaban en Gemini, pasa a Groq (nodo propio, 14 400 req/día). Nómbralo como lo que es: la razón de tener siempre un segundo camino gratuito, no un imprevisto. Ver [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md#cómo-elegir-en-una-decisión). |
+| **(d) El montaje se desborda de tiempo.** | Aplica el plan B de tiempos: sacrifica el bloque de conexión de fuentes reales (110–140 min), no el informe ni el cierre. Anuncia el corte en voz alta para que el grupo entienda que es una decisión, no que se quedaron sin tiempo. |
+| **(e) Alguien pega una API key en el chat compartido (pantalla, Slack, chat de la clase).** | Detén la demostración, pide que la persona **revoque esa clave de inmediato** desde la consola del proveedor (no que la borre del chat: ya quedó en el historial/log del canal), y usa el momento como ejemplo en vivo de por qué las credenciales se crean dentro de n8n y nunca se pegan en un chat. No lo trates como una vergüenza del estudiante — es exactamente la brecha que enseña el módulo 03. |
+
+---
+
+## 6. Cómo se evalúa, caminando por el salón
+
+Rúbrica completa en
+[FUNDAMENTACION-DE-LA-CLASE.md](FUNDAMENTACION-DE-LA-CLASE.md#evaluación-auténtica-rúbrica-breve).
+Versión aplicable mientras se camina entre puestos:
+
+| Criterio | Qué mirar | En qué momento | Evidencia que pides |
+|---|---|---|---|
+| **Fuentes** | ¿Puede señalar de dónde salió cada dato? | Tramo 04 (laboratorios) | Que apunte al nodo o adaptador concreto, no "de por ahí". |
+| **Contrato** | ¿Usa los campos mínimos (`source`, `kind`, `status`, `priority`, `date`, `owner`)? | Tramo 02 (teoría) | Pídele que abra el nodo de salida del adaptador y lea un registro. |
+| **Reglas** | ¿El semáforo sale de una condición inspeccionable o de una impresión? | Tramo 02, al cambiar `status` a `bloqueado` | Que explique qué regla cambió el resultado, no que "se puso rojo". |
+| **IA** | ¿El prompt limita al modelo a la evidencia del snapshot? | Tramo 04 (informe) | Pídele que le muestre al modelo un dato que no está en el snapshot y observen juntos si lo inventa. |
+| **Gobernanza** | ¿Hay una compuerta humana antes de una salida externa? | Tramo 07 (cierre) | Que nombre responsable, plazo y canal — no sólo "alguien revisa". |
+| **Copiloto** | ¿Dio contexto y verificó, o copió y pegó sin entender? | Tramo 06 (montaje) | Pídele que te cuente, en tres líneas, la causa raíz del error que resolvió — es el cierre del protocolo de 4 pasos. |
+
+---
+
+## 7. Qué NO hacer
+
+Lecciones de esta serie de clases, no advertencias teóricas:
+
+- **No prometas el AI Assistant nativo de n8n.** Existe en self-hosted, pero
+  requiere activación de licencia de instancia, endpoint configurado y API key
+  propia (BYOK). No es "prender y listo", y perder 20 minutos de una clase de 3
+  horas peleando con una activación de licencia no le enseña nada a nadie. Ver
+  [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md#lo-que-no-vamos-a-prometer-en-clase).
+- **No proyectes nunca una API key**, ni siquiera un fragmento. Las credenciales
+  se crean dentro de n8n; los exports de workflows no las incluyen, y así debe
+  quedar también tu pantalla compartida.
+- **No dejes que la clase se convierta en soporte técnico individual.** Un
+  bloqueo de instalación que no se resuelve en 2 minutos se atiende en pareja o
+  después de la sesión, no frente a todo el grupo. El tiempo de los demás vale
+  más que resolver un caso particular en vivo.
+- **No cierres el tema del copiloto sin que alguien haya visto una alucinación
+  real en pantalla.** Si nadie la provocó de forma espontánea, fuerza el
+  ejercicio de "la trampa del nodo inventado" o la actividad "caza la
+  alucinación" del módulo 05 de `GUIA-INTERACTIVA.html`. Sin ese momento vivido,
+  el protocolo de 4 pasos queda como teoría y no como método interiorizado.
+
+---
+
+## Inconsistencias detectadas entre documentos (para revisión del equipo)
+
+Se reportan aquí sin corregir, tal como se pidió:
+
+1. **Duración de la Actividad Reina.** `FUNDAMENTACION-DE-LA-CLASE.md` describe
+   el bloque de 140–180 min (informe + cierre) como dos filas separadas de la
+   tabla de agenda, mientras que `GUIA-INTERACTIVA.html` presenta "Actividad
+   Reina" como una sola sección de "45 minutos" dentro del módulo 04, que
+   incluye el simulador de la torre. No es contradictorio, pero el rótulo "45
+   minutos" en el HTML no tiene un anclaje directo y visible en la tabla de
+   tiempos de la fundamentación — vale la pena que quien dicte la clase no
+   intente cuadrar ambos relojes de forma literal.
+2. **Nombres de módulo entre documentos.** La fundamentación llama al segundo
+   bloque de la agenda "05 Copiloto" y lo ubica en el minuto 15–35 (antes del
+   montaje), lo cual coincide con el orden real de las pestañas del HTML (`05 ·
+   COPILOTO` es el quinto tab, no el segundo). El número de módulo (`05`) no
+   corresponde a su posición cronológica en la clase (segundo bloque). Es
+   intencional según la fundamentación ("por qué el copiloto va antes del
+   montaje y no después"), pero puede confundir a un docente que lea la agenda
+   por primera vez esperando que el número de módulo seguido el orden de
+   dictado. Vale una nota aclaratoria en la propia fundamentación si se vuelve
+   a editar.
+3. **`.env.example` sin verificar contra el checklist de validación del
+   README.** El README pide correr `node scripts/verify-artifacts.mjs` y
+   `docker compose config` como validación previa, pero ninguno de los
+   documentos fuente confirma explícitamente que `docker compose config`
+   fallará o no si `.env` no existe todavía (antes del paso `cp .env.example
+   .env`). No se verificó en este trabajo por estar fuera del alcance pedido;
+   queda como punto a confirmar en el próximo ensayo.

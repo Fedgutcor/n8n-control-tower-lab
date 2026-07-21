@@ -1,6 +1,9 @@
 services:
   n8n:
-    image: docker.n8n.io/n8nio/n8n
+    # Tag fijo a propósito: una clase no puede cambiar de versión sola entre el
+    # ensayo del docente y el día del taller. Para actualizar, cambie el número
+    # aquí y vuelva a ensayar antes de clase.
+    image: docker.n8n.io/n8nio/n8n:2.30.8
     container_name: control-tower-n8n
     restart: unless-stopped
     ports:
@@ -9,10 +12,27 @@ services:
       GENERIC_TIMEZONE: ${GENERIC_TIMEZONE:-America/Bogota}
       TZ: ${GENERIC_TIMEZONE:-America/Bogota}
       N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:?Define N8N_ENCRYPTION_KEY en .env}
+      # En n8n 2.x el permiso 0600 del archivo de settings ya es el comportamiento
+      # por defecto. Se deja explícito para que se vea en clase. Si aparece un
+      # error EACCES sobre /home/node/.n8n/config, ponerlo en "false" es el
+      # diagnóstico rápido — pero la causa real es el dueño del volumen.
       N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
-      N8N_RUNNERS_ENABLED: "true"
+      # NOTA: N8N_RUNNERS_ENABLED se eliminó de este archivo a propósito.
+      # Está deprecada desde n8n 2.0: los task runners ya vienen activos y
+      # declararla solo genera ruido en los logs.
     volumes:
       - n8n_data:/home/node/.n8n
+      # Los workflows de la clase quedan visibles DENTRO del contenedor, en
+      # modo solo lectura. Sirve para importarlos por línea de comandos:
+      #   docker compose exec n8n n8n import:workflow --input=/workflows/01-semilla-demostracion.json
+      # El camino normal del estudiante sigue siendo la interfaz (Import from File).
+      - ./workflows:/workflows:ro
+    # Permite que los nodos de n8n alcancen servicios que corren en TU máquina
+    # (por ejemplo Ollama en el puerto 11434) usando la URL
+    # http://host.docker.internal:11434 en los tres sistemas operativos.
+    # En macOS y Windows funciona sin esto; en Linux es obligatorio.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 volumes:
   n8n_data:

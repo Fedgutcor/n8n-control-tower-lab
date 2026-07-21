@@ -1,4 +1,5 @@
 {
+  "id": "seed01",
   "name": "01 · Semilla de demostración — Torre de Control",
   "nodes": [
     {
@@ -30,12 +31,20 @@
       "position": [700, 300]
     },
     {
-      "parameters": { "content": "={{ JSON.stringify($json, null, 2) }}", "height": 400, "width": 460, "color": 6 },
+      "parameters": { "content": "CÓMO VER EL RESULTADO\n\nEste recuadro es una nota del lienzo: no recibe datos ni evalúa expresiones (un sticky note nunca se ejecuta, y por eso ni siquiera aparece conectado a otros nodos). Aquí NO vas a ver el snapshot.\n\nPara ver el resultado real:\n\n1. Haz clic en el nodo \"Normalizar y priorizar\".\n2. Abre la pestaña de salida (Output) en el panel derecho.\n3. Ahí está el JSON procesado: resumen, decisiones pendientes y los tres proyectos con sus eventos e hitos.\n\nCambia un dato en \"Semilla: tres fuentes\" (por ejemplo, pon un status en 'bloqueado') y vuelve a ejecutar. Ese panel de salida es donde vas a ver el cambio — identifica qué regla del nodo \"Normalizar y priorizar\" lo produjo.", "height": 400, "width": 460, "color": 6 },
       "id": "42f0d9c7-7d99-4d70-912e-123456789004",
-      "name": "Resultado: snapshot de la torre",
+      "name": "Nota: cómo ver el resultado",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [940, 150]
+    },
+    {
+      "parameters": { "content": "RELACIÓN CON EL WORKFLOW 03\n\nEste workflow (01) muestra la NORMALIZACIÓN: toma tres fuentes crudas y las convierte en un snapshot único con prioridades.\n\nEl workflow \"03 · Informe ejecutivo\" parte de los MISMOS datos (Portal de aliados/Lucía/en_riesgo, Onboarding comercial/Miguel/en_curso, Migración CRM/Sara/bloqueado) y los redacta como informe para un director.\n\nSon independientes: cada uno se importa y se ejecuta por separado. Juntos enseñan dos etapas de la misma torre de control.", "height": 260, "width": 460, "color": 3 },
+      "id": "42f0d9c7-7d99-4d70-912e-123456789005",
+      "name": "Nota: relación con el workflow 03",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [940, 580]
     }
   ],
   "pinData": {},

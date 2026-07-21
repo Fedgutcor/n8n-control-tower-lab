@@ -15,10 +15,29 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 | `workflows/01-semilla-demostracion.json` | Práctica funcional sin cuentas ni API keys. |
 | `workflows/02-torre-de-control.json` | Ingreso por contrato para conectar Calendar, Sheets, GitHub, Linear o Notion. |
 | `workflows/03-informe-ejecutivo.json` | Informe en formato fijo, primero determinista y luego ampliable con IA. |
+| `workflows/04-informe-con-modelo.json` | Extiende el informe con un modelo de lenguaje y valida su salida con un chequeo que detecta datos inventados (marca `RECHAZADO` si el modelo alucina). |
 | `prompts/INFORME-EJECUTIVO.md` | Prompt y pruebas contra invenciones. |
 | `samples/` | Datos de demostración y plantilla para dashboard. |
+| `docs/MONTAJE-PASO-A-PASO.md` | Las dos rutas de instalación (Docker y npx) y los cuatro errores del día. |
+| `docs/EL-LLM-COMO-COPILOTO.md` | Cómo usar un modelo para que te acompañe en el montaje, con prompts listos. |
+| `docs/PROVEEDORES-LLM.md` | Qué proveedor usar, dónde y por qué. Opciones gratuitas verificadas. |
 | `docs/` | Fundamentación, agenda docente, matriz de credenciales y arquitectura. |
 | `GUIA-INTERACTIVA.html` | Laboratorio offline y autocontenido para que trabaje el estudiante. |
+
+## Empieza por aquí
+
+1. **[Monta n8n en tu máquina](docs/MONTAJE-PASO-A-PASO.md)** — ruta Docker o
+   ruta npx, con los requisitos reales verificados.
+2. **[Abre un copiloto al lado](docs/EL-LLM-COMO-COPILOTO.md)** — no para que
+   instale por ti, sino para traducir lo que falle. Es la mitad de la clase.
+3. **Importa `workflows/01-semilla-demostracion.json`** y ejecútalo. Funciona sin
+   ninguna cuenta ni clave.
+4. **Importa `workflows/03-informe-ejecutivo.json`** y ejecútalo. Produce el
+   informe completo **sin usar ningún modelo de IA**: formato, conteos, semáforo
+   y agenda salen de reglas que puedes leer.
+5. **[Ahora sí, elige un modelo](docs/PROVEEDORES-LLM.md)** y prueba
+   `workflows/04-informe-con-modelo.json`. Compara su resultado con el del paso
+   anterior: esa comparación es la clase entera.
 
 ## El resultado que construyen
 
@@ -34,22 +53,93 @@ flowchart LR
   H -->|no| V[Revisar evidencia]
 ```
 
+## Vocabulario mínimo
+
+Nueve palabras que se repiten en todo el repositorio, cada una con una
+analogía de la vida diaria:
+
+- **API**: la ventanilla de atención de un programa. Recibe una solicitud con
+  un formato preciso y devuelve una respuesta, sin dejar entrar a nadie a los
+  archivos internos.
+- **JSON**: una lista de compras con etiquetas. En vez de "leche, pan, huevos"
+  escribe `{"leche": 2, "pan": 1, "huevos": 12}`: el mismo dato, con cada valor
+  identificado por su nombre.
+- **webhook**: un timbre que un sistema le instala a otro. Cuando ocurre algo,
+  el timbre suena solo y avisa, sin que nadie tenga que ir a preguntar.
+- **credencial**: la llave de una cerradura específica. Abre esa puerta y
+  ninguna otra; por eso cada servicio conectado usa la suya propia.
+- **contenedor**: un departamento amoblado y listo para vivir, con todo lo que
+  el programa necesita adentro, sin depender de lo que ya tenga instalado la
+  computadora que lo aloja.
+- **volumen**: la caja fuerte del departamento, la que sobrevive a la mudanza.
+  Si el contenedor se apaga o se reemplaza, lo guardado en el volumen sigue
+  ahí.
+- **nodo**: un puesto de la línea de montaje dentro de n8n. Cada uno recibe
+  una pieza, hace una tarea puntual sobre ella y la entrega al siguiente.
+- **trigger**: el disparador que arranca la línea de montaje. Puede ser un
+  horario, un clic manual o un webhook que suena; sin trigger, el flujo nunca
+  empieza.
+- **ejecución**: una pasada completa de la línea de montaje, de principio a
+  fin, con los datos de ese momento. Cada corrida del flujo deja su propio
+  registro.
+
 ## Inicio rápido (docente)
+
+> Si es estudiante, siga la secuencia numerada de la sección "Empieza por
+> aquí" más arriba. Lo que sigue es la referencia técnica de quien dicta la
+> clase: instalación completa, arranque, conexión de fuentes y validación, en
+> un solo lugar.
 
 ### 1. Requisito local
 
-Instale Docker Desktop. Esta máquina no tenía Docker ni n8n ejecutándose al
-preparar el material; por eso el proyecto deja un arranque reproducible. La
-guía oficial de n8n usa Docker, el puerto 5678 y un volumen persistente para la
-instalación local. [Ver documentación oficial](https://docs.n8n.io/hosting/installation/docker/).
+Dos rutas posibles, ambas documentadas paso a paso en
+**[MONTAJE-PASO-A-PASO.md](docs/MONTAJE-PASO-A-PASO.md)**:
+
+- **Docker Desktop** — ruta principal. No depende de la versión de Node de cada
+  estudiante, que es la fuente número uno de problemas en clase.
+- **`npx n8n`** — sin Docker, pero exige **Node.js 22.22 o superior** (requisito
+  de n8n 2.x, verificado en el registro de npm). Es la ruta preferible si van a
+  trabajar con Ollama, porque evita el problema de red entre contenedor y
+  máquina anfitriona.
+
+Esta clase fija la versión **n8n 2.30.8** en `docker-compose.yml`, a propósito:
+una clase no debería cambiar de versión sola entre el ensayo y el taller.
 
 ### 2. Arrancar n8n
 
 ```bash
 cp .env.example .env
-# Edite .env y reemplace N8N_ENCRYPTION_KEY por un secreto largo y aleatorio.
+
+# Genere una clave y péguela en la línea N8N_ENCRYPTION_KEY= del archivo .env
+openssl rand -hex 32          # macOS y Linux
+```
+
+En Windows, con PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+
+# Genera 64 caracteres hexadecimales concatenando dos GUID y quitando los guiones
+((New-Guid).ToString() + (New-Guid).ToString()) -replace '-',''
+```
+
+> **Ejercicio del método de la clase:** antes de copiar ese comando de
+> PowerShell a ciegas, pídaselo a su copiloto y compare la respuesta — es el
+> mismo caso que ejercita el **prompt B** de
+> [EL-LLM-COMO-COPILOTO.md](docs/EL-LLM-COMO-COPILOTO.md): *"dame un comando
+> de PowerShell de solo lectura que genere una cadena hexadecimal aleatoria
+> de 64 caracteres"*. Verifique que la salida tenga realmente 64 caracteres
+> antes de pegarla en `.env`.
+
+```bash
 docker compose up -d
 ```
+
+> **El segundo paso no es opcional.** `.env.example` deja la clave vacía a
+> propósito: si intenta arrancar sin definirla, n8n no levanta y verá el mensaje
+> `Define N8N_ENCRYPTION_KEY en .env`. Es intencional. Un ejemplo con una clave
+> ya escrita haría que la instalación arrancara cifrada con un valor publicado
+> en este repositorio, y todo *parecería* funcionar.
 
 Abra [http://localhost:5678](http://localhost:5678), cree el usuario propietario
 local y deje que cada estudiante cree sus propias credenciales dentro de n8n.
@@ -87,7 +177,14 @@ snapshot. En modo prueba, la URL es:
 http://localhost:5678/webhook-test/control-tower
 ```
 
-Pruebe primero enviando el contenido de `samples/control-tower-demo.json` con
+**Antes de enviar nada:** abra el workflow `02` en el editor de n8n y pulse
+**Execute workflow** (o **Listen for Test Event**, según la versión) en el
+nodo del webhook. La URL de prueba solo escucha **una vez** después de ese
+clic; si envía el POST sin haberlo pulsado antes, obtendrá un error `404` sin
+ningún mensaje en el editor que explique la causa. Cada prueba adicional
+requiere volver a pulsar el botón.
+
+Pruebe entonces enviando el contenido de `samples/control-tower-demo.json` con
 Postman, Bruno, curl o un nodo HTTP Request. Luego construya un flujo emisor por
 fuente. El flujo emisor siempre termina en este mismo contrato:
 
@@ -138,10 +235,22 @@ salida sin aprobación**.
 ### ChatGPT no es una API key
 
 Tener una suscripción de ChatGPT no habilita automáticamente llamadas a la API:
-son productos y sistemas de facturación separados. Para el nodo OpenAI se crea
-una credencial de API en n8n y se controla su uso; si no hay presupuesto o
-aprobación, el ejercicio funciona completo con el informe determinista o con
-un proveedor autorizado por la institución. [Fuente oficial de OpenAI](https://help.openai.com/en/articles/8156019-is-api-usage-included-in-chatgpt-subscriptions-even-if-i-have-a-paid-chatgpt-account)
+son productos y sistemas de facturación separados. [Fuente oficial de OpenAI](https://help.openai.com/en/articles/8156019-is-api-usage-included-in-chatgpt-subscriptions-even-if-i-have-a-paid-chatgpt-account)
+
+Pero eso no deja a nadie sin ejercicio. Hay cuatro caminos **sin tarjeta**, con
+nodo propio en n8n y detalle completo en
+[PROVEEDORES-LLM.md](docs/PROVEEDORES-LLM.md):
+
+| Camino | Cuándo conviene |
+|---|---|
+| **Google Gemini** | **Empieza aquí.** La opción de menos fricción: sin tarjeta, sin descargas, sin configuración de red. |
+| **Groq** | Plan B rápido si Gemini se queda sin cuota: tiene nodo propio en n8n. |
+| **Ollama** | Ruta avanzada. Cero cuota y nada sale de tu equipo, pero puede exigir resolver un tema de red. Más fácil por la ruta `npx` que por Docker. |
+| **Cerebras** | Alternativa vía el nodo de OpenAI cambiando la URL base. |
+
+Y si nada de eso está disponible, el ejercicio **igual funciona completo**: el
+workflow `03` produce el informe sin ningún modelo. Esa es justamente la lección
+de arquitectura, no una limitación del taller.
 
 ## Guion de clase
 
@@ -153,13 +262,20 @@ La fundamentación, resultados y rúbrica están en
 ## Validación antes de la clase
 
 ```bash
-node scripts/verify-artifacts.mjs
-docker compose config
+node scripts/verify-artifacts.mjs   # revisa artefactos, secretos, voseo y sintaxis del lab
+docker compose config               # requiere que .env ya tenga la clave definida
 ```
 
+`verify-artifacts.mjs` distingue **errores** (falla, código 1) de **advertencias**
+(informa y sigue). Comprueba, entre otras cosas, que no se filtre ninguna
+credencial al repositorio público y que el script del laboratorio interactivo
+compile — un solo paréntesis mal puesto ahí deja el lab entero sin funcionar
+aunque la página se vea perfecta.
+
 Al tener Docker instalado, haga además este ensayo con una carpeta de datos
-limpia: arrancar n8n, importar los tres JSON y ejecutar `01` y `03`. Cree
-credenciales de demostración por separado; los exports nunca incluyen secretos.
+limpia: arrancar n8n, importar los cuatro JSON y ejecutar `01`, `03` y, con un
+modelo ya disponible, `04`. Cree credenciales de demostración por separado;
+los exports nunca incluyen secretos.
 
 ## Límites conscientes
 

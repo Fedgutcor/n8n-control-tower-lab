@@ -1,0 +1,96 @@
+{
+  "id": "model04",
+  "name": "04 · Informe con modelo — extensión con IA",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "7a2c9e40-1b3d-4f6a-8e21-123456789001",
+      "name": "Al ejecutar manualmente",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [220, 340]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Mismos datos que la semilla de los workflows 01 y 03 (misma corrida de la\n// torre de control): mismos proyectos, responsables, estados, fechas y\n// bloqueadores. Este workflow reutiliza el snapshot para que el modelo\n// redacte, y el nodo de validación al final compruebe que no inventó nada.\nreturn [{ json: {\n  period: '20–26 de julio de 2026',\n  projects: [\n    { name: 'Portal de aliados', owner: 'Lucía', status: 'en_riesgo', progress: 62, due: '2026-07-24', blocker: 'Falta decisión de Legal sobre términos.', decision: 'Aprobar versión B de términos antes del martes.' },\n    { name: 'Onboarding comercial', owner: 'Miguel', status: 'en_curso', progress: 48, due: '2026-08-02', blocker: '', decision: '' },\n    { name: 'Migración CRM', owner: 'Sara', status: 'bloqueado', progress: 31, due: '2026-07-22', blocker: 'Proveedor no entregó acceso a la API.', decision: 'Escalar incumplimiento y acordar fecha de acceso.' }\n  ],\n  events: ['Mar 09:00 · Comité de lanzamiento', 'Jue 15:00 · Demo de onboarding', 'Hoy 16:30 · Escalamiento con proveedor']\n} }];"
+      },
+      "id": "7a2c9e40-1b3d-4f6a-8e21-123456789002",
+      "name": "Snapshot para el modelo",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 340]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Eres redactor ejecutivo para una oficina de proyectos. Recibirás un JSON de una torre de control con proyectos, bloqueos, fechas y eventos. Redacta ÚNICAMENTE con esa evidencia.\n\nDevuelve JSON válido con esta forma exacta:\n{\n  \"headline\": \"una oración, máximo 22 palabras\",\n  \"estado_general\": \"verde|ámbar|rojo\",\n  \"decisiones_solicitadas\": [\n    {\"proyecto\":\"\", \"responsable\":\"\", \"decisión\":\"\", \"fecha_límite\":\"\"}\n  ],\n  \"riesgos\": [\n    {\"proyecto\":\"\", \"riesgo\":\"\", \"impacto\":\"\", \"siguiente_paso\":\"\"}\n  ],\n  \"agenda\": [\"fecha y evento\"],\n  \"narrativa\": \"máximo 120 palabras\"\n}\n\nReglas:\n- Conserva literalmente nombres, responsables, fechas, porcentajes y estados presentes en la entrada.\n- Si falta un dato, usa \"No disponible\". No lo infieras.\n- No inventes métricas, decisiones, dueños, citas ni causas.\n- Separa hecho, riesgo y recomendación.\n- Evidencia obligatoria: cada riesgo debe referir un dato recibido.\n- Responde SOLO con el JSON. Sin texto antes ni después, sin explicaciones.\n\nJSON de entrada:\n{{ JSON.stringify($json, null, 2) }}",
+        "hasOutputParser": false
+      },
+      "id": "7a2c9e40-1b3d-4f6a-8e21-123456789003",
+      "name": "Informe redactado por el modelo",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [700, 340]
+    },
+    {
+      "parameters": {
+        "model": "qwen2.5-coder:7b",
+        "options": {}
+      },
+      "id": "7a2c9e40-1b3d-4f6a-8e21-123456789004",
+      "name": "Ollama Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [700, 560]
+    },
+    {
+      "parameters": {
+        "jsCode": "// VALIDADOR ANTI-INVENCIÓN\n// Este nodo NO usa IA: es código determinista que compara lo que escribió el\n// modelo contra los datos que de verdad recibió. Si el modelo menciona un\n// proyecto, un responsable o una fecha que no estaban en la entrada, este\n// nodo lo detecta y rechaza el informe. Esto hace tangible la regla de la\n// clase: \"la IA redacta, no inventa\".\n\n// 1) Recuperamos el snapshot original, ANTES de pasar por el modelo. Así\n//    sabemos qué datos eran reales de verdad.\nconst snapshot = $('Snapshot para el modelo').first().json;\n\n// 2) Armamos las listas de \"hechos permitidos\": lo único que el modelo tiene\n//    permitido nombrar, porque estaba en la entrada.\nconst nombresPermitidos = snapshot.projects.map((p) => p.name);\nconst responsablesPermitidos = snapshot.projects.map((p) => p.owner);\nconst fechasPermitidas = [\n  ...snapshot.projects.map((p) => p.due),\n  ...snapshot.events.map((e) => e.split(' · ')[0]),\n];\n\n// 3) La respuesta del modelo llega como texto plano (campo \"text\"), no como\n//    JSON todavía. Algunos modelos envuelven el JSON en ```json ... ```;\n//    se lo quitamos antes de intentar leerlo.\nconst textoCrudo = ($json.text ?? '').trim();\nconst textoLimpio = textoCrudo\n  .replace(/^```json\\s*/i, '')\n  .replace(/^```\\s*/i, '')\n  .replace(/```\\s*$/i, '')\n  .trim();\n\nlet respuestaModelo;\nlet errorDeFormato = '';\ntry {\n  respuestaModelo = JSON.parse(textoLimpio);\n} catch (error) {\n  errorDeFormato = `El modelo no devolvió JSON válido: ${error.message}`;\n}\n\n// 4) Si ni siquiera pudimos leer el JSON, rechazamos de una vez: no hay nada\n//    que validar.\nif (errorDeFormato) {\n  return [{\n    json: {\n      validacion: 'RECHAZADO',\n      camposInventados: [errorDeFormato],\n      textoOriginalDelModelo: textoCrudo,\n    },\n  }];\n}\n\n// 5) Recorremos cada campo que el modelo pudo haber inventado y lo\n//    comparamos contra las listas permitidas. \"No disponible\" siempre es\n//    válido: es lo que le pedimos usar cuando falta un dato.\nconst camposInventados = [];\n\nconst validarProyecto = (valor, ubicacion) => {\n  if (valor && valor !== 'No disponible' && !nombresPermitidos.includes(valor)) {\n    camposInventados.push(`${ubicacion}: proyecto inventado \"${valor}\"`);\n  }\n};\nconst validarResponsable = (valor, ubicacion) => {\n  if (valor && valor !== 'No disponible' && !responsablesPermitidos.includes(valor)) {\n    camposInventados.push(`${ubicacion}: responsable inventado \"${valor}\"`);\n  }\n};\nconst validarFecha = (valor, ubicacion) => {\n  if (valor && valor !== 'No disponible' && !fechasPermitidas.some((fecha) => String(valor).includes(fecha))) {\n    camposInventados.push(`${ubicacion}: fecha inventada \"${valor}\"`);\n  }\n};\n\nfor (const decision of respuestaModelo.decisiones_solicitadas ?? []) {\n  validarProyecto(decision.proyecto, 'decisiones_solicitadas');\n  validarResponsable(decision.responsable, 'decisiones_solicitadas');\n  validarFecha(decision.fecha_límite, 'decisiones_solicitadas');\n}\n\nfor (const riesgo of respuestaModelo.riesgos ?? []) {\n  validarProyecto(riesgo.proyecto, 'riesgos');\n}\n\nfor (const entrada of respuestaModelo.agenda ?? []) {\n  if (typeof entrada === 'string' && !fechasPermitidas.some((fecha) => entrada.includes(fecha))) {\n    camposInventados.push(`agenda: entrada no verificable \"${entrada}\"`);\n  }\n}\n\n// 6) Veredicto final. Si la lista de campos inventados quedó vacía, el\n//    informe se aprueba; si no, se rechaza y se muestra exactamente qué\n//    inventó el modelo.\nreturn [{\n  json: {\n    validacion: camposInventados.length ? 'RECHAZADO' : 'APROBADO',\n    camposInventados,\n    respuestaDelModelo: respuestaModelo,\n    hechosPermitidosUsadosParaValidar: {\n      proyectos: nombresPermitidos,\n      responsables: responsablesPermitidos,\n      fechas: fechasPermitidas,\n    },\n  },\n}];"
+      },
+      "id": "7a2c9e40-1b3d-4f6a-8e21-123456789005",
+      "name": "Validador anti-invención",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [940, 340]
+    },
+    {
+      "parameters": {
+        "content": "CÓMO CAMBIAR DE PROVEEDOR\n\nEste workflow usa Ollama Chat Model porque es el único sin cuota ni tarjeta (ver docs/PROVEEDORES-LLM.md). Si prefieres no instalar Ollama:\n\n1. Elimina el nodo \"Ollama Chat Model\".\n2. Agrega \"Google Gemini Chat Model\" (modelo gemini-2.5-flash, sin tarjeta) o \"Groq Chat Model\" (nodo propio, 14 400 llamadas/día — recuerda cambiar el modelo por defecto, que es uno viejo).\n3. Conecta el nodo nuevo al puerto \"Model\" de \"Informe redactado por el modelo\", en el mismo lugar donde estaba Ollama.\n4. Crea la credencial del proveedor elegido con tu propia API key. Nunca la subas al repositorio.\n\nEl resto del workflow (semilla y validador) no cambia: el contrato de datos es el mismo sin importar qué modelo redacte.", "height": 320, "width": 460, "color": 5 },
+      "id": "7a2c9e40-1b3d-4f6a-8e21-123456789006",
+      "name": "Nota: cómo cambiar de proveedor",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1200, 20]
+    },
+    {
+      "parameters": {
+        "content": "GOTCHA: DOCKER NO VE TU OLLAMA\n\nLa ruta principal de este taller es Docker. Ahí, la URL de la credencial Ollama tiene que ser:\n\nhttp://host.docker.internal:11434\n\nOJO: cuando crees la credencial Ollama, n8n propone por defecto \"http://localhost:11434\" — ese valor NO sirve para Docker (para el contenedor, \"localhost\" es el contenedor mismo, no tu máquina). Tienes que reemplazarlo a mano por host.docker.internal.\n\nEn macOS y Windows esa URL funciona sin configuración extra. En Linux hace falta agregar en docker-compose.yml:\n\nextra_hosts:\n  - \"host.docker.internal:host-gateway\"\n\n(este repositorio ya lo incluye).\n\nSolo si usas la ruta npx en vez de Docker (n8n corriendo directo en tu máquina, sin contenedor) el valor por defecto \"http://localhost:11434\" sí es el correcto y no hay que tocarlo.", "height": 360, "width": 460, "color": 4 },
+      "id": "7a2c9e40-1b3d-4f6a-8e21-123456789007",
+      "name": "Nota: gotcha Docker → Ollama",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [220, 20]
+    },
+    {
+      "parameters": {
+        "content": "CÓMO LEER EL RESULTADO\n\nHaz clic en el nodo \"Validador anti-invención\" y mira su salida:\n\n- validacion: \"APROBADO\" o \"RECHAZADO\".\n- camposInventados: lista vacía si todo estaba respaldado por el snapshot; si no, aquí ves exactamente qué inventó el modelo (proyecto, responsable o fecha que no existían en la entrada).\n- respuestaDelModelo: el JSON que redactó el modelo, ya interpretado.\n\nEjercicio sugerido: cambia el nombre de un proyecto directamente en el prompt (nodo \"Informe redactado por el modelo\") y ejecuta de nuevo. Deberías ver el validador rechazarlo.", "height": 280, "width": 460, "color": 6 },
+      "id": "7a2c9e40-1b3d-4f6a-8e21-123456789008",
+      "name": "Nota: cómo leer el resultado",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [940, 20]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Al ejecutar manualmente": { "main": [[{ "node": "Snapshot para el modelo", "type": "main", "index": 0 }]] },
+    "Snapshot para el modelo": { "main": [[{ "node": "Informe redactado por el modelo", "type": "main", "index": 0 }]] },
+    "Ollama Chat Model": { "ai_languageModel": [[{ "node": "Informe redactado por el modelo", "type": "ai_languageModel", "index": 0 }]] },
+    "Informe redactado por el modelo": { "main": [[{ "node": "Validador anti-invención", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "7a2c9e40-1b3d-4f6a-8e21-123456789001",
+  "meta": { "templateCredsSetupCompleted": false },
+  "tags": []
+}

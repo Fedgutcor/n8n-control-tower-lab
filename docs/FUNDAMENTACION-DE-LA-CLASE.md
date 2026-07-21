@@ -39,18 +39,41 @@ Al terminar, cada estudiante podrá:
 5. Separar reglas deterministas de redacción con IA.
 6. Producir un informe ejecutivo con un formato verificable y una compuerta
    humana antes de una acción externa.
+7. Usar un modelo de lenguaje como copiloto de su propio montaje: dar contexto,
+   pegar el error literal, exigir que separe hecho de suposición, verificar con
+   un comando propio y registrar la causa raíz — distinguiendo esa función de la
+   de un modelo que corre dentro del flujo.
 
 ## Diseño de 3 horas
 
-| Tiempo | Momento | Evidencia de aprendizaje |
-|---:|---|---|
-| 0–20 min | Mapa: “¿qué fuentes usan hoy para saber si un proyecto está en riesgo?” + demo del snapshot. | Cada persona identifica tres fuentes y un destinatario de la decisión. |
-| 20–50 min | n8n local: iniciar Docker, abrir `localhost:5678`, importar y ejecutar `01`. | El estudiante muestra el JSON normalizado y explica cada nodo. |
-| 50–85 min | Contrato común: modificar datos demo, insertar un bloqueo y revisar cómo cambia el semáforo. | Un registro con `source`, `kind`, `status`, `priority`, `date` y `owner`. |
-| 85–105 min | Pausa + clínica de credenciales: OAuth, token personal, API key y secreto. | Matriz fuente–credencial–permiso mínimo. |
-| 105–140 min | Conectar dos fuentes reales: Google Calendar + Sheets, GitHub, Linear o Notion. | Dos adaptadores que producen el mismo contrato. |
-| 140–165 min | Informe: ejecutar `03`, auditar su formato; extender con IA solo para redacción. | Informe con decisiones, riesgos, agenda y evidencia. |
-| 165–180 min | Actividad Reina y compromiso: diseñar la propia orquesta y exportar plan. | Un flujo, una compuerta humana y tres compromisos. |
+| Tiempo | Momento | Módulo del lab | Evidencia de aprendizaje |
+|---:|---|---|---|
+| 0–15 min | Mapa: “¿qué fuentes usan hoy para saber si un proyecto está en riesgo?” + demo del snapshot. | 01 Inicio | Cada persona identifica tres fuentes y un destinatario de la decisión. |
+| 15–35 min | **El copiloto antes del montaje**: las dos formas de usar un LLM, el protocolo de 4 pasos y la caza de alucinaciones. | 05 Copiloto | Cada estudiante tiene un chat abierto y sabe cuándo preguntarle a él, cuándo a su máquina y cuándo a la persona docente. |
+| 35–70 min | n8n local: elegir ruta (Docker o npx), levantar, importar y ejecutar `01`. **Aquí es donde aparecen los errores, y donde el copiloto se usa de verdad.** | 06 Manos a la obra | El estudiante muestra el JSON normalizado y explica qué nodo lo produjo. |
+| 70–95 min | Contrato común: modificar datos demo, insertar un bloqueo y revisar cómo cambia el semáforo. | 02 Teoría | Un registro con `source`, `kind`, `status`, `priority`, `date` y `owner`. |
+| 95–110 min | Pausa + clínica de credenciales: OAuth, token personal, API key y secreto. | 03 Brechas | Matriz fuente–credencial–permiso mínimo. |
+| 110–140 min | Conectar una o dos fuentes reales: Google Calendar + Sheets, GitHub, Linear o Notion. | 04 Laboratorios | Adaptadores que producen el mismo contrato. |
+| 140–162 min | Informe: ejecutar `03`, auditar su formato; **solo después** conectar un modelo para redacción. | 04 Laboratorios | Informe con decisiones, riesgos, agenda y evidencia. |
+| 162–180 min | Actividad Reina y compromiso: diseñar la propia orquesta y exportar plan. | 07 Compromisos | Un flujo, una compuerta humana y tres compromisos. |
+
+> **El número del módulo no es el orden de dictado.** En el laboratorio HTML los
+> módulos están numerados por tema (01 a 07), no por reloj. El módulo **05 ·
+> Copiloto** es el segundo bloque que se dicta, y el **06 · Manos a la obra** es
+> el tercero. La columna "Módulo del lab" de esta tabla es la referencia buena:
+> los estudiantes navegan por pestañas, no en línea recta.
+
+> **Por qué el copiloto va antes del montaje y no después:** si se enseña al final,
+> queda como una curiosidad. Si se enseña antes, se convierte en la herramienta con
+> la que el estudiante atraviesa la parte más frustrante de la clase — y ahí es
+> donde el método se aprende de verdad, porque hay un error real en pantalla.
+
+### Plan B de tiempos
+
+Si el montaje se desborda (es el tramo con más varianza), sacrifica el bloque de
+110–140 min: la conexión de fuentes reales se puede dejar como trabajo posterior
+con la [matriz de conexiones](MATRIZ-DE-CONEXIONES.md). No sacrifiques el bloque
+del informe ni el cierre: son los que cargan el mensaje de la clase.
 
 ## Principios que se enseñan explícitamente
 
@@ -84,9 +107,29 @@ automática; aprobar una prioridad crítica no.
 
 ## Fundamentación técnica verificada
 
+> Verificado en julio de 2026 contra el registro de npm, el código fuente de
+> `n8n-io/n8n` y la documentación oficial. Revisar la semana de la clase.
+
+- Versión estable de n8n: **2.30.8**, con requisito de **Node.js >= 22.22**
+  (verificado con `npm view n8n version` y `npm view n8n engines`, fuente
+  primaria). Buena parte del contenido indexado en la web sigue citando el
+  requisito de Node de la serie 1.x: **no sirve**.
 - n8n documenta Docker como vía de instalación local; expone el servicio en el
   puerto 5678, usa `GENERIC_TIMEZONE` para nodos de calendario y persiste
-  información en `/home/node/.n8n`. [Documentación oficial de Docker para n8n](https://docs.n8n.io/hosting/installation/docker/)
+  información en `/home/node/.n8n`. La instalación vía `npx n8n` sigue siendo
+  oficialmente soportada. [Documentación oficial de Docker para n8n](https://docs.n8n.io/hosting/installation/docker/)
+- `N8N_RUNNERS_ENABLED` está **deprecada desde n8n 2.0**: los task runners vienen
+  activos por defecto y declararla solo ensucia los logs. Fue eliminada del
+  `docker-compose.yml` de este repositorio por esa razón.
+- La **Sustainable Use License** de n8n permite explícitamente el uso educativo.
+  La restricción real es revender n8n como servicio competidor, que no aplica
+  aquí. [Licencia oficial](https://docs.n8n.io/privacy-and-security/sustainable-use-license)
+- El **AI Assistant** y el **AI Workflow Builder** integrados existen en
+  self-hosted, pero requieren activación de licencia de instancia, endpoint
+  configurado y API key propia. **No se demuestran en vivo en esta clase.**
+- Un modelo dentro del flujo tiene cuatro caminos gratuitos con nodo propio o
+  compatible: Ollama, Google Gemini, Groq y Cerebras. Detalle, límites reales y
+  el gotcha de red entre Docker y Ollama en [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md).
 - El nodo de Google Calendar soporta crear, consultar, listar, actualizar y
   borrar eventos, por lo que es una fuente suficiente para el tramo de agenda
   del ejercicio. [Operaciones de Google Calendar en n8n](https://docs.n8n.io/integrations/builtin/app-nodes/n8n-nodes-base.googlecalendar/)
@@ -103,6 +146,7 @@ automática; aprobar una prioridad crítica no.
 | Reglas | El LLM “decide” riesgos. | Semáforo determinista. | Explica umbrales y prueba casos límite. |
 | IA | Redacta sin control. | Prompt limita a evidencia. | Valida JSON, cita campos y rechaza alucinaciones. |
 | Gobernanza | Sin responsable final. | Tiene una compuerta humana. | Define responsable, plazo y canal de escalamiento. |
+| Copiloto | Copia y pega lo que el modelo diga, sin entenderlo. | Da contexto, pega el error literal y verifica antes de ejecutar. | Detecta una respuesta inventada y explica la causa raíz con sus palabras. |
 
 ## Preparación del docente
 
