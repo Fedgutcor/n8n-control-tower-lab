@@ -117,10 +117,15 @@ cada una quedó claro qué se delegó y qué no:
   principal, Ollama como ruta avanzada — es una decisión editorial, no
   técnica. El agente investigó opciones, costos y límites; la persona eligió
   cuál enseñar primero.
-- **Reglas**: cuando apareció un problema de red entre Docker y Ollama que se
-  podía resolver abriendo el firewall de una máquina de producción, la
-  decisión fue **no tocarlo** y documentar la limitación en vez de resolverla
-  al costo de exponer una máquina real.
+- **Reglas**: el criterio del semáforo (qué estado es rojo, cuál ámbar) lo
+  dicta una persona y queda escrito donde se puede leer. El agente lo
+  implementa; no lo decide. Esa separación es el centro de la clase.
+- **Alcance de lo reversible**: cuando apareció un problema de red entre Docker
+  y Ollama que se podía resolver abriendo el firewall de una máquina de
+  producción, el agente **pidió autorización en vez de aplicarlo**. La
+  respuesta fue no tocarlo y documentar la limitación, antes que resolver el
+  problema al costo de exponer una máquina real. Pedir permiso ahí, y no
+  después, fue lo que hizo que la decisión siguiera siendo humana.
 - **Compuerta**: publicar el repositorio en un GitHub público — con todo lo
   que eso implica sobre credenciales, datos de ejemplo y quién puede leerlo —
   lo aprobó la persona, no el agente.
