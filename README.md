@@ -16,6 +16,9 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 | `workflows/02-torre-de-control.json` | Ingreso por contrato para conectar Calendar, Sheets, GitHub, Linear o Notion. |
 | `workflows/03-informe-ejecutivo.json` | Informe en formato fijo, primero determinista y luego ampliable con IA. |
 | `workflows/04-informe-con-modelo.json` | Extiende el informe con un modelo de lenguaje y valida su salida con un chequeo que detecta datos inventados (marca `RECHAZADO` si el modelo alucina). |
+| `workflows/05-fuente-real-sin-codigo.json` | **Lee una hoja de cálculo real y calcula el semáforo sin un solo nodo de código.** Funciona sin credenciales; se cambia una dirección para apuntar a tu propia hoja de Google. |
+| `docs/CONECTAR-GOOGLE.md` | El camino corto para leer Google sin OAuth, y el completo para datos reales. |
+| `docs/PROMPT-NOTEBOOKLM-APERTURA.md` | Prompt para generar la presentación de apertura sobre especificar y probar antes de automatizar. |
 | `prompts/INFORME-EJECUTIVO.md` | Prompt y pruebas contra invenciones. |
 | `samples/` | Datos de demostración y plantilla para dashboard. |
 | `docs/MONTAJE-PASO-A-PASO.md` | Las dos rutas de instalación (Docker y npx) y los cuatro errores del día. |
