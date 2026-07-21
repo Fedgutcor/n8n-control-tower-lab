@@ -1,5 +1,22 @@
 # Guía del docente — clase de 3 horas: n8n local para directivos
 
+> **El documento que siguen los estudiantes durante la parte práctica es
+> [DIRIGIR-AL-AGENTE.md](DIRIGIR-AL-AGENTE.md).** Léelo antes que esta guía.
+>
+> El ejercicio del día no es armar nodos a mano: es **encargarle a un agente de
+> IA que monte la automatización**, y saber revisar lo que devuelve. Los
+> estudiantes trabajan con cinco encargos, de menor a mayor, sobre una
+> arquitectura de seis piezas que el documento explica primero.
+>
+> **Tu papel durante el taller** no es resolverles el problema técnico. Es hacer
+> tres preguntas, una y otra vez:
+>
+> - "¿Le diste tu contexto, o esperabas que lo adivinara?"
+> - "¿Qué decidió el agente que deberías haber decidido tú?"
+> - "¿Te mostró la salida real, o solo te dijo que funcionó?"
+>
+> Ese es el músculo que se llevan. La herramienta caduca; esas tres preguntas no.
+
 > Documento operativo para el día de la clase. La fundamentación pedagógica está
 > en [FUNDAMENTACION-DE-LA-CLASE.md](FUNDAMENTACION-DE-LA-CLASE.md); aquí no se
 > repite el porqué, sólo el cómo y el cuándo.

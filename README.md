@@ -30,6 +30,20 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 
 ## Empieza por aquí
 
+> ### 👉 [**CÓMO DIRIGIR A UN AGENTE — empieza por este documento**](docs/DIRIGIR-AL-AGENTE.md)
+>
+> **Todo este repositorio lo construyó un agente de IA en una sesión, dirigido
+> por alguien que no escribió una línea de código.** Ese documento enseña a hacer
+> lo mismo: la arquitectura que necesitas entender para saber qué pedir, cómo se
+> redacta un encargo, cinco encargos de práctica, y cómo auditar lo que te
+> devuelven sin saber programar.
+>
+> No es un tutorial de clics. Es aprender a delegar sin perder el control de lo
+> que importa.
+
+El resto del repositorio es la referencia técnica: el material que el agente
+usa, y contra el que puedes verificar lo que construya.
+
 1. **[Monta n8n en tu máquina](docs/MONTAJE-PASO-A-PASO.md)** — ruta Docker o
    ruta npx, con los requisitos reales verificados.
 2. **[Abre un copiloto al lado](docs/EL-LLM-COMO-COPILOTO.md)** — no para que
@@ -39,9 +53,12 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 4. **Importa `workflows/03-informe-ejecutivo.json`** y ejecútalo. Produce el
    informe completo **sin usar ningún modelo de IA**: formato, conteos, semáforo
    y agenda salen de reglas que puedes leer.
-5. **[Ahora sí, elige un modelo](docs/PROVEEDORES-LLM.md)** y prueba
+5. **[Conecta tu propia hoja de cálculo](docs/CONECTAR-GOOGLE.md)** con
+   `workflows/05-fuente-real-sin-codigo.json`, y cruza proyectos con agenda en
+   `workflows/06-agenda-y-proyectos.json`.
+6. **[Ahora sí, elige un modelo](docs/PROVEEDORES-LLM.md)** y prueba
    `workflows/04-informe-con-modelo.json`. Compara su resultado con el del paso
-   anterior: esa comparación es la clase entera.
+   4: esa comparación es la clase entera.
 
 ## El resultado que construyen
 
