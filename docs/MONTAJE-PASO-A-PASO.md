@@ -254,6 +254,45 @@ realmente deprecada (`N8N_RUNNERS_ENABLED`); el resto son avisos anticipados.
 > justamente lo que le vas a pedir a tu copiloto cuando le pegues un log:
 > "dime qué de esto es un error real y qué es ruido".
 
+## `localhost` no significa lo mismo para todos los dispositivos
+
+Este concepto va a aparecer dos veces más en la clase — en el formulario del
+workflow `08` y en la compuerta de aprobación del workflow `10` — así que
+conviene entenderlo aquí una sola vez, en general, y no como un caso especial
+de Telegram.
+
+Cuando abres `http://localhost:5678` en el navegador de tu propia laptop,
+`localhost` significa "este mismo computador donde estoy escribiendo esto
+ahora". Funciona porque el navegador y n8n corren en la misma máquina.
+
+El problema aparece en el momento en que **otro dispositivo** intenta abrir
+esa misma dirección. Tu teléfono, la laptop de un compañero, un bot de
+Telegram que corre en los servidores de Telegram: para cualquiera de ellos,
+`localhost` no apunta a tu laptop. Apunta **a sí mismos**. Un teléfono que
+abre `http://localhost:5678` intenta conectarse consigo mismo, no contigo —
+y por supuesto, no encuentra nada ahí.
+
+No es un error de configuración que se arregla cambiando un parámetro al
+azar. Es exactamente lo que la palabra significa: "esta misma máquina, la que
+sea que estés usando para leer esto".
+
+**Dónde te vas a topar con esto en la clase:**
+
+- El formulario del workflow `08`: la URL que genera el Form Trigger solo
+  responde a dispositivos en tu misma red — nunca a "localhost" desde otro
+  dispositivo.
+- La compuerta del workflow `10`: la operación nativa de Telegram para
+  aprobar con un botón (`Send and Wait for Response`) arma su enlace con la
+  dirección de tu propia instancia. Si esa dirección quedó en `localhost`, el
+  botón en tu teléfono jamás va a poder tocarla — por la misma razón exacta.
+
+**La solución, cuando hace falta,** no es "arreglar localhost": es decirle a
+n8n una dirección que el otro dispositivo sí pueda alcanzar — la IP de tu
+laptop en la red local (si están en la misma red y esa red no separa los
+dispositivos entre sí) o un dominio público (si necesitas alcance desde
+cualquier lugar). Es exactamente el primer paso hacia lo que
+[EL-DIA-DESPUES.md](EL-DIA-DESPUES.md) llama "producción".
+
 ## Cuando algo falla: los cuatro errores del día
 
 Estos son los que aparecen de verdad. Para cualquier otro, usa el **prompt B**

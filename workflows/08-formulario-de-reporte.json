@@ -110,9 +110,9 @@
     },
     {
       "parameters": {
-        "content": "## La limitación honesta\n\nMientras n8n corre en tu propia laptop, esta URL de formulario **solo funciona dentro de tu propia red**: tu teléfono conectado al mismo WiFi que tu laptop, por ejemplo. Fuera de esa red — datos móviles, otra oficina, otro WiFi — la dirección no responde. No es un error de configuración: simplemente no hay ningún servidor escuchando del otro lado para quien está afuera.\n\nPara que tu equipo real la use desde cualquier lugar, n8n necesita vivir en un servidor accesible desde internet, no en tu laptop. Esa es una decisión de infraestructura, no un ajuste de este workflow — es justo el paso que separa \"probar la idea\" de \"ponerla en producción\".",
-        "height": 360,
-        "width": 380,
+        "content": "## La limitación honesta\n\nMientras n8n corre en tu propia laptop, esta URL de formulario **solo funciona dentro de tu propia red**: tu teléfono conectado al mismo WiFi que tu laptop, por ejemplo. Fuera de esa red — datos móviles, otra oficina, otro WiFi — la dirección no responde. No es un error de configuración: simplemente no hay ningún servidor escuchando del otro lado para quien está afuera.\n\n**Y estar en la misma red tampoco alcanza siempre.** Muchas redes de invitados y buena parte de las redes corporativas activan \"aislamiento de cliente\" (client isolation / AP isolation): cada dispositivo puede salir a internet, pero no puede ver a los demás dispositivos conectados al mismo WiFi. Si tu teléfono y tu laptop están en una red así, el formulario tampoco va a cargar aunque compartan la misma red — y desde el teléfono se ve idéntico al caso de estar en redes distintas. Pruébalo tú mismo antes de asumir que \"misma red\" resuelve el problema.\n\nPara que tu equipo real la use desde cualquier lugar, n8n necesita vivir en un servidor accesible desde internet, no en tu laptop. Esa es una decisión de infraestructura, no un ajuste de este workflow — es justo el paso que separa \"probar la idea\" de \"ponerla en producción\".",
+        "height": 460,
+        "width": 400,
         "color": 7
       },
       "id": "f1000000-0000-4000-8000-000000000005",
