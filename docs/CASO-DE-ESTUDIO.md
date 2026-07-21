@@ -86,6 +86,18 @@ desde cero, no el agente que lo escribió: un obstáculo rodeado en silencio es
 peor que un error cometido a la vista, porque el error se corrige cuando
 alguien lo ve y el rodeo se hereda intacto.
 
+**Publicó una explicación antes de tener la causa.** Cuando una prueba mostró
+que la ruta `npx` fallaba instalando `sqlite3`, el agente que dirigía el
+material escribió "esta ruta no está garantizada en macOS" antes de saber por
+qué fallaba: el síntoma era real, la explicación no. La causa verdadera
+resultó ser una opción de configuración de npm en esa máquina concreta
+(`ignore-scripts=true`), sin relación con macOS ni con la versión de n8n. El
+arreglo que parecía obvio, `npm rebuild sqlite3 --build-from-source`,
+respondía "rebuilt successfully" sin compilar nada, porque respeta la misma
+opción que causaba el problema: un arreglo que confirma éxito sin haber
+actuado es peor que uno que falla, porque cierra la investigación. Confirmar
+un síntoma no es encontrar una causa.
+
 ---
 
 ## 3. Lo que solo apareció al ejecutar de verdad
