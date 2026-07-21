@@ -48,6 +48,15 @@ una máquina limpia si es posible.
       [INFORME-EJECUTIVO.md](../prompts/INFORME-EJECUTIVO.md#este-prompt-no-basta-y-tenemos-la-prueba)):
       si no la ensayaste antes, no la dictes en vivo por primera vez frente al
       grupo.
+- [ ] Ensaya el workflow `07` (informe al celular): crea tu bot con `@BotFather`,
+      obtén tu chat ID y **prueba el envío contra tu chat personal**, nunca
+      contra un grupo. Es el flujo de mayor impacto de la clase y el único que
+      envía algo al mundo real.
+      > **Gotcha verificado:** `n8n execute` por línea de comandos **no arranca**
+      > workflows que empiezan con `Schedule Trigger` — solo reconoce Manual
+      > Trigger. Para probar la cadena de datos por consola hay que cambiar el
+      > disparador a manual temporalmente. Desde la interfaz no aplica: ahí se
+      > ejecuta con el botón normal.
 - [ ] Corre la validación automática:
       ```bash
       node scripts/verify-artifacts.mjs
