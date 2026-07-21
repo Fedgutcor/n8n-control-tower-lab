@@ -39,7 +39,6 @@ const required = [
   'docs/EL-LLM-COMO-COPILOTO.md',
   'docs/PROVEEDORES-LLM.md',
   'docs/MATRIZ-DE-CONEXIONES.md',
-  'docs/VALIDACION.md',
   'docs/GUIA-DEL-DOCENTE.md',
   'samples/control-tower-demo.json',
   'samples/dashboard-template.csv',

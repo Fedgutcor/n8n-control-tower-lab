@@ -22,6 +22,8 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 | `workflows/08-formulario-de-reporte.json` | **Tu equipo reporta sin que lo persigas.** Un `Form Trigger` genera una URL de formulario real, sin escribir HTML y sin credenciales; calcula el semáforo con la misma regla de `05` y `07`, y muestra al que lo envía una confirmación con el resultado. Documenta la diferencia entre la URL de prueba y la de producción, y advierte con honestidad que en una instalación local esa URL solo funciona dentro de la propia red. |
 | `workflows/09-avisame-cuando-se-rompa.json` | **El aviso para cuando un flujo se rompe en silencio.** Un `Error Trigger` se conecta al `Error Workflow` de cualquier otro flujo (hay que asignarlo a mano, uno por uno, en Settings) y avisa por Telegram qué flujo falló, en qué nodo y desde cuándo — con los nombres de campo reales del payload, verificados contra el código del nodo. Documenta con honestidad su límite: avisa cuando un flujo se ejecuta y falla, no cuando nunca llegó a ejecutarse. |
 | `workflows/10-compuerta-humana.json` | **La sexta pieza de la arquitectura: dónde interviene una persona antes de que algo salga al mundo.** Arma el informe (misma cadena de `05`/`07`) y pide una aprobación explícita por Telegram; un segundo tramo consulta `getUpdates` por HTTP y solo avanza si alguien respondió la palabra pactada. Explica, con el hallazgo técnico de esta clase, por qué no usa el botón nativo "Send and Wait for Response" (su enlace de reanudación apunta a `localhost`, que para el teléfono es el teléfono mismo) y qué haría falta para usarlo de verdad. |
+| `docs/DIRIGIR-AL-AGENTE.md` | **El punto de entrada de la clase.** La arquitectura de seis piezas para saber qué encargarle a un agente de IA y qué no delegar nunca, cómo se redacta un encargo, los cinco encargos de práctica de menor a mayor, y las preguntas para auditar lo que el agente devuelve sin saber programar. |
+| `docs/MATRIZ-DE-CONEXIONES.md` | Tabla de fuentes reales (Sheets, Calendar, GitHub, Linear, Notion) con su credencial, adaptador al contrato y riesgo a gestionar — más la tabla de proveedores de modelo con nodo, credencial y free tier. |
 | `docs/CONECTAR-GOOGLE.md` | El camino corto para leer Google sin OAuth, y el completo para datos reales. |
 | `docs/CASO-DE-ESTUDIO.md` | **El relato honesto de cómo se construyó este repositorio**: los errores reales del agente que lo dirigió, lo que solo apareció al ejecutar de verdad, y qué decisiones se quedaron del lado humano. Con los commits para comprobarlo. |
 | `docs/EL-DIA-DESPUES.md` | **Qué pasa cuando termina la clase.** El prototipo corre en tu computador, con tu usuario y tus credenciales: qué significa eso, las tres preguntas que deciden si sobrevive, los tres niveles de madurez hasta producción, y cómo llevar la conversación al área de sistemas sin que te la prohíban. |
@@ -325,9 +327,12 @@ compile — un solo paréntesis mal puesto ahí deja el lab entero sin funcionar
 aunque la página se vea perfecta.
 
 Al tener Docker instalado, haga además este ensayo con una carpeta de datos
-limpia: arrancar n8n, importar los cuatro JSON y ejecutar `01`, `03` y, con un
-modelo ya disponible, `04`. Cree credenciales de demostración por separado;
-los exports nunca incluyen secretos.
+limpia: arrancar n8n, importar los workflows y ejecutar, como mínimo, estos
+tres: `01`, `03` y, con un modelo ya disponible, `04`. No es el ensayo
+completo — el checklist de una semana antes en
+[GUIA-DEL-DOCENTE.md](docs/GUIA-DEL-DOCENTE.md#1-checklist-de-ensayo--una-semana-antes)
+cubre los diez workflows. Cree credenciales de demostración por separado; los
+exports nunca incluyen secretos.
 
 ## Límites conscientes
 

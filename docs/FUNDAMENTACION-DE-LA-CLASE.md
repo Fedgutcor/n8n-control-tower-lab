@@ -201,7 +201,8 @@ automática; aprobar una prioridad crítica no.
 
 ## Preparación del docente
 
-- Pruebe los tres workflows importándolos desde una carpeta limpia.
+- Corra el checklist de ensayo completo, una semana antes, en
+  [GUIA-DEL-DOCENTE.md](GUIA-DEL-DOCENTE.md#1-checklist-de-ensayo--una-semana-antes).
 - Lleve `samples/control-tower-demo.json` como plan B para conectividad u OAuth.
 - Prepare una hoja de cálculo con permisos de edición para el grupo o permita
   que cada estudiante use una copia.

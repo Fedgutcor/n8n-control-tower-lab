@@ -86,6 +86,16 @@ informe determinista (workflow `03`), y solo después el modelo.
 > es la opción más "limpia" de las tres si quieres el mejor informe posible en
 > vez de la demostración del fallo).
 >
+> **Fecha de vencimiento a vigilar:** Google anunció el retiro de
+> `gemini-2.5-flash` para octubre de 2026 (ver
+> [LO-QUE-CUESTA-DE-VERDAD.md](LO-QUE-CUESTA-DE-VERDAD.md#3-órdenes-de-magnitud-no-cotizaciones)).
+> Cuando llegue esa fecha, el workflow `04` va a fallar por modelo retirado,
+> no por alucinación — no confundas esa causa con la demostración del
+> validador. Antes de dictar la clase después de esa fecha, elige en
+> [aistudio.google.com](https://aistudio.google.com) el modelo Flash vigente
+> en ese momento y actualiza el nodo, o cambia a Groq (plan B, ya documentado
+> arriba).
+>
 > **Ollama dejó de ser el camino recomendado para esta clase.** Sigue siendo la
 > mejor opción en privacidad y costo para uso posterior en la organización, pero
 > el modelo con el que se verificó originalmente la invención de datos

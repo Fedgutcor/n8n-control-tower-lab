@@ -42,10 +42,13 @@ una máquina limpia si es posible.
       > igual para la ruta `npx`, no solo para Docker. No cambies el número por
       > tu cuenta — confirma con el equipo cuál está vigente antes de ensayar
       > esa ruta.
-- [ ] Importa los ocho workflows (`01` a `08`) desde una carpeta limpia y
-      confirma que ninguno trae un nodo marcado como desconocido. Ejecuta `01`
-      y `03` sin errores — `04` y `07` tienen su propio ítem de ensayo más
-      abajo, con lo que exige cada uno.
+- [ ] Importa los diez workflows (`01` a `10`) desde una carpeta limpia y
+      confirma que ninguno trae un nodo marcado como desconocido. El núcleo
+      que se dicta a fondo en las 3 horas es `01`, `03`, `04` y `07`: ejecuta
+      `01` y `03` sin errores — `04` y `07` tienen su propio ítem de ensayo más
+      abajo, con lo que exige cada uno. Los seis restantes (`02`, `05`, `06`,
+      `08`, `09`, `10`) son extensiones fuera del núcleo: basta con confirmar
+      que importan sin errores, sin necesidad de ensayarlos a fondo.
 - [ ] Ensaya el workflow `04` con **Google Gemini** (`gemini-2.5-flash`), el
       proveedor con el que viene cableado, y confirma que el validador muestra
       el veredicto `RECHAZADO` al menos una vez — con Gemini la probabilidad
@@ -57,6 +60,16 @@ una máquina limpia si es posible.
       grupo. Si vas a recomendar Groq o Cerebras en su lugar, ensaya también
       con ese proveedor — la probabilidad de rechazo es distinta en cada uno
       (ver [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md#parte-2--el-modelo-dentro-del-flujo)).
+- [ ] Confirma que `gemini-2.5-flash` —el modelo con el que viene cableado el
+      workflow `04`— sigue disponible en AI Studio. Google anunció su retiro
+      para octubre de 2026 (ver
+      [LO-QUE-CUESTA-DE-VERDAD.md](LO-QUE-CUESTA-DE-VERDAD.md#3-órdenes-de-magnitud-no-cotizaciones)):
+      una clase dictada después de esa fecha puede ver fallar la demostración
+      central por modelo retirado, no por alucinación, y es una causa distinta
+      a la de cuota agotada del ítem anterior — no la confundas con ella. Si ya
+      no está disponible, elige en AI Studio el modelo Flash vigente en ese
+      momento y actualiza el nodo, o cambia a Groq como plan B (ver
+      [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md#parte-2--el-modelo-dentro-del-flujo)).
 - [ ] Ensaya el workflow `07` (informe al celular): crea tu bot con `@BotFather`,
       obtén tu chat ID y **prueba el envío contra tu chat personal**, nunca
       contra un grupo. Es el flujo de mayor impacto de la clase y el único que

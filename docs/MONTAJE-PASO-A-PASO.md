@@ -314,8 +314,8 @@ seguir — es un buen ejercicio de lectura de logs.
 n8n permite escribir nodos de código en JavaScript o en Python. La imagen no
 trae Python. Los workflows de esta clase usan **solo JavaScript**, y justo
 después de ese mensaje el log registra `Registered runner "JS Task Runner"`, que
-es el que sí necesitamos. Verificado: los tres workflows se ejecutan sin
-problema.
+es el que sí necesitamos. Verificado: los nodos de código JavaScript funcionan
+sin problema sin el runner de Python.
 
 **2. Un bloque de "deprecations related to your n8n setup"**
 
