@@ -66,34 +66,35 @@ informe determinista (workflow `03`), y solo después el modelo.
 
 | Proveedor | Papel en la clase | Nodo en n8n | Credencial | Free tier | ¿Tarjeta? | Modelo a elegir |
 |---|---|---|---|---|---|---|
-| **Google Gemini** | **Principal** | Google Gemini Chat Model | Google Gemini(PaLM) API | Sin tarjeta | No | `gemini-2.5-flash` |
+| **Google Gemini** | **Principal — es el que trae cableado el workflow 04** | Google Gemini Chat Model | Google Gemini(PaLM) API | Sin tarjeta | No | `gemini-2.5-flash` |
 | **Groq** | Plan B en vivo | Groq Chat Model | Groq | 30 req/min · 14 400 req/día | No | `llama-3.3-70b-versatile` (cambia el default, que es un modelo viejo) |
-| **Ollama** (local) | Ruta avanzada | Ollama Chat Model | Ollama (URL base) | Ilimitado, offline | No aplica | `qwen2.5-coder:7b` (~4,7 GB) — ver nota abajo |
-| **Cerebras** | Alternativa | OpenAI Chat Model con URL base cambiada a `https://api.cerebras.ai/v1` | OpenAI | 1 M tokens/día · 30 req/min | No | Llama 3.3 70B (catálogo inestable, verifica antes) |
+| **Cerebras** | Alternativa | OpenAI Chat Model con URL base cambiada a `https://api.cerebras.ai/v1` | OpenAI | 1 M tokens/día · 30 req/min | No | Verifica el catálogo con `GET /v1/models` antes de la clase: cambia sin aviso. En jul-2026 ya no tiene Llama 3.3; el disponible es `gpt-oss-120b` |
+| **Ollama** (local) | Ruta avanzada, no recomendada para el aula | Ollama Chat Model | Ollama (URL base) | Ilimitado, offline | No aplica | Cualquiera que tengas descargado — no verificado contra la demo de invención actual |
 
-> **Ojo: el workflow 04 viene cableado con Ollama, no con Gemini.** Aunque esta
-> guía recomienda Gemini como camino principal, el archivo trae el nodo **Ollama
-> Chat Model** ya conectado, porque es el único proveedor con el que pudimos
-> **verificar** la demostración de la invención de datos.
+> **El workflow 04 viene cableado con Google Gemini** (`gemini-2.5-flash`),
+> porque no pide tarjeta, no requiere instalar nada, y porque **verificamos con
+> corridas reales** que produce un `RECHAZADO` reproducible en el validador
+> anti-invención (ver el detalle completo en
+> [INFORME-EJECUTIVO.md](../prompts/INFORME-EJECUTIVO.md#este-prompt-no-basta-y-tenemos-la-prueba)).
+> Solo hace falta crear la credencial `Google Gemini(PaLM) Api` con tu clave de
+> [aistudio.google.com](https://aistudio.google.com) — el sticky note del
+> workflow trae los pasos exactos.
 >
-> Si vas por Gemini —lo recomendable para la clase— tendrás que borrar ese nodo,
-> agregar el de **Google Gemini Chat Model** y crear su credencial. Son dos
-> minutos, pero no aparecen solos: hazlo en el ensayo, no frente al grupo.
+> Si prefieres Groq o Cerebras, el sticky note "Cómo cambiar de proveedor" del
+> propio workflow 04 explica cómo, y ambos también mostraron rechazos reales en
+> nuestras pruebas (Groq: 1 de 3 corridas; Cerebras: ninguna en 3 corridas —
+> es la opción más "limpia" de las tres si quieres el mejor informe posible en
+> vez de la demostración del fallo).
 >
-> Si te quedas con Ollama, **descarga el modelo antes** (`ollama pull
-> qwen2.5-coder:7b`, ~4,7 GB). Si el modelo no está descargado, el nodo falla
-> con un error que no dice claramente que falta el modelo.
-
-> **Por qué el workflow 04 trae `qwen2.5-coder:7b` y no un modelo mejor.** Está
-> elegido a propósito: es el modelo con el que **verificamos** que se produce la
-> invención de datos que la clase quiere mostrar. Con `qwen2.5:14b` el mismo
-> prompt pasó limpio. Si cambias el modelo por defecto, es probable que el
-> `RECHAZADO` no aparezca y pierdas la demostración. Cuando quieras el mejor
-> informe posible en vez de la demostración del fallo, sube de modelo — pero
-> hazlo después de que el grupo haya visto fallar al pequeño.
->
-> Si la máquina no puede con 4,7 GB, existe `llama3.2:3b` (~2 GB), pero **no
-> hemos verificado** que reproduzca la invención: puede que la demo no salga.
+> **Ollama dejó de ser el camino recomendado para esta clase.** Sigue siendo la
+> mejor opción en privacidad y costo para uso posterior en la organización, pero
+> el modelo con el que se verificó originalmente la invención de datos
+> (`qwen2.5-coder:7b`) ya no es el que usa el workflow, y el gotcha de red
+> Docker↔Ollama (ver más abajo) es fricción que esta clase de tres horas ya no
+> necesita pagar. Si igual quieres mostrarlo, agrega el nodo **Ollama Chat
+> Model**, descarga el modelo antes (`ollama pull <modelo>`, nunca en vivo), y
+> no des por sentado que reproducirá el mismo `RECHAZADO`: no lo hemos vuelto a
+> verificar desde que el workflow se migró a proveedores en la nube.
 
 Notas que importan:
 

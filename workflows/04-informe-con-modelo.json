@@ -34,12 +34,12 @@
     },
     {
       "parameters": {
-        "model": "qwen2.5-coder:7b",
+        "modelName": "models/gemini-2.5-flash",
         "options": {}
       },
       "id": "7a2c9e40-1b3d-4f6a-8e21-123456789004",
-      "name": "Ollama Chat Model",
-      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [700, 560]
     },
@@ -55,7 +55,7 @@
     },
     {
       "parameters": {
-        "content": "CÓMO CAMBIAR DE PROVEEDOR\n\nEste workflow usa Ollama Chat Model porque es el único sin cuota ni tarjeta (ver docs/PROVEEDORES-LLM.md). Si prefieres no instalar Ollama:\n\n1. Elimina el nodo \"Ollama Chat Model\".\n2. Agrega \"Google Gemini Chat Model\" (modelo gemini-2.5-flash, sin tarjeta) o \"Groq Chat Model\" (nodo propio, 14 400 llamadas/día — recuerda cambiar el modelo por defecto, que es uno viejo).\n3. Conecta el nodo nuevo al puerto \"Model\" de \"Informe redactado por el modelo\", en el mismo lugar donde estaba Ollama.\n4. Crea la credencial del proveedor elegido con tu propia API key. Nunca la subas al repositorio.\n\nEl resto del workflow (semilla y validador) no cambia: el contrato de datos es el mismo sin importar qué modelo redacte.", "height": 320, "width": 460, "color": 5 },
+        "content": "CÓMO CAMBIAR DE PROVEEDOR\n\nEste workflow usa Google Gemini Chat Model (gemini-2.5-flash) porque no pide tarjeta y no requiere instalar nada — ver docs/PROVEEDORES-LLM.md. Si quieres otro camino:\n\n1. Elimina el nodo \"Google Gemini Chat Model\".\n2. Agrega:\n   • \"Groq Chat Model\" (nodo propio, modelo llama-3.3-70b-versatile — cambia el default, que es uno viejo) — 14 400 llamadas/día, sin tarjeta.\n   • o \"OpenAI Chat Model\" con Base URL https://api.cerebras.ai/v1 — verifica el modelo contra GET /v1/models antes de la clase, el catálogo cambia sin aviso (en jul-2026 ya no tiene Llama, usa gpt-oss-120b).\n   • o \"Ollama Chat Model\" (ruta avanzada, offline, cero cuota — mira el gotcha de Docker en docs/PROVEEDORES-LLM.md antes de intentarlo).\n3. Conecta el nodo nuevo al puerto \"Model\" de \"Informe redactado por el modelo\", en el mismo lugar donde estaba Gemini.\n4. Crea la credencial del proveedor elegido con tu propia API key. Nunca la subas al repositorio.\n\nEl resto del workflow (semilla y validador) no cambia: el contrato de datos es el mismo sin importar qué modelo redacte.", "height": 360, "width": 460, "color": 5 },
       "id": "7a2c9e40-1b3d-4f6a-8e21-123456789006",
       "name": "Nota: cómo cambiar de proveedor",
       "type": "n8n-nodes-base.stickyNote",
@@ -64,16 +64,16 @@
     },
     {
       "parameters": {
-        "content": "GOTCHA: DOCKER NO VE TU OLLAMA\n\nLa ruta principal de este taller es Docker. Ahí, la URL de la credencial Ollama tiene que ser:\n\nhttp://host.docker.internal:11434\n\nOJO: cuando crees la credencial Ollama, n8n propone por defecto \"http://localhost:11434\" — ese valor NO sirve para Docker (para el contenedor, \"localhost\" es el contenedor mismo, no tu máquina). Tienes que reemplazarlo a mano por host.docker.internal.\n\nEn macOS y Windows esa URL funciona sin configuración extra. En Linux hace falta agregar en docker-compose.yml:\n\nextra_hosts:\n  - \"host.docker.internal:host-gateway\"\n\n(este repositorio ya lo incluye).\n\nSolo si usas la ruta npx en vez de Docker (n8n corriendo directo en tu máquina, sin contenedor) el valor por defecto \"http://localhost:11434\" sí es el correcto y no hay que tocarlo.", "height": 360, "width": 460, "color": 4 },
+        "content": "CÓMO CONSEGUIR TU CLAVE DE GOOGLE GEMINI\n\n1. Entra a https://aistudio.google.com con tu cuenta de Google.\n2. Arriba a la izquierda: \"Get API key\" → \"Create API key\".\n3. Copia la clave (empieza con \"AIza...\"). No pide tarjeta.\n4. En n8n: Credentials → New → busca \"Google Gemini(PaLM) Api\" → pega la clave en \"API Key\" → Save.\n5. En el nodo \"Google Gemini Chat Model\" de este workflow, selecciona esa credencial recién creada.\n\nSin tarjeta, sin instalación, dos minutos. Por eso es el camino por defecto de esta clase (ver docs/PROVEEDORES-LLM.md). Si quieres la ruta 100% local con Ollama en vez de esto, esa guía trae aparte el gotcha de Docker → Ollama que hay que resolver antes de la clase, no en vivo.", "height": 360, "width": 460, "color": 4 },
       "id": "7a2c9e40-1b3d-4f6a-8e21-123456789007",
-      "name": "Nota: gotcha Docker → Ollama",
+      "name": "Nota: cómo conseguir tu clave de Gemini",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [220, 20]
     },
     {
       "parameters": {
-        "content": "CÓMO LEER EL RESULTADO\n\nHaz clic en el nodo \"Validador anti-invención\" y mira su salida:\n\n- validacion: \"APROBADO\" o \"RECHAZADO\".\n- camposInventados: lista vacía si todo estaba respaldado por el snapshot; si no, aquí ves exactamente qué inventó el modelo (proyecto, responsable o fecha que no existían en la entrada).\n- respuestaDelModelo: el JSON que redactó el modelo, ya interpretado.\n\nEjercicio sugerido: cambia el nombre de un proyecto directamente en el prompt (nodo \"Informe redactado por el modelo\") y ejecuta de nuevo. Deberías ver el validador rechazarlo.", "height": 280, "width": 460, "color": 6 },
+        "content": "CÓMO LEER EL RESULTADO\n\nHaz clic en el nodo \"Validador anti-invención\" y mira su salida:\n\n- validacion: \"APROBADO\" o \"RECHAZADO\".\n- camposInventados: lista vacía si todo estaba respaldado por el snapshot; si no, aquí ves exactamente qué se apartó del snapshot (proyecto, responsable o fecha que no estaban en la entrada tal cual).\n- respuestaDelModelo: el JSON que redactó el modelo, ya interpretado.\n\nCon Gemini este workflow rechaza el informe en la mayoría de las corridas (5 de 6 verificadas): en vez de copiar la fecha límite literal (\"2026-07-24\") o escribir \"No disponible\", suele escribir \"antes del martes\" o \"martes\" — una paráfrasis tomada de otro campo real de la entrada, puesta en el campo que exige el dato literal. El validador lo detecta y rechaza. Si tu primera corrida sale APROBADO, ejecuta una vez más: es alta probabilidad, no garantía.\n\nEjercicio adicional: cambia el nombre de un proyecto directamente en el prompt (nodo \"Informe redactado por el modelo\") y ejecuta de nuevo. Deberías ver el validador rechazarlo también por esa vía.", "height": 380, "width": 460, "color": 6 },
       "id": "7a2c9e40-1b3d-4f6a-8e21-123456789008",
       "name": "Nota: cómo leer el resultado",
       "type": "n8n-nodes-base.stickyNote",
@@ -85,7 +85,7 @@
   "connections": {
     "Al ejecutar manualmente": { "main": [[{ "node": "Snapshot para el modelo", "type": "main", "index": 0 }]] },
     "Snapshot para el modelo": { "main": [[{ "node": "Informe redactado por el modelo", "type": "main", "index": 0 }]] },
-    "Ollama Chat Model": { "ai_languageModel": [[{ "node": "Informe redactado por el modelo", "type": "ai_languageModel", "index": 0 }]] },
+    "Google Gemini Chat Model": { "ai_languageModel": [[{ "node": "Informe redactado por el modelo", "type": "ai_languageModel", "index": 0 }]] },
     "Informe redactado por el modelo": { "main": [[{ "node": "Validador anti-invención", "type": "main", "index": 0 }]] }
   },
   "active": false,

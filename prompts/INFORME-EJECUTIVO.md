@@ -47,28 +47,44 @@ de entrada y marca `RECHAZADO` listando lo que se inventó.
 ## Este prompt no basta, y tenemos la prueba
 
 Lea las reglas de arriba. Son explícitas: "no inventes fechas", "si falta un
-dato, usa No disponible". Aun así, en nuestras pruebas contra un modelo local
-(`qwen2.5-coder:7b`) el modelo **inventó una fecha límite** —`2026-07-18`,
-cuando el dato real de la entrada era `2026-07-24`— y lo hizo en **dos corridas
-independientes con el mismo prompt**. No fue casualidad ni mala suerte: fue
-reproducible.
+dato, usa No disponible". Aun así, contra los tres proveedores gratuitos que
+usa esta clase (Groq, Cerebras y Gemini) el mismo prompt, contra el mismo
+snapshot, produjo salidas que el validador anti-invención **rechazó** —cada
+proveedor con un fallo distinto, verificado con corridas reales:
 
-Con un modelo más grande (`qwen2.5:14b`) el mismo prompt pasó limpio, usando la
-fecha correcta y "No disponible" donde correspondía.
+| Proveedor / modelo | Corridas | Rechazadas | Qué inventó |
+|---|---|---|---|
+| **Google Gemini** (`gemini-2.5-flash`) | 6 | **5** (83%) + 1 más al ejecutar el workflow completo en n8n | `fecha_límite` con "martes" / "antes del martes" (paráfrasis de un texto real, puesta en un campo que exige el dato literal); en la corrida dentro de n8n, además inventó `responsable: "Legal"` y una fecha `2026-07-21` que no existe en la entrada |
+| **Groq** (`llama-3.3-70b-versatile`) | 3 | 1 (33%) | `responsable: "Legal"` / `"Proveedor"` — nombres tomados del texto del bloqueo, no del campo `owner` real |
+| **Cerebras** (`gpt-oss-120b`) | 3 | 0 | — |
+
+Ninguno reprodujo *exactamente* el bug original (ese fue con un modelo local,
+`qwen2.5-coder:7b`, que inventó la fecha `2026-07-18` cuando la real era
+`2026-07-24`, en dos corridas seguidas — dato histórico, ya no es el que usa
+este workflow). Pero el fallo más frecuente y reproducible hoy —Gemini
+parafraseando una fecha en vez de copiarla literal— es la razón por la que el
+workflow 04 quedó cableado con Gemini: la demo de `RECHAZADO` sigue siendo
+real, solo que el dato concreto que se inventa cambió.
 
 **Lo que esto enseña, y es el centro de la clase:**
 
-1. Un prompt bien escrito **reduce** las invenciones. No las elimina.
-2. La diferencia entre un modelo y otro puede ser la diferencia entre un informe
-   correcto y uno con una fecha falsa. Un cambio de modelo no es un detalle de
-   configuración.
+1. Un prompt bien escrito **reduce** las invenciones. No las elimina, ni
+   siquiera en modelos grandes de proveedores serios.
+2. Cada modelo falla distinto. Gemini pone una fecha en lenguaje natural donde
+   se pedía el dato literal; Groq atribuye una decisión a "Legal" en vez de a
+   la persona responsable real. Un cambio de modelo no es un detalle de
+   configuración: cambia incluso QUÉ se inventa.
 3. Por eso la validación es **código, no otra instrucción al modelo**. Pedirle
    más cuidado a un sistema que ya recibió la instrucción de tener cuidado no
-   agrega ninguna garantía.
-4. Y por eso el dato inventado fue una **fecha**: no un disparate evidente, sino
-   un valor plausible que nadie detecta leyendo por encima. Así es como una
-   invención llega a una reunión de dirección.
+   agrega ninguna garantía — y el validador atrapa formas de fallar distintas
+   sin necesitar saber de antemano cuál va a ocurrir.
+4. Y por eso los datos inventados son **plausibles**: "antes del martes" suena
+   razonable, "Legal" suena a un responsable válido. Nadie los detecta leyendo
+   por encima. Así es como una invención llega a una reunión de dirección.
 
-> **Para el docente:** esta es una demostración en vivo que funciona. Ejecute el
-> workflow 04 con un modelo pequeño y muestre el `RECHAZADO` en pantalla. Vale
-> más que cualquier advertencia sobre alucinaciones.
+> **Para el docente:** esta es una demostración en vivo que funciona con
+> Gemini (~80% de probabilidad de `RECHAZADO` en la primera corrida, casi
+> segura en dos). Si la primera corrida sale `APROBADO`, ejecuta una vez más
+> frente al grupo — es alta probabilidad, no garantía, y eso también es parte
+> de la lección: la validación por código no depende de que el modelo falle
+> siempre, protege igual cuando falla a veces.

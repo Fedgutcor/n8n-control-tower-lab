@@ -94,8 +94,13 @@ confiable de perder la clase.
 
 - [ ] Imagen de Docker ya descargada en tu máquina (`docker compose pull` o
       `docker compose up -d` corrido de antemano).
-- [ ] Si vas a demostrar Ollama: modelo ya descargado (`ollama pull qwen2.5-coder:7b`
-      o el que hayas elegido). No lo bajes en vivo.
+- [ ] Credencial de Google Gemini creada (`aistudio.google.com` → "Get API key"
+      → "Create API key", sin tarjeta) y probada en el nodo "Google Gemini Chat
+      Model" del workflow 04 — ver [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md). Si
+      vas a demostrar Ollama en su lugar, el modelo debe estar descargado de
+      antemano (`ollama pull <modelo>`) — no lo bajes en vivo, y no des por
+      sentado que reproduce el `RECHAZADO`: no está verificado desde que el
+      workflow se migró a proveedores en la nube.
 - [ ] `.env` propio ya creado a partir de `.env.example`, con
       `N8N_ENCRYPTION_KEY` propia — no la que quede en el repositorio de
       ejemplo.
