@@ -1,0 +1,185 @@
+{
+  "id": "agenda06",
+  "name": "06 · Agenda y proyectos cruzados",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "b1000000-0000-4000-8000-000000000001",
+      "name": "Al ejecutar manualmente",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [-260, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/Fedgutcor/n8n-control-tower-lab/main/samples/eventos-demo.csv",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "b1000000-0000-4000-8000-000000000002",
+      "name": "Traer los eventos de agenda",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-40, 140]
+    },
+    {
+      "parameters": {
+        "operation": "csv",
+        "options": {}
+      },
+      "id": "b1000000-0000-4000-8000-000000000003",
+      "name": "Convertir eventos en datos",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [180, 140]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/Fedgutcor/n8n-control-tower-lab/main/samples/proyectos-demo.csv",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "id": "b1000000-0000-4000-8000-000000000004",
+      "name": "Traer los proyectos",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [-40, 460]
+    },
+    {
+      "parameters": {
+        "operation": "csv",
+        "options": {}
+      },
+      "id": "b1000000-0000-4000-8000-000000000005",
+      "name": "Convertir proyectos en datos",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [180, 460]
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByFields",
+        "fieldsToMatchString": "proyecto",
+        "joinMode": "enrichInput1",
+        "options": {}
+      },
+      "id": "b1000000-0000-4000-8000-000000000006",
+      "name": "Cruzar agenda con proyectos",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [420, 300]
+    },
+    {
+      "parameters": {
+        "sortFieldsUi": {
+          "sortField": [
+            {
+              "fieldName": "fecha",
+              "order": "ascending"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b1000000-0000-4000-8000-000000000007",
+      "name": "Ordenar por fecha del evento",
+      "type": "n8n-nodes-base.sort",
+      "typeVersion": 1,
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "content": "## Dos fuentes, un contrato\n\nEste flujo trae DOS orígenes de datos por separado y recién después los cruza:\n\n- **Traer los eventos de agenda**: descarga `eventos-demo.csv`, un calendario de ejemplo publicado en internet.\n- **Traer los proyectos**: descarga `proyectos-demo.csv`, la misma hoja que usa el workflow 05.\n\nHoy ambos apuntan a archivos de ejemplo para que el flujo funcione sin configurar nada. La forma de reemplazar cada uno está en las otras notas de este lienzo.\n\nFíjate en la columna `proyecto` de los dos archivos: tiene el mismo texto en ambos (\"Portal de aliados\", \"Migración CRM\"...). Ese texto compartido es el contrato que permite cruzarlos — sin un campo en común, no hay cruce posible.",
+        "height": 440,
+        "width": 380,
+        "color": 4
+      },
+      "id": "b1000000-0000-4000-8000-000000000008",
+      "name": "Nota: dos fuentes, un contrato",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [-300, -220]
+    },
+    {
+      "parameters": {
+        "content": "## Cómo cruza el nodo Merge\n\nEl nodo **Cruzar agenda con proyectos** está en modo **Combine → Matching Fields**: compara el campo `proyecto` de cada evento (entrada 1, arriba) contra el campo `proyecto` de cada fila de proyectos (entrada 2, abajo) y junta los que coinciden.\n\nLa opción **Output Type = Enrich Input 1** significa: \"conserva todos los eventos y agrégales los datos del proyecto que coincide\". Por eso cada evento sale con su `responsable`, `estado`, `prioridad` y `bloqueador` pegados.\n\nSi cambiaras esa opción a **Keep Matches**, seguirías viendo el cruce, pero un evento sin proyecto coincidente desaparecería en vez de quedar visible con los campos del proyecto vacíos. La diferencia importa cuando alguien escribe mal el nombre del proyecto en el calendario: con Enrich Input 1 ese error queda a la vista.",
+        "height": 460,
+        "width": 380,
+        "color": 5
+      },
+      "id": "b1000000-0000-4000-8000-000000000009",
+      "name": "Nota: cómo cruza el Merge",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [140, -220]
+    },
+    {
+      "parameters": {
+        "content": "## Dónde mirar el resultado\n\nHaz clic en **Ordenar por fecha del evento** y mira la pestaña de salida: cada fila trae `titulo`, `fecha`, `tipo` (del evento) junto con `responsable`, `estado`, `prioridad`, `avance` y `bloqueador` (del proyecto).\n\nEsa fila es la agenda de decisiones: no es solo \"qué reunión hay\", es \"qué reunión hay y qué tan urgente es el proyecto detrás\".\n\n**Ejercicio:** en `samples/eventos-demo.csv` cambia el `proyecto` de un evento a un nombre que no existe en `proyectos-demo.csv` y vuelve a ejecutar. Observa que el evento sigue apareciendo, pero sin los datos del proyecto — esa fila incompleta es la señal de un dato mal escrito, no un error del flujo.",
+        "height": 380,
+        "width": 380,
+        "color": 3
+      },
+      "id": "b1000000-0000-4000-8000-000000000010",
+      "name": "Nota: dónde ver el resultado",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [600, -220]
+    },
+    {
+      "parameters": {
+        "content": "## Usar tu propio Google Calendar\n\nEl reemplazo no es solo cambiar una dirección, como en el workflow 05: aquí hay que cambiar el nodo entero.\n\n1. Sigue el camino completo de OAuth en `docs/CONECTAR-GOOGLE.md` (sección \"Camino completo\") y crea la credencial de Google Calendar en n8n.\n2. Reemplaza **Traer los eventos de agenda** + **Convertir eventos en datos** por un nodo **Google Calendar** con la operación **Event → Get Many**, apuntado a tu calendario.\n3. El cruce necesita un campo `proyecto` en cada evento. Si nombras tus eventos como \"[Proyecto] resto del título\" (por ejemplo \"[Migración CRM] Revisión semanal\"), puedes extraerlo con un nodo **Edit Fields (Set)** antes del Merge:\n   `{{ $json.summary.match(/\\[(.*?)\\]/)?.[1] || '' }}`\n4. El resto del flujo no cambia: el Merge sigue cruzando por `proyecto`, sin importar de dónde vino cada rama.\n\nRecuerda: el camino OAuth se prepara ANTES de la clase, nunca en vivo frente al grupo.",
+        "height": 460,
+        "width": 400,
+        "color": 6
+      },
+      "id": "b1000000-0000-4000-8000-000000000011",
+      "name": "Nota: cómo conectar tu Calendar",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1040, -220]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Al ejecutar manualmente": {
+      "main": [
+        [
+          { "node": "Traer los eventos de agenda", "type": "main", "index": 0 },
+          { "node": "Traer los proyectos", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Traer los eventos de agenda": {
+      "main": [[{ "node": "Convertir eventos en datos", "type": "main", "index": 0 }]]
+    },
+    "Convertir eventos en datos": {
+      "main": [[{ "node": "Cruzar agenda con proyectos", "type": "main", "index": 0 }]]
+    },
+    "Traer los proyectos": {
+      "main": [[{ "node": "Convertir proyectos en datos", "type": "main", "index": 0 }]]
+    },
+    "Convertir proyectos en datos": {
+      "main": [[{ "node": "Cruzar agenda con proyectos", "type": "main", "index": 1 }]]
+    },
+    "Cruzar agenda con proyectos": {
+      "main": [[{ "node": "Ordenar por fecha del evento", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "b1000000-0000-4000-8000-000000000001",
+  "meta": { "templateCredsSetupCompleted": false },
+  "tags": []
+}
