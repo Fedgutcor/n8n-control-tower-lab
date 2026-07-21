@@ -1,0 +1,8 @@
+proyecto,responsable,estado,prioridad,fecha_limite,avance,bloqueador
+Portal de aliados,Lucía,en_riesgo,alta,2026-07-24,62,Falta decisión de Legal sobre términos
+Onboarding comercial,Miguel,en_curso,media,2026-08-02,48,
+Migración CRM,Sara,bloqueado,critica,2026-07-22,31,Proveedor no entregó acceso a la API
+Renovación de intranet,Andrés,en_curso,baja,2026-09-15,20,
+Auditoría de proveedores,Paula,en_riesgo,alta,2026-07-31,55,Dos proveedores no enviaron documentación
+Programa de formación,Carolina,en_curso,media,2026-08-20,70,
+Tablero financiero,Julián,bloqueado,alta,2026-07-28,15,Sin acceso al repositorio de datos
