@@ -183,7 +183,21 @@ if (existsSync(workflowDir)) {
       );
     }
 
-    if (raw.includes('localhost:11434')) {
+    // Los sticky notes (n8n-nodes-base.stickyNote) son anotaciones puramente
+    // documentales: nunca ejecutan ni configuran una conexión real. Es común
+    // que un sticky note EXPLIQUE por qué no hay que usar "localhost:11434"
+    // — si no se excluyen, el check se dispara sobre su propia explicación.
+    // La exención es solo para este check: cualquier localhost:11434 real
+    // (URL de un nodo HTTP, una credencial, etc.) vive fuera de un sticky
+    // note y sigue detectándose igual.
+    const nodesOutsideStickyNotes = Array.isArray(workflow.nodes)
+      ? workflow.nodes.filter((node) => node && node.type !== 'n8n-nodes-base.stickyNote')
+      : [];
+    const usesLocalhostFueraDeStickyNote = nodesOutsideStickyNotes.some((node) =>
+      JSON.stringify(node).includes('localhost:11434')
+    );
+
+    if (usesLocalhostFueraDeStickyNote) {
       warnings.push(
         `${relPath} usa "http://localhost:11434". Si el workflow corre dentro del contenedor Docker, esa URL no ` +
           'alcanza a Ollama en tu máquina: cambia "localhost" por "host.docker.internal" (ver docs/PROVEEDORES-LLM.md).'
