@@ -21,6 +21,7 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 | `workflows/07-informe-al-celular.json` | **El informe llega solo, sin que nadie lo toque.** Un `Schedule Trigger` corre cada lunes a las 7:00, reutiliza la cadena de lectura y semáforo del flujo `05`, arma un mensaje corto pensado para leerse en un teléfono y lo envía por Telegram. Documenta paso a paso cómo crear el bot con `@BotFather` y cómo obtener el chat ID propio. Es el momento en que el flujo deja de ser una herramienta que se aprieta y pasa a ser un proceso que corre solo. |
 | `docs/CONECTAR-GOOGLE.md` | El camino corto para leer Google sin OAuth, y el completo para datos reales. |
 | `docs/CASO-DE-ESTUDIO.md` | **El relato honesto de cómo se construyó este repositorio**: los errores reales del agente que lo dirigió, lo que solo apareció al ejecutar de verdad, y qué decisiones se quedaron del lado humano. Con los commits para comprobarlo. |
+| `docs/EL-DIA-DESPUES.md` | **Qué pasa cuando termina la clase.** El prototipo corre en tu computador, con tu usuario y tus credenciales: qué significa eso, las tres preguntas que deciden si sobrevive, los tres niveles de madurez hasta producción, y cómo llevar la conversación al área de sistemas sin que te la prohíban. |
 | `docs/PROMPT-NOTEBOOKLM-APERTURA.md` | Prompt para generar la presentación de apertura sobre especificar y probar antes de automatizar. |
 | `prompts/INFORME-EJECUTIVO.md` | Prompt y pruebas contra invenciones. |
 | `samples/` | Datos de demostración y plantilla para dashboard. |

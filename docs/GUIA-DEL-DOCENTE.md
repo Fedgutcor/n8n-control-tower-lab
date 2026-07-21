@@ -313,6 +313,13 @@ Aquí sólo lo que necesitas mientras dictas.
   usamos".
 - **Señal para avanzar:** el archivo exportado desde `GUIA-INTERACTIVA.html`
   existe y tiene los tres campos completos.
+- **Antes de que se levanten del puesto**, menciona
+  [EL-DIA-DESPUES.md](EL-DIA-DESPUES.md): lo que se llevan es un prototipo en
+  su propio computador, y ese documento cubre exactamente lo que esta clase
+  no alcanza a dar — quién debe ser el dueño, cuándo conviene el salto a un
+  piloto, y cómo llevar la conversación al área de sistemas sin que la
+  prohíban. Sin esta mención, el entusiasmo de la clase se apaga en tres días
+  porque nadie sabe qué hacer con lo que construyó.
 
 ---
 
