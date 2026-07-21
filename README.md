@@ -30,6 +30,8 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 | `docs/PROVEEDORES-LLM.md` | Qué proveedor usar, dónde y por qué. Opciones gratuitas verificadas. |
 | `docs/QUE-NO-AUTOMATIZAR.md` | **El criterio inverso, que falta en el resto del material.** Seis señales de que un proceso no debe automatizarse, con ejemplo de gestión para cada una, y el punto medio de automatizar solo la preparación de una decisión sin automatizar la decisión. Con lista de verificación de ocho preguntas. |
 | `docs/LO-QUE-CUESTA-DE-VERDAD.md` | **Lo que "gratis" no dice.** Qué cubre de verdad la licencia de n8n y hasta dónde llegan las cuotas gratuitas de los proveedores de IA, qué se paga aunque el software no cueste (mantenimiento, máquina encendida, fallos silenciosos), y órdenes de magnitud fechados y con fuente para servidor, n8n Cloud y consumo de modelo. |
+| `docs/QUE-DATOS-PUEDEN-SALIR.md` | **La pregunta de gobernanza, completa.** Los tres lugares por donde la información sale de tu organización (copiloto, modelo dentro del flujo, conexión mal configurada), la pregunta del periódico y el competidor, qué hacer cuando la respuesta es "no", las cuatro preguntas sobre credenciales y una lista de verificación antes de conectar una fuente real. |
+| `docs/SI-CAMBIAS-DE-HERRAMIENTA.md` | **Lo que no caduca si tu organización no adopta n8n.** Qué es específico de la herramienta y qué es arquitectura transferible a Zapier, Make o cualquier otra plataforma — y la prueba de si aprendiste una cosa o la otra. |
 | `docs/` | Fundamentación, agenda docente, matriz de credenciales y arquitectura. |
 | `GUIA-INTERACTIVA.html` | Laboratorio offline y autocontenido para que trabaje el estudiante. |
 
