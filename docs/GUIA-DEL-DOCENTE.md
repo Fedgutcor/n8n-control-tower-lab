@@ -38,16 +38,25 @@ una máquina limpia si es posible.
       actualizó el compose después de tu último ensayo, vuelve a correr este
       checklist completo: un cambio de versión sin ensayo es la forma más segura
       de encontrarte un error nuevo frente al grupo.
-- [ ] Importa los cuatro workflows (`01`, `02`, `03`, `04`) desde una carpeta
-      limpia y ejecuta `01` y `03` sin errores.
-- [ ] Ensaya el workflow `04` con el modelo pequeño que vayas a recomendar en
-      clase (por ejemplo `qwen2.5-coder:7b` en Ollama) y confirma que el
-      validador muestra el veredicto `RECHAZADO` al menos una vez. El propio
-      prompt del informe la llama la demostración más valiosa de la sesión
-      (ver
+      > **En verificación:** hay una revisión en curso sobre si `2.30.8` sirve
+      > igual para la ruta `npx`, no solo para Docker. No cambies el número por
+      > tu cuenta — confirma con el equipo cuál está vigente antes de ensayar
+      > esa ruta.
+- [ ] Importa los ocho workflows (`01` a `08`) desde una carpeta limpia y
+      confirma que ninguno trae un nodo marcado como desconocido. Ejecuta `01`
+      y `03` sin errores — `04` y `07` tienen su propio ítem de ensayo más
+      abajo, con lo que exige cada uno.
+- [ ] Ensaya el workflow `04` con **Google Gemini** (`gemini-2.5-flash`), el
+      proveedor con el que viene cableado, y confirma que el validador muestra
+      el veredicto `RECHAZADO` al menos una vez — con Gemini la probabilidad
+      verificada es de ~80% en la primera corrida, casi segura en dos. El
+      propio prompt del informe la llama la demostración más valiosa de la
+      sesión (ver
       [INFORME-EJECUTIVO.md](../prompts/INFORME-EJECUTIVO.md#este-prompt-no-basta-y-tenemos-la-prueba)):
       si no la ensayaste antes, no la dictes en vivo por primera vez frente al
-      grupo.
+      grupo. Si vas a recomendar Groq o Cerebras en su lugar, ensaya también
+      con ese proveedor — la probabilidad de rechazo es distinta en cada uno
+      (ver [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md#parte-2--el-modelo-dentro-del-flujo)).
 - [ ] Ensaya el workflow `07` (informe al celular): crea tu bot con `@BotFather`,
       obtén tu chat ID y **prueba el envío contra tu chat personal**, nunca
       contra un grupo. Es el flujo de mayor impacto de la clase y el único que
@@ -69,16 +78,19 @@ una máquina limpia si es posible.
       (AI Studio para Gemini, consola de Groq, consola de Cerebras). No hay una
       tabla universal de límites que puedas confiar a ciegas: los catálogos
       gratuitos cambian sin aviso — ver
-      [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md). Si vas a usar Ollama, confirma
-      además que el modelo que vas a recomendar (`qwen2.5-coder:7b`) se
-      descarga y responde en tu máquina de referencia.
+      [PROVEEDORES-LLM.md](PROVEEDORES-LLM.md). Si en vez de eso vas a mostrar
+      **Ollama**, descarga el modelo antes (nunca en vivo) y no des por
+      sentado que reproduce el `RECHAZADO`: no está verificado desde que el
+      workflow se migró a proveedores en la nube.
 - [ ] Si vas a usar Ollama con la ruta Docker, verifica el gotcha de red:
       `http://host.docker.internal:11434` responde desde el nodo Ollama Chat
       Model. En Linux confirma que `extra_hosts` está en el compose (ya viene
       incluido en este repositorio).
-- [ ] Revisa `GUIA-INTERACTIVA.html` en el navegador: los 7 módulos cargan, las
-      mecánicas interactivas (emparejar, clasificar, ordenar, caza de
-      alucinación) funcionan y el botón de exportar plan genera un archivo.
+- [ ] Revisa `GUIA-INTERACTIVA.html` en el navegador: los **8 módulos** cargan
+      —incluido **08 · Dirigir**, el central de la clase, aunque se dicte
+      segundo pese a su número—, las mecánicas interactivas (emparejar,
+      clasificar, ordenar, caza de alucinación) funcionan y el botón de
+      exportar plan genera un archivo.
 - [ ] Relee la fundamentación técnica verificada en
       [FUNDAMENTACION-DE-LA-CLASE.md](FUNDAMENTACION-DE-LA-CLASE.md#fundamentación-técnica-verificada)
       y confirma que ningún dato (versión de n8n, requisito de Node, estado del
@@ -276,7 +288,11 @@ Aquí sólo lo que necesitas mientras dictas.
   contrato común, aplicando el **Encargo 3** de
   [DIRIGIR-AL-AGENTE.md](DIRIGIR-AL-AGENTE.md#encargo-3--conectar-tu-fuente-real).
   Con solo 15 minutos el objetivo es UNA fuente, no dos — GitHub, Linear y
-  Notion quedan para después con la matriz de conexiones.
+  Notion quedan para después con la matriz de conexiones. **Para Sheets, el
+  camino que entra en el tiempo disponible es el workflow `05`** con el enlace
+  público de solo lectura (ver
+  [CONECTAR-GOOGLE.md](CONECTAR-GOOGLE.md#camino-corto-leer-una-hoja-de-google-sin-credenciales));
+  reserva el OAuth completo para quien ya lo tenga resuelto de antes.
 - **Pregunta de apertura:** "¿qué credencial necesitan y quién en su
   organización la emite?"
 - **Error más probable:** falla de OAuth o de red del aula. Si el bloqueo no se
@@ -316,6 +332,11 @@ Aquí sólo lo que necesitas mientras dictas.
 - **Error más probable:** cerrar con una idea inspiradora en vez de un
   compromiso verificable. Redirige a la pregunta de apertura, no a "qué nodo
   usamos".
+- **Si el tiempo alcanza**, muestra el workflow `07` (informe al celular) como
+  el ejemplo concreto de a qué apunta el compromiso: un `Schedule Trigger` que
+  ya no depende de que alguien lo apriete. No hace falta dictarlo en vivo —el
+  checklist de ensayo ya lo cubre aparte—, pero conecta directamente con la
+  pregunta de apertura de este tramo.
 - **Señal para avanzar:** el archivo exportado desde `GUIA-INTERACTIVA.html`
   existe y tiene los tres campos completos.
 - **Antes de que se levanten del puesto**, menciona

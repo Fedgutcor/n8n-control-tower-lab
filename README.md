@@ -49,6 +49,17 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 > No es un tutorial de clics. Es aprender a delegar sin perder el control de lo
 > que importa.
 
+### Por dónde seguir, según quién eres
+
+`docs/` tiene 16 archivos — esta no es la tabla de artefactos de arriba, es el
+orden de lectura por rol y por momento.
+
+| Quién eres | Orden de lectura |
+|---|---|
+| **Voy a tomar la clase** | Antes: [DIRIGIR-AL-AGENTE.md](docs/DIRIGIR-AL-AGENTE.md). Durante: la tabla de abajo, con su pregunta de verificación. Después: [EL-DIA-DESPUES.md](docs/EL-DIA-DESPUES.md) y, si vas a conectar datos reales, [QUE-DATOS-PUEDEN-SALIR.md](docs/QUE-DATOS-PUEDEN-SALIR.md). |
+| **Voy a dictar esta clase** | [FUNDAMENTACION-DE-LA-CLASE.md](docs/FUNDAMENTACION-DE-LA-CLASE.md) → [GUIA-DEL-DOCENTE.md](docs/GUIA-DEL-DOCENTE.md) → [CASO-DE-ESTUDIO.md](docs/CASO-DE-ESTUDIO.md) → [PROMPT-NOTEBOOKLM-APERTURA.md](docs/PROMPT-NOTEBOOKLM-APERTURA.md) para la apertura. |
+| **Encontré esto en GitHub y quiero entender de qué va** | [CASO-DE-ESTUDIO.md](docs/CASO-DE-ESTUDIO.md) primero — es el más honesto y el que mejor explica el enfoque —, después [DIRIGIR-AL-AGENTE.md](docs/DIRIGIR-AL-AGENTE.md). |
+
 El resto del repositorio es la referencia técnica: el material que el agente
 usa, y contra el que puedes verificar lo que construya.
 
