@@ -15,9 +15,16 @@
 |---|---|---|
 | Node.js | No hace falta | **22.22 o superior** (obligatorio) |
 | Docker Desktop | Sí | No |
-| Espacio en disco | ~1,5 GB (imagen) | ~500 MB |
+| Espacio en disco | ~1,5 GB (imagen) | **4 GB libres**, medido |
 | RAM libre recomendada | 2 GB mínimo, 4 GB cómodo | 2 GB mínimo |
-| Tiempo de arranque | 5–10 min la primera vez | 2–3 min |
+| Tiempo de arranque | 5–10 min la primera vez | **5–15 min** la primera vez |
+| Herramientas de compilación | No hace falta | Puede hacer falta (ver B2) |
+
+> **Sobre el espacio y el tiempo de la ruta `npx`:** las cifras están medidas en
+> una máquina real, no estimadas. n8n descarga un árbol de dependencias muy
+> grande —incluye todo el stack de agentes de IA— y en nuestra prueba consumió
+> **más de 2 GB en ocho minutos sin haber terminado**. Si tienes el disco justo,
+> la ruta Docker es más predecible.
 
 **Cuál elegir:**
 
@@ -234,8 +241,19 @@ Para apagarlo: `Ctrl + C` en esa ventana.
 > valor por defecto protege, y las excepciones son decisiones conscientes de
 > alguien, no una puerta que se deja abierta por comodidad.
 >
-> **Si `ignore-scripts` está en `false` y aun así falla**, cámbiate a la ruta
-> Docker y sigue con la clase. No inviertas más tiempo ahí.
+> **Si `ignore-scripts` está en `false` y aun así falla**, mira el mensaje. Si
+> ves algo como `fatal error: 'cstring' file not found` o `'memory' file not
+> found`, el problema ya no es npm: son las herramientas de compilación de tu
+> sistema, que están incompletas o desajustadas. Nos pasó en una máquina real
+> durante la preparación de este material.
+>
+> En ese punto **detente y cámbiate a Docker**. Reparar una instalación de
+> herramientas de desarrollo puede llevar una hora y no tiene nada que ver con
+> lo que viniste a aprender.
+>
+> **Si tampoco tienes Docker**, avísale a quien dicta la clase **antes** del
+> día, no durante. Con aviso previo hay soluciones —una máquina prestada,
+> trabajar en parejas, una instancia compartida—; en medio de la sesión, no.
 >
 > **Ten en cuenta el espacio**: `npx n8n` descarga un árbol de dependencias muy
 > grande. Deja **al menos 4 GB libres** antes de empezar.
