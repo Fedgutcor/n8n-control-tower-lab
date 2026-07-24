@@ -1,8 +1,8 @@
 services:
   n8n:
-    # Tag fijo a propósito: una clase no puede cambiar de versión sola entre el
-    # ensayo del docente y el día del taller. Para actualizar, cambie el número
-    # aquí y vuelva a ensayar antes de clase.
+    # Tag fijo a propósito: el entorno no debe cambiar de versión solo entre
+    # una prueba y la siguiente. Para actualizar, cambie el número aquí y
+    # vuelva a probar los workflows antes de seguir.
     image: docker.n8n.io/n8nio/n8n:2.30.8
     container_name: control-tower-n8n
     restart: unless-stopped

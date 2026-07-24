@@ -136,8 +136,8 @@ en la nube.
 
 ## Credenciales: las cuatro preguntas
 
-La fundamentación de esta clase ya las nombra al describir la clínica de
-credenciales del tramo 03. Aquí van desarrolladas con sus consecuencias, en
+La clase las nombra durante la clínica de credenciales. Aquí van
+desarrolladas con sus consecuencias, en
 particular la última, que es la que casi nadie responde hasta que ya es
 tarde.
 

@@ -82,9 +82,9 @@ real, solo que el dato concreto que se inventa cambió.
    razonable, "Legal" suena a un responsable válido. Nadie los detecta leyendo
    por encima. Así es como una invención llega a una reunión de dirección.
 
-> **Para el docente:** esta es una demostración en vivo que funciona con
+> **Para verlo con tus propios ojos:** esta demostración funciona con
 > Gemini (~80% de probabilidad de `RECHAZADO` en la primera corrida, casi
-> segura en dos). Si la primera corrida sale `APROBADO`, ejecuta una vez más
-> frente al grupo — es alta probabilidad, no garantía, y eso también es parte
-> de la lección: la validación por código no depende de que el modelo falle
+> segura en dos). Si la primera corrida sale `APROBADO`, ejecuta una vez
+> más — es alta probabilidad, no garantía, y eso también es parte de la
+> lección: la validación por código no depende de que el modelo falle
 > siempre, protege igual cuando falla a veces.

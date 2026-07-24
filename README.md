@@ -27,7 +27,6 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 | `docs/CONECTAR-GOOGLE.md` | El camino corto para leer Google sin OAuth, y el completo para datos reales. |
 | `docs/CASO-DE-ESTUDIO.md` | **El relato honesto de cómo se construyó este repositorio**: los errores reales del agente que lo dirigió, lo que solo apareció al ejecutar de verdad, y qué decisiones se quedaron del lado humano. Con los commits para comprobarlo. |
 | `docs/EL-DIA-DESPUES.md` | **Qué pasa cuando termina la clase.** El prototipo corre en tu computador, con tu usuario y tus credenciales: qué significa eso, las tres preguntas que deciden si sobrevive, los tres niveles de madurez hasta producción, y cómo llevar la conversación al área de sistemas sin que te la prohíban. |
-| `docs/PROMPT-NOTEBOOKLM-APERTURA.md` | Prompt para generar la presentación de apertura sobre especificar y probar antes de automatizar. |
 | `prompts/INFORME-EJECUTIVO.md` | Prompt y pruebas contra invenciones. |
 | `samples/` | Datos de demostración y plantilla para dashboard. |
 | `docs/MONTAJE-PASO-A-PASO.md` | Las dos rutas de instalación (Docker y npx) y los cuatro errores del día. |
@@ -37,7 +36,6 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 | `docs/LO-QUE-CUESTA-DE-VERDAD.md` | **Lo que "gratis" no dice.** Qué cubre de verdad la licencia de n8n y hasta dónde llegan las cuotas gratuitas de los proveedores de IA, qué se paga aunque el software no cueste (mantenimiento, máquina encendida, fallos silenciosos), y órdenes de magnitud fechados y con fuente para servidor, n8n Cloud y consumo de modelo. |
 | `docs/QUE-DATOS-PUEDEN-SALIR.md` | **La pregunta de gobernanza, completa.** Los tres lugares por donde la información sale de tu organización (copiloto, modelo dentro del flujo, conexión mal configurada), la pregunta del periódico y el competidor, qué hacer cuando la respuesta es "no", las cuatro preguntas sobre credenciales y una lista de verificación antes de conectar una fuente real. |
 | `docs/SI-CAMBIAS-DE-HERRAMIENTA.md` | **Lo que no caduca si tu organización no adopta n8n.** Qué es específico de la herramienta y qué es arquitectura transferible a Zapier, Make o cualquier otra plataforma — y la prueba de si aprendiste una cosa o la otra. |
-| `docs/` | Fundamentación, agenda docente, matriz de credenciales y arquitectura. |
 | `GUIA-INTERACTIVA.html` | Laboratorio offline y autocontenido para que trabaje el estudiante. |
 
 ## Empieza por aquí
@@ -53,15 +51,14 @@ ejecutivo y conserva a una persona como responsable de las decisiones.
 > No es un tutorial de clics. Es aprender a delegar sin perder el control de lo
 > que importa.
 
-### Por dónde seguir, según quién eres
+### Por dónde seguir, según tu momento
 
-`docs/` tiene 16 archivos — esta no es la tabla de artefactos de arriba, es el
-orden de lectura por rol y por momento.
+`docs/` tiene 12 archivos — esta no es la tabla de artefactos de arriba, es el
+orden de lectura por momento.
 
-| Quién eres | Orden de lectura |
+| Tu momento | Orden de lectura |
 |---|---|
 | **Voy a tomar la clase** | Antes: [DIRIGIR-AL-AGENTE.md](docs/DIRIGIR-AL-AGENTE.md). Durante: la tabla de abajo, con su pregunta de verificación. Después: [EL-DIA-DESPUES.md](docs/EL-DIA-DESPUES.md) y, si vas a conectar datos reales, [QUE-DATOS-PUEDEN-SALIR.md](docs/QUE-DATOS-PUEDEN-SALIR.md). |
-| **Voy a dictar esta clase** | [FUNDAMENTACION-DE-LA-CLASE.md](docs/FUNDAMENTACION-DE-LA-CLASE.md) → [GUIA-DEL-DOCENTE.md](docs/GUIA-DEL-DOCENTE.md) → [CASO-DE-ESTUDIO.md](docs/CASO-DE-ESTUDIO.md) → [PROMPT-NOTEBOOKLM-APERTURA.md](docs/PROMPT-NOTEBOOKLM-APERTURA.md) para la apertura. |
 | **Encontré esto en GitHub y quiero entender de qué va** | [CASO-DE-ESTUDIO.md](docs/CASO-DE-ESTUDIO.md) primero — es el más honesto y el que mejor explica el enfoque —, después [DIRIGIR-AL-AGENTE.md](docs/DIRIGIR-AL-AGENTE.md). |
 
 El resto del repositorio es la referencia técnica: el material que el agente
@@ -135,22 +132,21 @@ analogía de la vida diaria:
   fin, con los datos de ese momento. Cada corrida del flujo deja su propio
   registro.
 
-## Inicio rápido (docente)
+## Montaje del entorno — referencia técnica
 
-> Si es estudiante, siga la sección "Empieza por aquí" más arriba: el documento
-> sobre cómo dirigir a un agente, y la tabla de lo que debe quedar montado con
-> su pregunta de verificación. Lo que sigue es la referencia técnica de quien
-> dicta la clase — instalación completa, arranque, conexión de fuentes y
-> validación en un solo lugar — y también el material contra el que se puede
-> contrastar lo que construya un agente.
+> El camino recomendado es la sección "Empieza por aquí": dirigir a un agente y
+> verificar con la tabla de lo que debe quedar montado. Lo que sigue es la
+> referencia técnica completa — instalación, arranque, conexión de fuentes y
+> validación en un solo lugar — para hacerlo a mano, o para contrastar lo que
+> construya tu agente.
 
 ### 1. Requisito local
 
 Dos rutas posibles, ambas documentadas paso a paso en
 **[MONTAJE-PASO-A-PASO.md](docs/MONTAJE-PASO-A-PASO.md)**:
 
-- **Docker Desktop** — ruta principal. No depende de la versión de Node de cada
-  estudiante, que es la fuente número uno de problemas en clase.
+- **Docker Desktop** — ruta principal. No depende de la versión de Node de tu
+  equipo, que es la fuente número uno de problemas en clase.
 - **`npx n8n`** — sin Docker, pero exige **Node.js 22.22 o superior** (requisito
   de n8n 2.x, verificado en el registro de npm). Es la ruta preferible si van a
   trabajar con Ollama, porque evita el problema de red entre contenedor y
@@ -196,7 +192,7 @@ docker compose up -d
 > en este repositorio, y todo *parecería* funcionar.
 
 Abra [http://localhost:5678](http://localhost:5678), cree el usuario propietario
-local y deje que cada estudiante cree sus propias credenciales dentro de n8n.
+local y sus propias credenciales dentro de n8n.
 
 Para detenerlo sin borrar datos:
 
@@ -306,14 +302,12 @@ Y si nada de eso está disponible, el ejercicio **igual funciona completo**: el
 workflow `03` produce el informe sin ningún modelo. Esa es justamente la lección
 de arquitectura, no una limitación del taller.
 
-## Guion de clase
+## El laboratorio interactivo
 
 Abra `GUIA-INTERACTIVA.html` directamente desde el navegador: funciona offline,
-guarda progreso en el equipo y permite exportar el plan de cada estudiante.
-La fundamentación, resultados y rúbrica están en
-[FUNDAMENTACION-DE-LA-CLASE.md](docs/FUNDAMENTACION-DE-LA-CLASE.md).
+guarda tu progreso en el equipo y permite exportar tu plan al final.
 
-## Validación antes de la clase
+## Validación del entorno
 
 ```bash
 node scripts/verify-artifacts.mjs   # revisa artefactos, secretos, voseo y sintaxis del lab
@@ -328,11 +322,8 @@ aunque la página se vea perfecta.
 
 Al tener Docker instalado, haga además este ensayo con una carpeta de datos
 limpia: arrancar n8n, importar los workflows y ejecutar, como mínimo, estos
-tres: `01`, `03` y, con un modelo ya disponible, `04`. No es el ensayo
-completo — el checklist de una semana antes en
-[GUIA-DEL-DOCENTE.md](docs/GUIA-DEL-DOCENTE.md#1-checklist-de-ensayo--una-semana-antes)
-cubre los diez workflows. Cree credenciales de demostración por separado; los
-exports nunca incluyen secretos.
+tres: `01`, `03` y, con un modelo ya disponible, `04`. Cree credenciales de
+demostración por separado; los exports nunca incluyen secretos.
 
 ## Límites conscientes
 

@@ -46,15 +46,15 @@ editor. En la versión self-hosted **existen, pero no funcionan al instalar**:
 requieren activación de licencia de la instancia, configurar el endpoint del
 servicio y traer tu propia API key (BYOK). No es "prender y listo".
 
-**Decisión para esta clase:** no se muestra en vivo. Si quieres enseñarlo, ensáyalo
-antes y ten un plan B — perder 20 minutos de una clase de 3 horas peleando con una
-activación de licencia no le enseña nada a nadie.
+**Decisión para esta clase:** no se usa en vivo. Activarlo exige licencia y
+configuración propias, y perder 20 minutos de una clase de 3 horas peleando con
+una activación de licencia no le enseña nada a nadie.
 
 También existe **`n8n-mcp`** (`czlonkowski/n8n-mcp`), un servidor MCP que le da a
 un LLM conocimiento real de los nodos de n8n y reduce mucho la invención de node
-types. Es excelente — **para el docente que prepara el material**. Su instalación
-(clonar, compilar, configurar rutas absolutas en el cliente MCP) está fuera del
-alcance de un estudiante no técnico en clase.
+types. Es excelente — **cuando hay tiempo de preparación por delante**. Su
+instalación (clonar, compilar, configurar rutas absolutas en el cliente MCP)
+queda fuera del alcance de esta clase; anótalo para después, no para hoy.
 
 ---
 
@@ -91,7 +91,7 @@ informe determinista (workflow `03`), y solo después el modelo.
 > [LO-QUE-CUESTA-DE-VERDAD.md](LO-QUE-CUESTA-DE-VERDAD.md#3-órdenes-de-magnitud-no-cotizaciones)).
 > Cuando llegue esa fecha, el workflow `04` va a fallar por modelo retirado,
 > no por alucinación — no confundas esa causa con la demostración del
-> validador. Antes de dictar la clase después de esa fecha, elige en
+> validador. Si trabajas con este material después de esa fecha, elige en
 > [aistudio.google.com](https://aistudio.google.com) el modelo Flash vigente
 > en ese momento y actualiza el nodo, o cambia a Groq (plan B, ya documentado
 > arriba).
