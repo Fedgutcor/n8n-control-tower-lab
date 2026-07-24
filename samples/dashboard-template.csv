@@ -1,5 +1,5 @@
 external_id,source,kind,title,owner,status,priority,date,blocker,url,captured_at
-PROY-01,google-sheets,project,Portal de aliados,Lucía,en_riesgo,alta,2026-07-24,Falta decisión de Legal sobre términos,,
-PROY-02,google-sheets,project,Onboarding comercial,Miguel,en_curso,media,2026-08-02,,, 
-EVT-01,google-calendar,event,Comité de lanzamiento,Lucía,programado,alta,2026-07-21T09:00:00-05:00,,, 
-PROY-03,github,project,Migración CRM,Sara,bloqueado,critica,2026-07-22,Proveedor no entregó acceso a la API,,
+PROY-01,google-sheets,project,Portal de aliados,Demo Uno,en_riesgo,alta,2026-07-24,Falta decisión de Legal sobre términos,,
+PROY-02,google-sheets,project,Onboarding comercial,Demo Dos,en_curso,media,2026-08-02,,,
+EVT-01,google-calendar,event,Comité de lanzamiento,Demo Uno,programado,alta,2026-07-21T09:00:00-05:00,,,
+PROY-03,github,project,Migración CRM,Demo Tres,bloqueado,critica,2026-07-22,Proveedor no entregó acceso a la API,,

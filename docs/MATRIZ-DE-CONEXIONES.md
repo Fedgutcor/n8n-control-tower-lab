@@ -41,7 +41,7 @@ nodo **Code** o **Edit Fields** que devuelva el contrato común, y luego haga un
       "id": "id-estable-del-proveedor",
       "kind": "event",
       "title": "Comité de lanzamiento",
-      "owner": "Lucía",
+      "owner": "Demo Uno",
       "status": "programado",
       "priority": "alta",
       "start": "2026-07-21T09:00:00-05:00",

@@ -12,7 +12,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Mismos datos que la semilla del workflow 01 (misma corrida de la torre de\n// control): mismos proyectos, responsables, estados, fechas y bloqueadores.\n// 01 muestra la normalización; este workflow redacta el informe sobre esos\n// mismos hechos.\nreturn [{ json: {\n  period: '20–26 de julio de 2026',\n  projects: [\n    { name: 'Portal de aliados', owner: 'Lucía', status: 'en_riesgo', progress: 62, due: '2026-07-24', blocker: 'Falta decisión de Legal sobre términos', decision: 'Aprobar versión B de términos antes del martes.' },\n    { name: 'Onboarding comercial', owner: 'Miguel', status: 'en_curso', progress: 48, due: '2026-08-02', blocker: '', decision: '' },\n    { name: 'Migración CRM', owner: 'Sara', status: 'bloqueado', progress: 31, due: '2026-07-22', blocker: 'Proveedor no entregó acceso a la API', decision: 'Escalar incumplimiento y acordar fecha de acceso.' }\n  ],\n  events: ['Mar 09:00 · Comité de lanzamiento', 'Jue 15:00 · Demo de onboarding', 'Hoy 16:30 · Escalamiento con proveedor']\n} }];"
+        "jsCode": "// Mismos datos que la semilla del workflow 01 (misma corrida de la torre de\n// control): mismos proyectos, responsables, estados, fechas y bloqueadores.\n// 01 muestra la normalización; este workflow redacta el informe sobre esos\n// mismos hechos.\nreturn [{ json: {\n  period: '20–26 de julio de 2026',\n  projects: [\n    { name: 'Portal de aliados', owner: 'Demo Uno', status: 'en_riesgo', progress: 62, due: '2026-07-24', blocker: 'Falta decisión de Legal sobre términos', decision: 'Aprobar versión B de términos antes del martes.' },\n    { name: 'Onboarding comercial', owner: 'Demo Dos', status: 'en_curso', progress: 48, due: '2026-08-02', blocker: '', decision: '' },\n    { name: 'Migración CRM', owner: 'Demo Tres', status: 'bloqueado', progress: 31, due: '2026-07-22', blocker: 'Proveedor no entregó acceso a la API', decision: 'Escalar incumplimiento y acordar fecha de acceso.' }\n  ],\n  events: ['Mar 09:00 · Comité de lanzamiento', 'Jue 15:00 · Demo de onboarding', 'Hoy 16:30 · Escalamiento con proveedor']\n} }];"
       },
       "id": "51739dc5-0ba6-4e1e-9f51-123456789002",
       "name": "Snapshot para informe",
@@ -39,7 +39,7 @@
       "position": [690, 20]
     },
     {
-      "parameters": { "content": "RELACIÓN CON EL WORKFLOW 01\n\nEste workflow (03) redacta el informe ejecutivo. Su semilla \"Snapshot para informe\" usa los MISMOS datos que el workflow \"01 · Semilla de demostración\" (Portal de aliados/Lucía/en_riesgo, Onboarding comercial/Miguel/en_curso, Migración CRM/Sara/bloqueado).\n\nSon independientes: cada uno se importa y se ejecuta por separado. 01 muestra la normalización de las tres fuentes; este muestra la redacción del informe sobre esos mismos hechos.", "height": 235, "width": 460, "color": 3 },
+      "parameters": { "content": "RELACIÓN CON EL WORKFLOW 01\n\nEste workflow (03) redacta el informe ejecutivo. Su semilla \"Snapshot para informe\" usa los MISMOS datos que el workflow \"01 · Semilla de demostración\" (Portal de aliados/Demo Uno/en_riesgo, Onboarding comercial/Demo Dos/en_curso, Migración CRM/Demo Tres/bloqueado).\n\nSon independientes: cada uno se importa y se ejecuta por separado. 01 muestra la normalización de las tres fuentes; este muestra la redacción del informe sobre esos mismos hechos.", "height": 235, "width": 460, "color": 3 },
       "id": "51739dc5-0ba6-4e1e-9f51-123456789005",
       "name": "Nota: relación con el workflow 01",
       "type": "n8n-nodes-base.stickyNote",
